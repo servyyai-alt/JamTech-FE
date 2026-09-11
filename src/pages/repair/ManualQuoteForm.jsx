@@ -24,6 +24,9 @@ const ManualQuoteForm = () => {
     defaultValues: {
       category: state?.category?.name || "",
       brand: state?.brand?.name || "",
+      model: state?.model?.name || "",
+      variant: state?.variant?.label || "",
+      issue: state?.service ? `Requested repair: ${state.service.name}. ` : "",
       name: user?.name || "",
       email: user?.email || "",
       phone: user?.phone || "",

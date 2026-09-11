@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, Outlet, Link } from "react-router-dom";
 import {
-  LayoutDashboard, Smartphone, Tag, Layers, SlidersHorizontal, Wrench, DollarSign,
+  LayoutDashboard, Smartphone, Tag, Layers, SlidersHorizontal, Wrench,
   ClipboardList, ShoppingBag, FolderTree, Package, Users, Ticket, Star, CreditCard, Settings,
 } from "lucide-react";
 
@@ -18,7 +18,6 @@ const groups = [
       { to: "/admin/models", label: "Models", icon: Layers },
       { to: "/admin/variants", label: "Variants / Config", icon: SlidersHorizontal },
       { to: "/admin/repair-services", label: "Repair Services", icon: Wrench },
-      { to: "/admin/repair-prices", label: "Repair Pricing", icon: DollarSign },
       { to: "/admin/bookings", label: "Repair Bookings", icon: ClipboardList },
     ],
   },
