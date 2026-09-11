@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingCart, User, Wrench, Package, Menu, X, LogOut } from "lucide-react";
+import { Search, ShoppingCart, User, Wrench, Package, Menu, X, LogOut, Heart } from "lucide-react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useCart } from "../../context/CartContext.jsx";
 
@@ -67,6 +67,14 @@ const Navbar = () => {
           </Link>
           <Link to="/track-order" title="Track Order" className="hidden rounded-full p-2 text-ink-700 hover:bg-gray-100 md:inline-flex">
             <Package size={20} />
+          </Link>
+          <Link to="/profile/wishlist" title="Wishlist" aria-label="Wishlist" className="relative rounded-full p-2 text-ink-700 hover:bg-gray-100">
+            <Heart size={20} />
+            {!!user?.wishlist?.length && (
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary-600 px-1 text-[10px] font-bold text-white">
+                {user.wishlist.length}
+              </span>
+            )}
           </Link>
           <Link to="/cart" className="relative rounded-full p-2 text-ink-700 hover:bg-gray-100">
             <ShoppingCart size={20} />

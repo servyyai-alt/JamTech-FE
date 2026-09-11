@@ -49,22 +49,22 @@ const RepairModelSelect = () => {
       </div>
 
       {loading ? <Loader /> : error ? <ErrorState message={error} /> : models.length === 0 ? (
-        <EmptyState title="No models available yet" />
+        <EmptyState title="No models available yet" description="Request a manual quote and our team will confirm your repair options." />
       ) : (
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
           {models.map((model) => (
-            <Link
-              key={model._id}
-              to={`/repair/${categorySlug}/${brandSlug}/${model.slug}`}
-              state={{ category, brand, model }}
-              className="card flex flex-col items-center gap-3 p-6 text-center hover:-translate-y-1"
-            >
+            <Link key={model._id} to={`/repair/${categorySlug}/${brandSlug}/${model.slug}`} state={{ category, brand, model }} className="card flex flex-col items-center gap-3 p-6 text-center hover:-translate-y-1">
               {model.image ? <img src={model.image} alt={model.name} className="h-16 w-16 object-contain" /> : <Smartphone className="text-primary-600" size={32} />}
               <span className="font-display text-sm font-semibold">{model.name}</span>
             </Link>
           ))}
+          <Link to="/repair/manual-quote" state={{ category, brand }} className="card flex flex-col items-center justify-center gap-3 border-dashed p-6 text-center hover:-translate-y-1">
+            <span className="text-2xl text-primary-600">+</span>
+            <span className="font-display text-sm font-semibold">My model isn’t listed</span>
+          </Link>
         </div>
       )}
+      {!loading && !error && models.length === 0 && <div className="mt-6 text-center"><Link to="/repair/manual-quote" state={{ category, brand }} className="btn-secondary">My model isn’t listed</Link></div>}
     </div>
   );
 };

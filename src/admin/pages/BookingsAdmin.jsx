@@ -59,9 +59,12 @@ const BookingsAdmin = () => {
                 <tr key={b._id} className="hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium">{b.bookingNumber}</td>
                   <td className="px-4 py-3">{b.customerDetails?.name}<br /><span className="text-xs text-gray-400">{b.customerDetails?.email}</span></td>
-                  <td className="px-4 py-3">{b.brand?.name} {b.deviceModel?.name}</td>
-                  <td className="px-4 py-3">{b.repairService?.name}</td>
-                  <td className="px-4 py-3">€{b.price}</td>
+                  <td className="px-4 py-3">
+                    {b.isManualQuote ? `${b.customDevice?.brand} ${b.customDevice?.model}` : `${b.brand?.name} ${b.deviceModel?.name}`}
+                    {b.isManualQuote && <span className="mt-1 block max-w-xs text-xs text-gray-500">{b.customDevice?.issue}</span>}
+                  </td>
+                  <td className="px-4 py-3">{b.isManualQuote ? "Manual quote" : b.repairService?.name}</td>
+                  <td className="px-4 py-3">{b.isManualQuote ? "Quote pending" : `€${b.price}`}</td>
                   <td className="px-4 py-3"><StatusBadge status={b.status} /></td>
                   <td className="px-4 py-3">
                     <select

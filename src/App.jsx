@@ -21,6 +21,7 @@ const RepairModelSelect = lazy(() => import("./pages/repair/RepairModelSelect.js
 const RepairVariantSelect = lazy(() => import("./pages/repair/RepairVariantSelect.jsx"));
 const RepairServiceSelect = lazy(() => import("./pages/repair/RepairServiceSelect.jsx"));
 const RepairBookingForm = lazy(() => import("./pages/repair/RepairBookingForm.jsx"));
+const ManualQuoteForm = lazy(() => import("./pages/repair/ManualQuoteForm.jsx"));
 const BookingSuccess = lazy(() => import("./pages/repair/BookingSuccess.jsx"));
 const RepairTracking = lazy(() => import("./pages/repair/RepairTracking.jsx"));
 
@@ -77,6 +78,7 @@ function App() {
           {/* Repair flow */}
           <Route path="/repair" element={<RepairCategorySelect />} />
           <Route path="/repair/booking" element={<RepairBookingForm />} />
+          <Route path="/repair/manual-quote" element={<ManualQuoteForm />} />
           <Route path="/repair/booking-success/:bookingNumber" element={<BookingSuccess />} />
           <Route path="/repair/:categorySlug" element={<RepairBrandSelect />} />
           <Route path="/repair/:categorySlug/:brandSlug" element={<RepairModelSelect />} />
