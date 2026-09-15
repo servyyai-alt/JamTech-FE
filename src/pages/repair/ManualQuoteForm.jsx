@@ -20,6 +20,7 @@ const ManualQuoteForm = () => {
   const { showToast } = useToast();
   const [serviceMethod, setServiceMethod] = useState("Store Visit");
   const [submitting, setSubmitting] = useState(false);
+  const needsAddress = serviceMethod === "Pickup & Delivery" || serviceMethod === "On-site Repair" || serviceMethod === "Mail-in Repair";
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       category: state?.category?.name || "",
@@ -47,7 +48,15 @@ const ManualQuoteForm = () => {
         serviceMethod,
         preferredDate: data.preferredDate,
         preferredTime: data.preferredTime,
-        customerDetails: { name: data.name, email: data.email, phone: data.phone },
+        customerDetails: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          address: data.address,
+          city: data.city,
+          postalCode: data.postalCode,
+          country: data.country,
+        },
       });
       navigate(`/repair/booking-success/${response.data.bookingNumber}`, { state: { booking: response.data } });
     } catch (error) {
@@ -105,6 +114,14 @@ const ManualQuoteForm = () => {
             {input("name", "Full Name")}
             {input("email", "Email", { type: "email" })}
             {input("phone", "Phone")}
+            {needsAddress && (
+              <>
+                <div className="sm:col-span-2">{input("address", "Address", { required: needsAddress })}</div>
+                {input("city", "City", { required: needsAddress })}
+                {input("postalCode", "Postal Code", { required: needsAddress })}
+                {input("country", "Country", { required: needsAddress })}
+              </>
+            )}
           </div>
         </section>
 
