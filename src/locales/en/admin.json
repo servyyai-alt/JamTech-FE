@@ -160,6 +160,7 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "select": "Select...",
+    "noOptions": "No options available",
     "toastLoadFailed": "Failed to load data",
     "toastDropdownFailed": "Failed to load dropdown options",
     "toastUpdated": "Updated successfully",
@@ -255,7 +256,11 @@
     "estimatedTimeFr": "Estimated Time (French)",
     "warrantyFr": "Warranty (French)",
     "estTime": "Est. Time",
-    "colWarranty": "Warranty"
+    "colWarranty": "Warranty",
+    "compatibilitySection": "Applies to Specific Devices (optional)",
+    "compatibleCategories": "Device Categories",
+    "compatibleBrands": "Brands",
+    "compatibleModels": "Device Models"
   },
   "repairPrices": {
     "title": "Repair Pricing",

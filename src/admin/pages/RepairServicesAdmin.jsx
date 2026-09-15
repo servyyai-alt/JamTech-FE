@@ -20,6 +20,12 @@ const RepairServicesAdmin = () => {
         { name: "warranty", label: t("repairServices.warranty") },
         { name: "sortOrder", label: t("fields.sortOrder"), type: "number" },
         { name: "isActive", label: t("fields.active"), type: "checkbox" },
+        {
+          name: "compatibleCategories", label: t("repairServices.compatibleCategories"), type: "multiselect",
+          optionsResource: "device-catalog/categories", section: t("repairServices.compatibilitySection"),
+        },
+        { name: "compatibleBrands", label: t("repairServices.compatibleBrands"), type: "multiselect", optionsResource: "device-catalog/brands" },
+        { name: "compatibleModels", label: t("repairServices.compatibleModels"), type: "multiselect", optionsResource: "device-catalog/models" },
         { name: "translations.fr.name", label: t("fields.nameFr"), section: "French Translation" },
         { name: "translations.fr.shortDescription", label: t("fields.shortDescriptionFr"), type: "textarea" },
         { name: "translations.fr.fullDescription", label: t("fields.fullDescriptionFr"), type: "textarea" },

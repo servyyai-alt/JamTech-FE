@@ -114,7 +114,7 @@ const ManualQuoteForm = () => {
           <h2 className="mb-4 font-display font-semibold">{t("contactDetails")}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {input("name", "fullName")}
-            {input("email", "email", { type: "email" })}
+            {input("email", "email", { type: "email", required: false })}
             {input("phone", "phone")}
             {needsAddress && (
               <>

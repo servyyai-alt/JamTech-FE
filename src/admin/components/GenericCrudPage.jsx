@@ -8,9 +8,10 @@ import EmptyState from "../../components/common/EmptyState.jsx";
 
 /**
  * Generic CRUD admin page.
- * fields: [{ name, label, type: 'text'|'number'|'textarea'|'checkbox'|'select', options?: [{value,label}], required?, section?, placeholder? }]
+ * fields: [{ name, label, type: 'text'|'number'|'textarea'|'checkbox'|'select'|'multiselect', options?: [{value,label}], optionsResource?, optionLabel?, required?, section?, placeholder? }]
  *   - `name` may be dotted (e.g. "translations.fr.name") for nested fields.
  *   - `section` groups consecutive fields under a heading.
+ *   - `multiselect` renders a checkbox list (values stored as an array of ids).
  * columns: [{ key, label, render?: (row) => node }]
  */
 const getPath = (obj, path) =>
@@ -88,7 +89,7 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
 
   const openCreate = () => {
     const initial = {};
-    fields.forEach((f) => (initial[f.name] = f.type === "checkbox" ? true : ""));
+    fields.forEach((f) => (initial[f.name] = f.type === "multiselect" ? [] : f.type === "checkbox" ? true : ""));
     setForm(initial);
     setEditing(null);
     setModalOpen(true);
@@ -98,8 +99,12 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
     const initial = {};
     fields.forEach((f) => {
       const value = getPath(item, f.name);
-      // API list endpoints may populate a relation; select controls need its ID.
-      initial[f.name] = value?._id ?? value ?? (f.type === "checkbox" ? true : "");
+      if (Array.isArray(value)) {
+        // API list endpoints may populate a relation; controls need their IDs.
+        initial[f.name] = value.map((v) => (typeof v === "string" ? v : v?._id));
+      } else {
+        initial[f.name] = value?._id ?? value ?? (f.type === "checkbox" ? true : "");
+      }
     });
     setForm(initial);
     setEditing(item);
@@ -210,6 +215,25 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
                         <option value="">{t("crud.select")}...</option>
                         {(f.options || selectOptions[f.name] || []).map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                       </select>
+                    ) : f.type === "multiselect" ? (
+                      <div className="max-h-52 overflow-y-auto rounded-xl border border-gray-200 bg-gray-50 p-3">
+                        {(f.options || selectOptions[f.name] || []).length === 0 ? (
+                          <p className="text-sm text-gray-400">{t("crud.noOptions")}</p>
+                        ) : (f.options || selectOptions[f.name] || []).map((o) => (
+                          <label key={o.value} className="flex items-center gap-2 py-1 text-sm text-ink-700">
+                            <input
+                              type="checkbox"
+                              checked={(value || []).includes(o.value)}
+                              onChange={(e) => {
+                                const current = value || [];
+                                const next = e.target.checked ? [...current, o.value] : current.filter((v) => v !== o.value);
+                                handleChange(f.name, next);
+                              }}
+                            />
+                            <span className="font-medium">{o.label}</span>
+                          </label>
+                        ))}
+                      </div>
                     ) : f.type === "checkbox" ? (
                       <label className="flex items-center gap-2 text-sm font-medium text-ink-700">
                         <input type="checkbox" checked={!!value} onChange={(e) => handleChange(f.name, e.target.checked)} />

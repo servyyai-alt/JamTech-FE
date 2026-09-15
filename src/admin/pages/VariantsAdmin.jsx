@@ -28,6 +28,7 @@ const VariantsAdmin = () => {
         { name: "translations.fr.screenSize", label: t("variants.screenSizeFr") },
       ]}
       columns={[
+        { key: "deviceModel", label: t("fields.deviceModel"), render: (v) => v.deviceModel?.name ?? "—" },
         { key: "label", label: t("variants.colLabel") },
         { key: "storage", label: t("variants.storage") },
         { key: "color", label: t("variants.color") },

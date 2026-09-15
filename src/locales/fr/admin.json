@@ -160,6 +160,7 @@
     "cancel": "Annuler",
     "delete": "Supprimer",
     "select": "Sélectionner...",
+    "noOptions": "Aucune option disponible",
     "toastLoadFailed": "Échec du chargement des données",
     "toastDropdownFailed": "Échec du chargement des options de la liste déroulante",
     "toastUpdated": "Mis à jour avec succès",
@@ -255,7 +256,11 @@
     "estimatedTimeFr": "Temps estimé (français)",
     "warrantyFr": "Garantie (français)",
     "estTime": "Durée estimée",
-    "colWarranty": "Garantie"
+    "colWarranty": "Garantie",
+    "compatibilitySection": "S'applique à des appareils spécifiques (optionnel)",
+    "compatibleCategories": "Catégories d'appareils",
+    "compatibleBrands": "Marques",
+    "compatibleModels": "Modèles"
   },
   "repairPrices": {
     "title": "Tarifs de réparation",

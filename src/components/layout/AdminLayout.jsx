@@ -85,7 +85,7 @@ const AdminLayout = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <aside className="hidden w-64 shrink-0 overflow-y-auto border-r border-gray-100 bg-ink-900 text-gray-300 lg:block">
+      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 overflow-y-auto border-r border-gray-100 bg-ink-900 text-gray-300 lg:block">
         <SidebarContent />
       </aside>
 
