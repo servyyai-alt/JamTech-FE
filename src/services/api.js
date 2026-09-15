@@ -1,4 +1,5 @@
 import axios from "axios";
+import i18n from "../i18n.js";
 
 const api = axios.create({
   baseURL: "/api",
@@ -8,6 +9,8 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("jam_token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
+  const lang = i18n.language?.startsWith("fr") ? "fr" : "en";
+  config.params = { ...(config.params || {}), lang };
   return config;
 });
 

@@ -4,11 +4,13 @@ import api from "../../services/api.js";
 import Loader from "../../components/common/Loader.jsx";
 import EmptyState from "../../components/common/EmptyState.jsx";
 import ProductCard from "../../components/ecommerce/ProductCard.jsx";
+import { useTranslation } from "react-i18next";
 
 const ProfileWishlist = () => {
   const { user } = useAuth();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation("profile");
 
   useEffect(() => {
     if (!user?.wishlist?.length) { setLoading(false); return; }
@@ -18,7 +20,7 @@ const ProfileWishlist = () => {
   }, [user]);
 
   if (loading) return <Loader />;
-  if (products.length === 0) return <EmptyState title="Your wishlist is empty" />;
+  if (products.length === 0) return <EmptyState title={t("wishlist.emptyTitle")} />;
 
   return (
     <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">

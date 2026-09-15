@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useCart } from "../../context/CartContext.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useToast } from "../../context/ToastContext.jsx";
@@ -9,6 +10,7 @@ import { formatPrice } from "../../components/common/PriceTag.jsx";
 import AdyenDropIn from "../../components/payment/AdyenDropIn.jsx";
 
 const Checkout = () => {
+  const { t } = useTranslation("cart");
   const { items, subtotal, coupon, clearCart } = useCart();
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -44,7 +46,7 @@ const Checkout = () => {
       const res = await orderService.createOrder(payload);
       setOrder(res.data);
     } catch (err) {
-      showToast(err.response?.data?.message || "Could not place order.", "error");
+      showToast(err.response?.data?.message || t("checkout.orderFailed"), "error");
     } finally {
       setPlacing(false);
     }
@@ -59,8 +61,8 @@ const Checkout = () => {
   if (order) {
     return (
       <div className="container-px section-y mx-auto max-w-xl">
-        <h1 className="mb-2 text-center font-display text-2xl font-bold">Complete Your Payment</h1>
-        <p className="mb-6 text-center text-sm text-gray-500">Order {order.orderNumber} · {formatPrice(order.totalAmount)}</p>
+        <h1 className="mb-2 text-center font-display text-2xl font-bold">{t("checkout.completePayment")}</h1>
+        <p className="mb-6 text-center text-sm text-gray-500">{t("checkout.orderLine", { orderNumber: order.orderNumber, amount: formatPrice(order.totalAmount) })}</p>
         <div className="card p-6">
           <AdyenDropIn referenceType="order" referenceId={order._id} onPaymentResult={handlePaymentResult} />
         </div>
@@ -70,59 +72,59 @@ const Checkout = () => {
 
   return (
     <div className="container-px section-y mx-auto max-w-6xl">
-      <h1 className="mb-8 font-display text-3xl font-bold text-ink-900">Checkout</h1>
+      <h1 className="mb-8 font-display text-3xl font-bold text-ink-900">{t("checkout.checkout")}</h1>
       <div className="grid gap-8 lg:grid-cols-3">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 lg:col-span-2">
           {!user && (
             <div className="card p-6">
-              <h3 className="mb-4 font-display font-semibold">Contact Details</h3>
-              <label className="label">Email *</label>
+              <h3 className="mb-4 font-display font-semibold">{t("checkout.contactDetails")}</h3>
+              <label className="label">{t("checkout.email")}</label>
               <input type="email" className="input" {...register("email", { required: !user })} />
-              {errors.email && <p className="mt-1 text-xs text-red-500">Email is required</p>}
+              {errors.email && <p className="mt-1 text-xs text-red-500">{t("checkout.emailRequired")}</p>}
             </div>
           )}
 
           <div className="card p-6">
-            <h3 className="mb-4 font-display font-semibold">Billing Address</h3>
+            <h3 className="mb-4 font-display font-semibold">{t("checkout.billingAddress")}</h3>
             <div className="grid gap-4 sm:grid-cols-2">
-              <div><label className="label">Full Name *</label><input className="input" {...register("fullName", { required: true })} /></div>
-              <div><label className="label">Phone *</label><input className="input" {...register("phone", { required: true })} /></div>
-              <div className="sm:col-span-2"><label className="label">Address Line 1 *</label><input className="input" {...register("addressLine1", { required: true })} /></div>
-              <div className="sm:col-span-2"><label className="label">Address Line 2</label><input className="input" {...register("addressLine2")} /></div>
-              <div><label className="label">City *</label><input className="input" {...register("city", { required: true })} /></div>
-              <div><label className="label">Postal Code *</label><input className="input" {...register("postalCode", { required: true })} /></div>
-              <div><label className="label">Country *</label><input className="input" {...register("country", { required: true })} /></div>
+              <div><label className="label">{t("checkout.fullName")}</label><input className="input" {...register("fullName", { required: true })} /></div>
+              <div><label className="label">{t("checkout.phone")}</label><input className="input" {...register("phone", { required: true })} /></div>
+              <div className="sm:col-span-2"><label className="label">{t("checkout.addressLine1")}</label><input className="input" {...register("addressLine1", { required: true })} /></div>
+              <div className="sm:col-span-2"><label className="label">{t("checkout.addressLine2")}</label><input className="input" {...register("addressLine2")} /></div>
+              <div><label className="label">{t("checkout.city")}</label><input className="input" {...register("city", { required: true })} /></div>
+              <div><label className="label">{t("checkout.postalCode")}</label><input className="input" {...register("postalCode", { required: true })} /></div>
+              <div><label className="label">{t("checkout.country")}</label><input className="input" {...register("country", { required: true })} /></div>
             </div>
           </div>
 
           <div className="card p-6">
             <label className="mb-4 flex items-center gap-2 font-display font-semibold">
               <input type="checkbox" checked={sameAsBilling} onChange={(e) => setSameAsBilling(e.target.checked)} />
-              Shipping address same as billing
+              {t("checkout.shippingSameAsBilling")}
             </label>
             {!sameAsBilling && (
               <div className="grid gap-4 sm:grid-cols-2">
-                <div><label className="label">Full Name *</label><input className="input" {...register("shipFullName", { required: !sameAsBilling })} /></div>
-                <div><label className="label">Phone *</label><input className="input" {...register("shipPhone", { required: !sameAsBilling })} /></div>
-                <div className="sm:col-span-2"><label className="label">Address Line 1 *</label><input className="input" {...register("shipAddressLine1", { required: !sameAsBilling })} /></div>
-                <div><label className="label">City *</label><input className="input" {...register("shipCity", { required: !sameAsBilling })} /></div>
-                <div><label className="label">Postal Code *</label><input className="input" {...register("shipPostalCode", { required: !sameAsBilling })} /></div>
-                <div><label className="label">Country *</label><input className="input" {...register("shipCountry", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.fullName")}</label><input className="input" {...register("shipFullName", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.phone")}</label><input className="input" {...register("shipPhone", { required: !sameAsBilling })} /></div>
+                <div className="sm:col-span-2"><label className="label">{t("checkout.addressLine1")}</label><input className="input" {...register("shipAddressLine1", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.city")}</label><input className="input" {...register("shipCity", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.postalCode")}</label><input className="input" {...register("shipPostalCode", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.country")}</label><input className="input" {...register("shipCountry", { required: !sameAsBilling })} /></div>
               </div>
             )}
           </div>
 
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" required /> I agree to the <a href="/terms" className="text-primary-600 underline">Terms & Conditions</a>
+            <input type="checkbox" required /> {t("checkout.agreeToTerms")} <a href="/terms" className="text-primary-600 underline">{t("checkout.termsAndConditions")}</a>
           </label>
 
           <button type="submit" disabled={placing} className="btn-primary w-full disabled:opacity-60">
-            {placing ? "Placing Order..." : "Place Order"}
+            {placing ? t("checkout.placingOrder") : t("checkout.placeOrder")}
           </button>
         </form>
 
         <div className="card h-fit p-6">
-          <h3 className="mb-4 font-display font-semibold">Order Summary</h3>
+          <h3 className="mb-4 font-display font-semibold">{t("summary.title")}</h3>
           <div className="max-h-64 space-y-3 overflow-y-auto">
             {items.map((i) => (
               <div key={`${i.productId}_${i.variantId || "base"}`} className="flex justify-between text-sm">
@@ -132,10 +134,10 @@ const Checkout = () => {
             ))}
           </div>
           <div className="mt-4 flex justify-between border-t border-gray-100 pt-4">
-            <span className="font-display font-semibold">Subtotal</span>
+            <span className="font-display font-semibold">{t("summary.subtotal")}</span>
             <span className="font-display font-bold">{formatPrice(subtotal - (coupon?.discount || 0))}</span>
           </div>
-          <p className="mt-1 text-xs text-gray-400">Final total (with shipping & VAT) is confirmed after placing your order.</p>
+          <p className="mt-1 text-xs text-gray-400">{t("checkout.finalTotalNote")}</p>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Heart, ShoppingCart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import PriceTag from "../common/PriceTag.jsx";
 import StarRating from "../common/StarRating.jsx";
 import { useCart } from "../../context/CartContext.jsx";
@@ -9,6 +10,7 @@ import { useToast } from "../../context/ToastContext.jsx";
 import * as authService from "../../services/authService.js";
 
 const ProductCard = ({ product }) => {
+  const { t } = useTranslation("shop");
   const { addItem } = useCart();
   const { user, refreshUser } = useAuth();
   const { showToast } = useToast();
@@ -23,18 +25,18 @@ const ProductCard = ({ product }) => {
       price: product.salePrice && product.salePrice < product.regularPrice ? product.salePrice : product.regularPrice,
       quantity: 1,
     });
-    showToast("Added to cart", "success");
+    showToast(t("product.addedToCart"), "success");
   };
 
   const handleWishlist = async (e) => {
     e.preventDefault();
-    if (!user) return showToast("Please log in to save items", "info");
+    if (!user) return showToast(t("wishlist.loginRequired"), "info");
     try {
       await authService.toggleWishlist(product._id);
       await refreshUser();
-      showToast("Wishlist updated", "success");
+      showToast(t("wishlist.updated"), "success");
     } catch {
-      showToast("Failed to update wishlist", "error");
+      showToast(t("wishlist.failed"), "error");
     }
   };
 
@@ -69,7 +71,7 @@ const ProductCard = ({ product }) => {
             <ShoppingCart size={15} />
           </button>
         </div>
-        {product.stock <= 0 && <span className="text-xs font-semibold text-red-500">Out of stock</span>}
+        {product.stock <= 0 && <span className="text-xs font-semibold text-red-500">{t("product.outOfStock")}</span>}
       </div>
     </Link>
   );

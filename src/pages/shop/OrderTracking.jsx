@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import * as orderService from "../../services/orderService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
@@ -8,6 +9,7 @@ import { formatPrice } from "../../components/common/PriceTag.jsx";
 import { Search } from "lucide-react";
 
 const OrderTracking = () => {
+  const { t } = useTranslation("cart");
   const [params] = useSearchParams();
   const [orderNumber, setOrderNumber] = useState(params.get("orderNumber") || "");
   const [order, setOrder] = useState(null);
@@ -22,7 +24,7 @@ const OrderTracking = () => {
       const res = await orderService.trackOrder(orderNumber.trim());
       setOrder(res.data);
     } catch (err) {
-      setError(err.response?.data?.message || "Order not found.");
+      setError(err.response?.data?.message || t("tracking.notFound"));
     } finally {
       setLoading(false);
     }
@@ -32,10 +34,10 @@ const OrderTracking = () => {
 
   return (
     <div className="container-px section-y mx-auto max-w-3xl">
-      <h1 className="mb-2 text-center font-display text-3xl font-bold text-ink-900">Track Your Order</h1>
-      <p className="mb-8 text-center text-gray-500">Enter your order number to see status.</p>
+      <h1 className="mb-2 text-center font-display text-3xl font-bold text-ink-900">{t("tracking.title")}</h1>
+      <p className="mb-8 text-center text-gray-500">{t("tracking.description")}</p>
       <form onSubmit={track} className="mx-auto mb-10 flex max-w-md gap-2">
-        <input value={orderNumber} onChange={(e) => setOrderNumber(e.target.value)} placeholder="e.g. ORD-2026-00001" className="input flex-1" />
+        <input value={orderNumber} onChange={(e) => setOrderNumber(e.target.value)} placeholder={t("tracking.placeholder")} className="input flex-1" />
         <button className="btn-primary !px-5"><Search size={18} /></button>
       </form>
 
@@ -54,7 +56,7 @@ const OrderTracking = () => {
             ))}
           </div>
           <div className="flex justify-between border-t border-gray-100 pt-3 font-semibold">
-            <span>Total</span><span>{formatPrice(order.totalAmount, order.currency)}</span>
+            <span>{t("summary.total")}</span><span>{formatPrice(order.totalAmount, order.currency)}</span>
           </div>
         </div>
       )}

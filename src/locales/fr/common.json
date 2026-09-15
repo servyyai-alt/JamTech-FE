@@ -1,0 +1,55 @@
+{
+  "buttons": {
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "view": "Voir",
+    "back": "Retour",
+    "submit": "Envoyer",
+    "loading": "Chargement...",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "update": "Mettre à jour",
+    "remove": "Retirer",
+    "create": "Créer"
+  },
+  "statuses": {
+    "Pending": "En attente",
+    "Confirmed": "Confirmé",
+    "Device Received": "Appareil reçu",
+    "Diagnosis": "Diagnostic",
+    "Repair In Progress": "Réparation en cours",
+    "Awaiting Parts": "En attente de pièces",
+    "Repair Completed": "Réparation terminée",
+    "Ready for Collection": "Prêt à récupérer",
+    "Out for Delivery": "En cours de livraison",
+    "Delivered": "Livré",
+    "Cancelled": "Annulé",
+    "Processing": "En traitement",
+    "Shipped": "Expédié",
+    "Returned": "Retourné"
+  },
+  "empty": {
+    "title": "Rien ici pour le moment",
+    "noItems": "Aucun élément trouvé",
+    "description": "Rien à afficher pour le moment."
+  },
+  "errors": {
+    "somethingWentWrong": "Une erreur est survenue.",
+    "tryAgain": "Réessayer"
+  },
+  "confirm": {
+    "deleteTitle": "Supprimer cet élément ?",
+    "deleteMessage": "Cette action est irréversible."
+  },
+  "price": "Prix",
+  "total": "Total",
+  "quantity": "Quantité",
+  "actions": "Actions",
+  "yes": "Oui",
+  "no": "Non",
+  "currency": "€"
+}

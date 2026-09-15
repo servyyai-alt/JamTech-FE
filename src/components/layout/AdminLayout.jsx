@@ -5,6 +5,7 @@ import {
   ClipboardList, ShoppingBag, FolderTree, Package, Users, Ticket, Star, CreditCard, Settings,
   Menu, X,
 } from "lucide-react";
+import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 
 const groups = [
   {
@@ -76,6 +77,9 @@ const AdminLayout = () => {
           </div>
         ))}
       </nav>
+      <div className="px-3 pb-6">
+        <LanguageSwitcher className="w-full" />
+      </div>
     </>
   );
 
@@ -95,9 +99,12 @@ const AdminLayout = () => {
       </aside>
 
       <div className="flex-1 overflow-x-hidden">
-        <div className="flex items-center gap-3 border-b border-gray-100 bg-white px-4 py-3 lg:hidden">
-          <button onClick={() => setMobileOpen(true)} className="rounded-lg p-2 text-gray-600 hover:bg-gray-100"><Menu size={20} /></button>
-          <span className="font-display font-bold text-ink-900">JAM Admin</span>
+        <div className="flex items-center justify-between gap-3 border-b border-gray-100 bg-white px-4 py-3 lg:hidden">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setMobileOpen(true)} className="rounded-lg p-2 text-gray-600 hover:bg-gray-100"><Menu size={20} /></button>
+            <span className="font-display font-bold text-ink-900">JAM Admin</span>
+          </div>
+          <LanguageSwitcher />
         </div>
         <div className="container-px py-8">
           <Outlet />

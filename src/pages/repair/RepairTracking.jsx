@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import * as bookingService from "../../services/bookingService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
@@ -13,6 +14,8 @@ const ALL_STATUSES = [
 
 const RepairTracking = () => {
   const [params] = useSearchParams();
+  const { t } = useTranslation("repair");
+  const { t: tc } = useTranslation("common");
   const [bookingNumber, setBookingNumber] = useState(params.get("bookingNumber") || "");
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,7 +31,7 @@ const RepairTracking = () => {
       const res = await bookingService.trackBooking(bookingNumber.trim());
       setBooking(res.data);
     } catch (err) {
-      setError(err.response?.data?.message || "Booking not found. Please check your booking number.");
+      setError(err.response?.data?.message || t("error.notFound"));
     } finally {
       setLoading(false);
     }
@@ -43,11 +46,11 @@ const RepairTracking = () => {
 
   return (
     <div className="container-px section-y mx-auto max-w-3xl">
-      <h1 className="mb-2 text-center font-display text-3xl font-bold text-ink-900">Track Your Repair</h1>
-      <p className="mb-8 text-center text-gray-500">Enter your booking number to see live status.</p>
+      <h1 className="mb-2 text-center font-display text-3xl font-bold text-ink-900">{t("title")}</h1>
+      <p className="mb-8 text-center text-gray-500">{t("trackingSubtitle")}</p>
 
       <form onSubmit={track} className="mx-auto mb-10 flex max-w-md gap-2">
-        <input value={bookingNumber} onChange={(e) => setBookingNumber(e.target.value)} placeholder="e.g. REP-2026-00001" className="input flex-1" />
+        <input value={bookingNumber} onChange={(e) => setBookingNumber(e.target.value)} placeholder={t("trackingPlaceholder")} className="input flex-1" />
         <button className="btn-primary !px-5"><Search size={18} /></button>
       </form>
 
@@ -73,17 +76,17 @@ const RepairTracking = () => {
                     <div className={`h-3 w-3 shrink-0 rounded-full ${i <= currentIndex ? "bg-primary-600" : "bg-gray-200"}`} />
                     <div className={`h-0.5 flex-1 ${i === ALL_STATUSES.length - 1 ? "invisible" : i < currentIndex ? "bg-primary-600" : "bg-gray-200"}`} />
                   </div>
-                  <span className={`mt-2 text-center text-[10px] font-medium ${i <= currentIndex ? "text-ink-900" : "text-gray-400"}`}>{s}</span>
+                  <span className={`mt-2 text-center text-[10px] font-medium ${i <= currentIndex ? "text-ink-900" : "text-gray-400"}`}>{tc(`statuses.${s}`, { defaultValue: s })}</span>
                 </div>
               ))}
             </div>
           )}
 
           <div className="grid gap-3 border-t border-gray-100 pt-4 text-sm sm:grid-cols-2">
-            <div><span className="text-gray-500">Service Method</span><p className="font-medium">{booking.serviceMethod}</p></div>
-            <div><span className="text-gray-500">Preferred Date</span><p className="font-medium">{new Date(booking.preferredDate).toLocaleDateString()} at {booking.preferredTime}</p></div>
-            <div><span className="text-gray-500">Price</span><p className="font-medium">€{booking.price}</p></div>
-            <div><span className="text-gray-500">Payment Status</span><p className="font-medium capitalize">{booking.paymentStatus}</p></div>
+            <div><span className="text-gray-500">{t("serviceMethod")}</span><p className="font-medium">{booking.serviceMethod}</p></div>
+            <div><span className="text-gray-500">{t("preferredDate")}</span><p className="font-medium">{new Date(booking.preferredDate).toLocaleDateString()} at {booking.preferredTime}</p></div>
+            <div><span className="text-gray-500">{t("price")}</span><p className="font-medium">€{booking.price}</p></div>
+            <div><span className="text-gray-500">{t("paymentStatus")}</span><p className="font-medium capitalize">{booking.paymentStatus}</p></div>
           </div>
         </div>
       )}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import * as catalogService from "../../services/catalogService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
@@ -10,6 +11,7 @@ import { Smartphone } from "lucide-react";
 const RepairModelSelect = () => {
   const { categorySlug, brandSlug } = useParams();
   const location = useLocation();
+  const { t } = useTranslation("repair");
   const [category] = useState(location.state?.category);
   const [brand, setBrand] = useState(location.state?.brand || null);
   const [models, setModels] = useState([]);
@@ -32,7 +34,7 @@ const RepairModelSelect = () => {
         const modelRes = await catalogService.getModels(b._id);
         setModels(modelRes.data || []);
       } catch {
-        setError("Could not load models for this brand.");
+        setError(t("error.loadModels"));
       } finally {
         setLoading(false);
       }
@@ -44,12 +46,12 @@ const RepairModelSelect = () => {
     <div className="container-px section-y mx-auto max-w-6xl">
       <RepairStepper current={2} />
       <div className="mb-8 text-center">
-        <h1 className="font-display text-2xl font-bold text-ink-900 md:text-3xl">Choose Your Model</h1>
+        <h1 className="font-display text-2xl font-bold text-ink-900 md:text-3xl">{t("title")}</h1>
         <p className="mt-1 text-gray-500">{brand?.name}</p>
       </div>
 
       {loading ? <Loader /> : error ? <ErrorState message={error} /> : models.length === 0 ? (
-        <EmptyState title="No models available yet" description="Request a manual quote and our team will confirm your repair options." />
+        <EmptyState title={t("empty.title")} description={t("empty.description")} />
       ) : (
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
           {models.map((model) => (
@@ -60,11 +62,11 @@ const RepairModelSelect = () => {
           ))}
           <Link to="/repair/manual-quote" state={{ category, brand }} className="card flex flex-col items-center justify-center gap-3 border-dashed p-6 text-center hover:-translate-y-1">
             <span className="text-2xl text-primary-600">+</span>
-            <span className="font-display text-sm font-semibold">My model isn’t listed</span>
+            <span className="font-display text-sm font-semibold">{t("modelNotListed")}</span>
           </Link>
         </div>
       )}
-      {!loading && !error && models.length === 0 && <div className="mt-6 text-center"><Link to="/repair/manual-quote" state={{ category, brand }} className="btn-secondary">My model isn’t listed</Link></div>}
+      {!loading && !error && models.length === 0 && <div className="mt-6 text-center"><Link to="/repair/manual-quote" state={{ category, brand }} className="btn-secondary">{t("modelNotListed")}</Link></div>}
     </div>
   );
 };

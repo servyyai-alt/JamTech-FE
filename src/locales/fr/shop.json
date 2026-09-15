@@ -1,0 +1,49 @@
+{
+  "title": "Boutique",
+  "filter": {
+    "title": "Filtres",
+    "category": "Catégorie",
+    "clearCategory": "Effacer la catégorie",
+    "priceRange": "Fourchette de prix",
+    "min": "Min",
+    "max": "Max",
+    "rating": "Note",
+    "ratingAndUp": "{{count}}★ et plus",
+    "clearRating": "Effacer la note",
+    "inStockOnly": "En stock uniquement",
+    "onSale": "En solde",
+    "applyFilters": "Appliquer les filtres"
+  },
+  "sort": {
+    "newest": "Plus récent",
+    "priceAsc": "Prix : croissant",
+    "priceDesc": "Prix : décroissant",
+    "popular": "Plus populaire",
+    "rating": "Mieux noté"
+  },
+  "empty": {
+    "title": "Aucun produit trouvé",
+    "description": "Essayez d'ajuster vos filtres."
+  },
+  "product": {
+    "notFound": "Produit non trouvé.",
+    "addToCart": "Ajouter au panier",
+    "addedToCart": "Ajouté au panier",
+    "inStock": "En stock ({{count}} disponible)",
+    "outOfStock": "Rupture de stock",
+    "selectOption": "Sélectionner une option",
+    "description": "Description",
+    "specifications": "Caractéristiques",
+    "reviews": "Avis ({{count}})",
+    "noReviews": "Aucun avis pour le moment.",
+    "relatedProducts": "Produits similaires",
+    "deliveryEstimate": "2-4 jours",
+    "warranty": "Garantie standard",
+    "returnsPolicy": "Retours sous 14 jours"
+  },
+  "wishlist": {
+    "loginRequired": "Connectez-vous pour sauvegarder des articles",
+    "updated": "Liste de souhaits mise à jour",
+    "failed": "Échec de la mise à jour de la liste de souhaits"
+  }
+}

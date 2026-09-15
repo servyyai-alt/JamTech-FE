@@ -1,0 +1,49 @@
+{
+  "title": "Shop",
+  "filter": {
+    "title": "Filters",
+    "category": "Category",
+    "clearCategory": "Clear category",
+    "priceRange": "Price Range",
+    "min": "Min",
+    "max": "Max",
+    "rating": "Rating",
+    "ratingAndUp": "{{count}}★ & up",
+    "clearRating": "Clear rating",
+    "inStockOnly": "In Stock Only",
+    "onSale": "On Sale",
+    "applyFilters": "Apply Filters"
+  },
+  "sort": {
+    "newest": "Newest",
+    "priceAsc": "Price: Low to High",
+    "priceDesc": "Price: High to Low",
+    "popular": "Most Popular",
+    "rating": "Highest Rated"
+  },
+  "empty": {
+    "title": "No products found",
+    "description": "Try adjusting your filters."
+  },
+  "product": {
+    "notFound": "Product not found.",
+    "addToCart": "Add to Cart",
+    "addedToCart": "Added to cart",
+    "inStock": "In Stock ({{count}} available)",
+    "outOfStock": "Out of Stock",
+    "selectOption": "Select Option",
+    "description": "Description",
+    "specifications": "Specifications",
+    "reviews": "Reviews ({{count}})",
+    "noReviews": "No reviews yet.",
+    "relatedProducts": "Related Products",
+    "deliveryEstimate": "2-4 days",
+    "warranty": "Standard warranty",
+    "returnsPolicy": "14 day returns"
+  },
+  "wishlist": {
+    "loginRequired": "Please log in to save items",
+    "updated": "Wishlist updated",
+    "failed": "Failed to update wishlist"
+  }
+}

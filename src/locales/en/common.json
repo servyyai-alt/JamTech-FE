@@ -1,0 +1,55 @@
+{
+  "buttons": {
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add New",
+    "view": "View",
+    "back": "Back",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "close": "Close",
+    "confirm": "Confirm",
+    "update": "Update",
+    "remove": "Remove",
+    "create": "Create"
+  },
+  "statuses": {
+    "Pending": "Pending",
+    "Confirmed": "Confirmed",
+    "Device Received": "Device Received",
+    "Diagnosis": "Diagnosis",
+    "Repair In Progress": "Repair In Progress",
+    "Awaiting Parts": "Awaiting Parts",
+    "Repair Completed": "Repair Completed",
+    "Ready for Collection": "Ready for Collection",
+    "Out for Delivery": "Out for Delivery",
+    "Delivered": "Delivered",
+    "Cancelled": "Cancelled",
+    "Processing": "Processing",
+    "Shipped": "Shipped",
+    "Returned": "Returned"
+  },
+  "empty": {
+    "title": "Nothing here yet",
+    "noItems": "No items found",
+    "description": "Nothing to display right now."
+  },
+  "errors": {
+    "somethingWentWrong": "Something went wrong.",
+    "tryAgain": "Try again"
+  },
+  "confirm": {
+    "deleteTitle": "Delete this item?",
+    "deleteMessage": "This cannot be undone."
+  },
+  "price": "Price",
+  "total": "Total",
+  "quantity": "Quantity",
+  "actions": "Actions",
+  "yes": "Yes",
+  "no": "No",
+  "currency": "€"
+}

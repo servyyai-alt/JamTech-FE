@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const STATUS_COLORS = {
   Pending: "bg-gray-100 text-gray-700",
@@ -17,10 +18,13 @@ const STATUS_COLORS = {
   Returned: "bg-red-100 text-red-700",
 };
 
-const StatusBadge = ({ status }) => (
-  <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${STATUS_COLORS[status] || "bg-gray-100 text-gray-700"}`}>
-    {status}
-  </span>
-);
+const StatusBadge = ({ status }) => {
+  const { t } = useTranslation("common");
+  return (
+    <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${STATUS_COLORS[status] || "bg-gray-100 text-gray-700"}`}>
+      {t(`statuses.${status}`, { defaultValue: status })}
+    </span>
+  );
+};
 
 export default StatusBadge;

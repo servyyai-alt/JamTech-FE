@@ -1,31 +1,36 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import GenericCrudPage from "../components/GenericCrudPage.jsx";
 
-const BrandsAdmin = () => (
-  <GenericCrudPage
-    title="Brands"
-    resource="device-catalog/brands"
-    description="Manage brands per device category (Apple, Samsung, Dell, etc.)"
-    fields={[
-      { name: "name", label: "Name", required: true },
-      { name: "slug", label: "Slug (auto if blank)" },
-      {
-        name: "deviceCategory",
-        label: "Device Category",
-        type: "select",
-        optionsResource: "device-catalog/categories",
-        required: true,
-      },
-      { name: "logo", label: "Logo URL" },
-      { name: "sortOrder", label: "Sort Order", type: "number" },
-      { name: "isActive", label: "Active", type: "checkbox" },
-    ]}
-    columns={[
-      { key: "name", label: "Name" },
-      { key: "deviceCategory", label: "Category", render: (r) => r.deviceCategory?.name || "—" },
-      { key: "slug", label: "Slug" },
-      { key: "isActive", label: "Active", render: (r) => (r.isActive ? "Yes" : "No") },
-    ]}
-  />
-);
+const BrandsAdmin = () => {
+  const { t } = useTranslation("admin");
+  return (
+    <GenericCrudPage
+      title={t("brands.title")}
+      resource="device-catalog/brands"
+      description={t("brands.description")}
+      fields={[
+        { name: "name", label: t("fields.name"), required: true },
+        { name: "slug", label: t("fields.slug") },
+        {
+          name: "deviceCategory",
+          label: t("fields.deviceCategory"),
+          type: "select",
+          optionsResource: "device-catalog/categories",
+          required: true,
+        },
+        { name: "logo", label: t("brands.logo") },
+        { name: "sortOrder", label: t("fields.sortOrder"), type: "number" },
+        { name: "isActive", label: t("fields.active"), type: "checkbox" },
+        { name: "translations.fr.name", label: t("fields.nameFr"), section: "French Translation" },
+      ]}
+      columns={[
+        { key: "name", label: t("fields.name") },
+        { key: "deviceCategory", label: t("fields.colCategory"), render: (r) => r.deviceCategory?.name || "—" },
+        { key: "slug", label: t("fields.colSlug") },
+        { key: "isActive", label: t("fields.active"), render: (r) => (r.isActive ? t("yes") : t("no")) },
+      ]}
+    />
+  );
+};
 export default BrandsAdmin;

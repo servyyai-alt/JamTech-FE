@@ -1,7 +1,8 @@
 import React from "react";
+import i18n from "../../i18n.js";
 
 const formatPrice = (value, currency = "EUR") =>
-  new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(value || 0);
+  new Intl.NumberFormat(i18n.language?.toLowerCase().startsWith("fr") ? "fr-FR" : "en-IE", { style: "currency", currency }).format(value || 0);
 
 const PriceTag = ({ regularPrice, salePrice, currency = "EUR", size = "md" }) => {
   const hasDiscount = salePrice && salePrice < regularPrice;

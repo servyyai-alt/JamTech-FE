@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Minus, Plus, Trash2, Tag, ShoppingBag } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useCart } from "../../context/CartContext.jsx";
 import { formatPrice } from "../../components/common/PriceTag.jsx";
 import { useToast } from "../../context/ToastContext.jsx";
@@ -8,6 +9,7 @@ import * as orderService from "../../services/orderService.js";
 import EmptyState from "../../components/common/EmptyState.jsx";
 
 const Cart = () => {
+  const { t } = useTranslation("cart");
   const { items, updateQuantity, removeItem, subtotal, coupon, setCoupon } = useCart();
   const [couponCode, setCouponCode] = useState("");
   const [applying, setApplying] = useState(false);
@@ -20,9 +22,9 @@ const Cart = () => {
     try {
       const res = await orderService.validateCoupon(couponCode.trim(), subtotal);
       setCoupon(res.data);
-      showToast(`Coupon applied: -${formatPrice(res.data.discount)}`, "success");
+      showToast(t("coupon.applied", { discount: formatPrice(res.data.discount) }), "success");
     } catch (err) {
-      showToast(err.response?.data?.message || "Invalid coupon", "error");
+      showToast(err.response?.data?.message || t("coupon.invalid"), "error");
     } finally {
       setApplying(false);
     }
@@ -32,10 +34,10 @@ const Cart = () => {
     return (
       <div className="container-px section-y mx-auto max-w-3xl">
         <EmptyState
-          title="Your cart is empty"
-          description="Browse the shop to find something you'll love."
+          title={t("cart.empty.title")}
+          description={t("cart.empty.description")}
           icon={ShoppingBag}
-          action={<Link to="/shop" className="btn-primary mt-4">Go to Shop</Link>}
+          action={<Link to="/shop" className="btn-primary mt-4">{t("cart.empty.goToShop")}</Link>}
         />
       </div>
     );
@@ -43,7 +45,7 @@ const Cart = () => {
 
   return (
     <div className="container-px section-y mx-auto max-w-6xl">
-      <h1 className="mb-8 font-display text-3xl font-bold text-ink-900">Your Cart</h1>
+      <h1 className="mb-8 font-display text-3xl font-bold text-ink-900">{t("cart.title")}</h1>
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           {items.map((item) => (
@@ -67,24 +69,24 @@ const Cart = () => {
         </div>
 
         <div className="card h-fit p-6">
-          <h3 className="mb-4 font-display font-semibold">Order Summary</h3>
+          <h3 className="mb-4 font-display font-semibold">{t("summary.title")}</h3>
           <div className="mb-4 flex gap-2">
             <div className="relative flex-1">
               <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-              <input value={couponCode} onChange={(e) => setCouponCode(e.target.value)} placeholder="Coupon code" className="input pl-8 !py-2 text-sm" />
+              <input value={couponCode} onChange={(e) => setCouponCode(e.target.value)} placeholder={t("coupon.placeholder")} className="input pl-8 !py-2 text-sm" />
             </div>
-            <button onClick={applyCoupon} disabled={applying} className="btn-secondary !px-4 !py-2 text-sm">{applying ? "..." : "Apply"}</button>
+            <button onClick={applyCoupon} disabled={applying} className="btn-secondary !px-4 !py-2 text-sm">{applying ? "..." : t("coupon.apply")}</button>
           </div>
           <dl className="space-y-2 text-sm">
-            <div className="flex justify-between"><dt className="text-gray-500">Subtotal</dt><dd>{formatPrice(subtotal)}</dd></div>
-            {coupon && <div className="flex justify-between text-emerald-600"><dt>Coupon ({coupon.code})</dt><dd>-{formatPrice(coupon.discount)}</dd></div>}
-            <div className="flex justify-between text-gray-500"><dt>Shipping & tax</dt><dd>Calculated at checkout</dd></div>
+            <div className="flex justify-between"><dt className="text-gray-500">{t("summary.subtotal")}</dt><dd>{formatPrice(subtotal)}</dd></div>
+            {coupon && <div className="flex justify-between text-emerald-600"><dt>{t("summary.coupon", { code: coupon.code })}</dt><dd>-{formatPrice(coupon.discount)}</dd></div>}
+            <div className="flex justify-between text-gray-500"><dt>{t("summary.shippingTax")}</dt><dd>{t("summary.calculatedAtCheckout")}</dd></div>
           </dl>
           <div className="mt-4 flex justify-between border-t border-gray-100 pt-4">
-            <span className="font-display font-semibold">Estimated Total</span>
+            <span className="font-display font-semibold">{t("summary.estimatedTotal")}</span>
             <span className="font-display text-xl font-bold text-primary-600">{formatPrice(subtotal - (coupon?.discount || 0))}</span>
           </div>
-          <button onClick={() => navigate("/checkout")} className="btn-primary mt-5 w-full">Proceed to Checkout</button>
+          <button onClick={() => navigate("/checkout")} className="btn-primary mt-5 w-full">{t("checkout.proceedToCheckout")}</button>
         </div>
       </div>
     </div>

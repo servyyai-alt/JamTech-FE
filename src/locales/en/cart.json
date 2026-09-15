@@ -1,0 +1,71 @@
+{
+  "cart": {
+    "title": "Your Cart",
+    "empty": {
+      "title": "Your cart is empty",
+      "description": "Browse the shop to find something you'll love.",
+      "goToShop": "Go to Shop"
+    }
+  },
+  "summary": {
+    "title": "Order Summary",
+    "subtotal": "Subtotal",
+    "coupon": "Coupon ({{code}})",
+    "shippingTax": "Shipping & tax",
+    "calculatedAtCheckout": "Calculated at checkout",
+    "estimatedTotal": "Estimated Total",
+    "total": "Total"
+  },
+  "coupon": {
+    "placeholder": "Coupon code",
+    "apply": "Apply",
+    "applied": "Coupon applied: -{{discount}}",
+    "invalid": "Invalid coupon"
+  },
+  "checkout": {
+    "proceedToCheckout": "Proceed to Checkout",
+    "placeOrder": "Place Order",
+    "placingOrder": "Placing Order...",
+    "completePayment": "Complete Your Payment",
+    "orderLine": "Order {{orderNumber}} · {{amount}}",
+    "contactDetails": "Contact Details",
+    "email": "Email *",
+    "emailRequired": "Email is required",
+    "billingAddress": "Billing Address",
+    "fullName": "Full Name *",
+    "phone": "Phone *",
+    "addressLine1": "Address Line 1 *",
+    "addressLine2": "Address Line 2",
+    "city": "City *",
+    "postalCode": "Postal Code *",
+    "country": "Country *",
+    "shippingSameAsBilling": "Shipping address same as billing",
+    "agreeToTerms": "I agree to the",
+    "termsAndConditions": "Terms & Conditions",
+    "finalTotalNote": "Final total (with shipping & VAT) is confirmed after placing your order.",
+    "orderFailed": "Could not place order.",
+    "checkout": "Checkout"
+  },
+  "tracking": {
+    "title": "Track Your Order",
+    "description": "Enter your order number to see status.",
+    "placeholder": "e.g. ORD-2026-00001",
+    "notFound": "Order not found."
+  },
+  "payment": {
+    "success": {
+      "title": "Payment Successful!",
+      "messageStart": "Thank you — your order",
+      "messageEnd": "has been confirmed.",
+      "viewOrders": "View My Orders",
+      "continueShopping": "Continue Shopping"
+    },
+    "failed": {
+      "title": "Payment Failed",
+      "messageStart": "We couldn't process payment for order",
+      "messageEnd": "No charge was made.",
+      "tryAgain": "Try Again",
+      "contactSupport": "Contact Support"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import * as catalogService from "../../services/catalogService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
@@ -10,6 +11,7 @@ import { Tag } from "lucide-react";
 const RepairBrandSelect = () => {
   const { categorySlug } = useParams();
   const location = useLocation();
+  const { t } = useTranslation("repair");
   const [category, setCategory] = useState(location.state?.category || null);
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +28,7 @@ const RepairBrandSelect = () => {
         const brandRes = await catalogService.getBrands(cat._id);
         setBrands(brandRes.data || []);
       })
-      .catch(() => setError("Could not load brands for this category."))
+      .catch(() => setError(t("error.loadBrands")))
       .finally(() => setLoading(false));
     // eslint-disable-next-line
   }, [categorySlug]);
@@ -35,12 +37,12 @@ const RepairBrandSelect = () => {
     <div className="container-px section-y mx-auto max-w-6xl">
       <RepairStepper current={1} />
       <div className="mb-8 text-center">
-        <h1 className="font-display text-2xl font-bold text-ink-900 md:text-3xl">Choose Your Brand</h1>
+        <h1 className="font-display text-2xl font-bold text-ink-900 md:text-3xl">{t("title")}</h1>
         <p className="mt-1 text-gray-500">{category?.name}</p>
       </div>
 
       {loading ? <Loader /> : error ? <ErrorState message={error} /> : brands.length === 0 ? (
-        <EmptyState title="No brands available yet" description="Please check back soon or contact support." />
+        <EmptyState title={t("empty.title")} description={t("empty.description")} />
       ) : (
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
           {brands.map((brand) => (

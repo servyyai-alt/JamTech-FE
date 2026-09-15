@@ -1,0 +1,65 @@
+{
+  "about": {
+    "title": "About JAM Smart Tech",
+    "subtitle": "Premium device repair and electronics retail, built around trust, speed, and genuine parts.",
+    "storyTitle": "Our Story",
+    "storyBody": "JAM Smart Tech started as a neighborhood repair counter and grew into a full-service destination for device repair and accessories. Every repair is backed by a warranty, every part is genuine or manufacturer-grade, and every customer gets real-time tracking from booking to delivery.",
+    "imgAlt": "Repair technician",
+    "features": {
+      "certified": "Certified Repairs",
+      "customers": "10,000+ Happy Customers",
+      "genuine": "Genuine Parts",
+      "sameDay": "Same-Day Service"
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "toastSuccess": "Message sent! We'll get back to you soon.",
+    "emailLabel": "Email",
+    "emailValue": "support@jamsmarttech.com",
+    "phoneLabel": "Phone",
+    "phoneValue": "+31 20 123 4567",
+    "storeLabel": "Store",
+    "storeValue": "123 Tech Street, Amsterdam, Netherlands",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "sending": "Sending...",
+      "send": "Send Message"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": {
+      "duration": { "q": "How long does a typical repair take?", "a": "Most screen and battery repairs are completed same-day, often within 45-90 minutes for in-store visits." },
+      "warranty": { "q": "Do you offer a warranty on repairs?", "a": "Yes, every repair includes a warranty ranging from 90 days to 12 months depending on the service." },
+      "methods": { "q": "What service methods are available?", "a": "Store visit, pickup & delivery, mail-in repair, and on-site repair — availability depends on your location and device." },
+      "track": { "q": "Can I track my repair or order?", "a": "Yes, use the Track Repair or Track Order links in the navbar with your booking or order number." },
+      "payment": { "q": "What payment methods do you accept?", "a": "We accept all major cards and popular local payment methods through our secure Adyen-powered checkout." }
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has moved.",
+    "backHome": "Back to Home"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "items": [
+      "We collect only the information necessary to process your repair bookings and orders — including contact details, device information, and shipping addresses.",
+      "Payment processing is handled securely by Adyen. We never store your full card number or CVV on our servers.",
+      "Your data is never sold to third parties. We use it solely to fulfill orders, manage repair bookings, and improve our services.",
+      "You can request access to, correction of, or deletion of your personal data at any time by contacting our support team."
+    ]
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "items": [
+      "By booking a repair or placing an order with JAM Smart Tech, you agree to the pricing, warranty terms, and service timelines presented at the time of booking or checkout.",
+      "Repair pricing is determined by device category, brand, model, configuration, and the selected repair service, and is confirmed before any payment is required.",
+      "Orders are subject to product availability. We reserve the right to cancel or refund orders that cannot be fulfilled.",
+      "Warranty coverage varies by repair type and is stated on the relevant service page and booking confirmation."
+    ]
+  }
+}

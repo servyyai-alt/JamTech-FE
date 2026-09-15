@@ -1,0 +1,102 @@
+{
+  "hero": {
+    "badge": "Certified repairs · Genuine parts · Real warranty",
+    "titlePart1": "Device broken?",
+    "titlePart2": "We fix that fast.",
+    "subtitle": "Premium repair services for phones, tablets, computers and consoles — plus a full accessories store. Most repairs done same day.",
+    "ctaRepair": "Book a Repair",
+    "ctaShop": "Shop Accessories",
+    "imgAlt": "Technician repairing device"
+  },
+  "heroBadge": {
+    "title": "Repair Complete",
+    "subtitle": "iPhone 15 · Screen fixed"
+  },
+  "ratingBadge": {
+    "value": "50k+ reviews"
+  },
+  "stats": {
+    "devicesRepaired": { "value": "50K+", "label": "Devices Repaired" },
+    "avgRating": { "value": "4.9★", "label": "Average Rating" },
+    "avgTurnaround": { "value": "2 Hr", "label": "Avg. Turnaround" },
+    "partsGuaranteed": { "value": "100%", "label": "Parts Guaranteed" }
+  },
+  "marquee": {
+    "items": [
+      "Certified Technicians",
+      "Same-Day Repairs",
+      "90-Day Warranty",
+      "Genuine Parts",
+      "Free Diagnostics",
+      "Pickup & Delivery",
+      "All Major Brands",
+      "Competitive Pricing"
+    ]
+  },
+  "categories": {
+    "kicker": "What needs fixing?",
+    "title": "Choose Your Device",
+    "allServices": "All services",
+    "subtitle": "Repair & parts available",
+    "bookNow": "Book now"
+  },
+  "categoryNames": {
+    "smartphones": "Smartphones",
+    "tablets": "Tablets",
+    "computers": "Computers",
+    "gaming_devices": "Gaming Devices"
+  },
+  "repairServices": {
+    "kicker": "Most requested",
+    "title": "Popular Repair Services",
+    "screen": { "name": "Screen Replacement", "time": "45–60 min", "warranty": "90-day warranty" },
+    "battery": { "name": "Battery Replacement", "time": "30 min", "warranty": "12-month warranty" },
+    "software": { "name": "Software & Diagnostics", "time": "Same day", "warranty": "Free diagnosis" },
+    "general": { "name": "General Repair", "time": "Varies", "warranty": "Genuine parts" }
+  },
+  "howItWorks": {
+    "kicker": "Simple process",
+    "title": "How It Works",
+    "choose": { "title": "Choose Your Device", "desc": "Select category, brand and exact model in seconds." },
+    "pick": { "title": "Pick a Repair", "desc": "See transparent pricing before you commit to anything." },
+    "book": { "title": "Book & Track", "desc": "Store visit, pickup, mail-in or on-site — your choice." },
+    "fix": { "title": "Get It Fixed", "desc": "Certified technicians, genuine parts, real warranty." }
+  },
+  "whyUs": {
+    "kicker": "Why us",
+    "title": "The JAM Smart Tech Difference",
+    "certified": { "title": "Certified Technicians", "desc": "Every repair handled by trained specialists using genuine OEM parts backed by warranty." },
+    "flexible": { "title": "Flexible Service", "desc": "Walk in, book a pickup, mail it in, or have us come to you — whatever fits your schedule." },
+    "fast": { "title": "Fast Turnaround", "desc": "Most repairs completed same day. Track your repair status in real time from any device." },
+    "support": { "title": "After-Service Support", "desc": "Our support team is available post-repair to ensure everything is working perfectly." }
+  },
+  "featured": {
+    "kicker": "Hand-picked",
+    "title": "Featured Products",
+    "viewAll": "View all"
+  },
+  "bestSellers": {
+    "kicker": "Top rated",
+    "title": "Best Sellers",
+    "viewAll": "View all"
+  },
+  "reviews": {
+    "kicker": "Customer stories",
+    "title": "What Customers Say",
+    "role": "Verified Customer",
+    "items": {
+      "aisha": { "name": "Aisha K.", "text": "Screen replacement on my iPhone was done same day. Looks absolutely brand new — couldn't be happier.", "device": "iPhone 14 Pro" },
+      "marco": { "name": "Marco R.", "text": "Ordered a charger and a case — fast delivery, great packaging, genuinely fair prices. Will be back.", "device": "Samsung Galaxy" },
+      "lena": { "name": "Lena T.", "text": "Booked a pickup repair for my laptop battery. Super smooth from start to finish, kept me updated throughout.", "device": "MacBook Pro" },
+      "james": { "name": "James O.", "text": "Gaming console repair was handled with care. They even cleaned the unit — above and beyond service.", "device": "PlayStation 5" },
+      "priya": { "name": "Priya M.", "text": "Software issue resolved remotely within hours. Saved me a trip to the store entirely.", "device": "Dell XPS" }
+    }
+  },
+  "newsletter": {
+    "title": "Stay in the loop",
+    "subtitle": "Repair tips, exclusive deals and product launches — straight to your inbox. No spam.",
+    "success": "You're subscribed — thanks!",
+    "placeholder": "your@email.com",
+    "subscribe": "Subscribe"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "cart": {
+    "title": "Votre panier",
+    "empty": {
+      "title": "Votre panier est vide",
+      "description": "Parcourez la boutique pour trouver quelque chose qui vous plaît.",
+      "goToShop": "Aller à la boutique"
+    }
+  },
+  "summary": {
+    "title": "Récapitulatif",
+    "subtotal": "Sous-total",
+    "coupon": "Coupon ({{code}})",
+    "shippingTax": "Livraison et taxes",
+    "calculatedAtCheckout": "Calculé lors du paiement",
+    "estimatedTotal": "Total estimé",
+    "total": "Total"
+  },
+  "coupon": {
+    "placeholder": "Code coupon",
+    "apply": "Appliquer",
+    "applied": "Coupon appliqué : -{{discount}}",
+    "invalid": "Coupon invalide"
+  },
+  "checkout": {
+    "proceedToCheckout": "Passer au paiement",
+    "placeOrder": "Passer la commande",
+    "placingOrder": "Commande en cours...",
+    "completePayment": "Finaliser le paiement",
+    "orderLine": "Commande {{orderNumber}} · {{amount}}",
+    "contactDetails": "Coordonnées",
+    "email": "E-mail *",
+    "emailRequired": "L'e-mail est requis",
+    "billingAddress": "Adresse de facturation",
+    "fullName": "Nom complet *",
+    "phone": "Téléphone *",
+    "addressLine1": "Adresse ligne 1 *",
+    "addressLine2": "Adresse ligne 2",
+    "city": "Ville *",
+    "postalCode": "Code postal *",
+    "country": "Pays *",
+    "shippingSameAsBilling": "Adresse de livraison identique à celle de facturation",
+    "agreeToTerms": "J'accepte les",
+    "termsAndConditions": "Conditions générales",
+    "finalTotalNote": "Le total définitif (avec livraison et TVA) est confirmé après la passation de votre commande.",
+    "orderFailed": "Impossible de passer la commande.",
+    "checkout": "Paiement"
+  },
+  "tracking": {
+    "title": "Suivre votre commande",
+    "description": "Entrez votre numéro de commande pour voir le statut.",
+    "placeholder": "ex. ORD-2026-00001",
+    "notFound": "Commande non trouvée."
+  },
+  "payment": {
+    "success": {
+      "title": "Paiement réussi !",
+      "messageStart": "Merci — votre commande",
+      "messageEnd": "a été confirmée.",
+      "viewOrders": "Voir mes commandes",
+      "continueShopping": "Continuer les achats"
+    },
+    "failed": {
+      "title": "Échec du paiement",
+      "messageStart": "Nous n'avons pas pu traiter le paiement pour la commande",
+      "messageEnd": "Aucun prélèvement n'a été effectué.",
+      "tryAgain": "Réessayer",
+      "contactSupport": "Contacter le support"
+    }
+  }
+}

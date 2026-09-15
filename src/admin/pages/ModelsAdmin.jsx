@@ -1,26 +1,32 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import GenericCrudPage from "../components/GenericCrudPage.jsx";
 
-const ModelsAdmin = () => (
-  <GenericCrudPage
-    title="Device Models"
-    resource="device-catalog/models"
-    description="Models belonging to a brand, e.g. iPhone 16 Pro."
-    fields={[
-      { name: "name", label: "Name", required: true },
-      { name: "slug", label: "Slug (auto if blank)" },
-      { name: "brand", label: "Brand", type: "select", optionsResource: "device-catalog/brands", required: true },
-      { name: "deviceCategory", label: "Device Category", type: "select", optionsResource: "device-catalog/categories", required: true },
-      { name: "deviceType", label: "Device Type (Laptop/Desktop/AIO)" },
-      { name: "image", label: "Image URL" },
-      { name: "releaseYear", label: "Release Year", type: "number" },
-      { name: "isActive", label: "Active", type: "checkbox" },
-    ]}
-    columns={[
-      { key: "name", label: "Name" },
-      { key: "deviceType", label: "Type" },
-      { key: "isActive", label: "Active", render: (r) => (r.isActive ? "Yes" : "No") },
-    ]}
-  />
-);
+const ModelsAdmin = () => {
+  const { t } = useTranslation("admin");
+  return (
+    <GenericCrudPage
+      title={t("models.title")}
+      resource="device-catalog/models"
+      description={t("models.description")}
+      fields={[
+        { name: "name", label: t("fields.name"), required: true },
+        { name: "slug", label: t("fields.slug") },
+        { name: "brand", label: t("fields.brand"), type: "select", optionsResource: "device-catalog/brands", required: true },
+        { name: "deviceCategory", label: t("fields.deviceCategory"), type: "select", optionsResource: "device-catalog/categories", required: true },
+        { name: "deviceType", label: t("models.deviceType") },
+        { name: "image", label: t("fields.image") },
+        { name: "releaseYear", label: t("models.releaseYear"), type: "number" },
+        { name: "isActive", label: t("fields.active"), type: "checkbox" },
+        { name: "translations.fr.name", label: t("fields.nameFr"), section: "French Translation" },
+        { name: "translations.fr.deviceType", label: t("models.deviceTypeFr") },
+      ]}
+      columns={[
+        { key: "name", label: t("fields.name") },
+        { key: "deviceType", label: t("fields.colType") },
+        { key: "isActive", label: t("fields.active"), render: (r) => (r.isActive ? t("yes") : t("no")) },
+      ]}
+    />
+  );
+};
 export default ModelsAdmin;

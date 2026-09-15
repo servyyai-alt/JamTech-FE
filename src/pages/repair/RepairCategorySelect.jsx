@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Smartphone, Tablet, Laptop, Gamepad2, ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import * as catalogService from "../../services/catalogService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
@@ -8,6 +9,7 @@ import ErrorState from "../../components/common/ErrorState.jsx";
 const ICONS = { Smartphones: Smartphone, Tablets: Tablet, Computers: Laptop, "Gaming Devices": Gamepad2 };
 
 const RepairCategorySelect = () => {
+  const { t } = useTranslation("repair");
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +19,7 @@ const RepairCategorySelect = () => {
     setError(null);
     catalogService.getDeviceCategories()
       .then((res) => setCategories(res.data || []))
-      .catch(() => setError("Could not load device categories."))
+      .catch(() => setError(t("error.loadCategories")))
       .finally(() => setLoading(false));
   };
   useEffect(load, []);
@@ -25,8 +27,8 @@ const RepairCategorySelect = () => {
   return (
     <div className="container-px section-y mx-auto max-w-6xl">
       <div className="mb-10 text-center">
-        <h1 className="font-display text-3xl font-bold text-ink-900 md:text-4xl">Book a Repair</h1>
-        <p className="mt-2 text-gray-500">Step 1 of 6 — choose your device category</p>
+        <h1 className="font-display text-3xl font-bold text-ink-900 md:text-4xl">{t("title")}</h1>
+        <p className="mt-2 text-gray-500">{t("step1Subtitle")}</p>
       </div>
 
       {loading ? <Loader /> : error ? <ErrorState message={error} onRetry={load} /> : (
@@ -39,7 +41,7 @@ const RepairCategorySelect = () => {
                   <Icon size={32} />
                 </div>
                 <span className="font-display text-lg font-semibold">{cat.name}</span>
-                <span className="flex items-center gap-1 text-sm font-medium text-primary-600">Continue <ArrowRight size={14} /></span>
+                <span className="flex items-center gap-1 text-sm font-medium text-primary-600">{t("continue")} <ArrowRight size={14} /></span>
               </Link>
             );
           })}

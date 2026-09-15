@@ -1,0 +1,65 @@
+{
+  "about": {
+    "title": "À propos de JAM Smart Tech",
+    "subtitle": "Réparation d'appareils haut de gamme et électronique grand public, fondées sur la confiance, la rapidité et les pièces d'origine.",
+    "storyTitle": "Notre histoire",
+    "storyBody": "JAM Smart Tech a commencé comme un comptoir de réparation de quartier et est devenu une destination à service complet pour la réparation d'appareils et les accessoires. Chaque réparation est garantie, chaque pièce est d'origine ou de qualité fabricant, et chaque client bénéficie d'un suivi en temps réel de la réservation à la livraison.",
+    "imgAlt": "Technicien de réparation",
+    "features": {
+      "certified": "Réparations certifiées",
+      "customers": "10 000+ clients satisfaits",
+      "genuine": "Pièces d'origine",
+      "sameDay": "Service le jour même"
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "toastSuccess": "Message envoyé ! Nous vous répondrons rapidement.",
+    "emailLabel": "E-mail",
+    "emailValue": "support@jamsmarttech.com",
+    "phoneLabel": "Téléphone",
+    "phoneValue": "+31 20 123 4567",
+    "storeLabel": "Magasin",
+    "storeValue": "123 rue de la Tech, Amsterdam, Pays-Bas",
+    "form": {
+      "name": "Nom",
+      "email": "E-mail",
+      "message": "Message",
+      "sending": "Envoi...",
+      "send": "Envoyer le message"
+    }
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "items": {
+      "duration": { "q": "Combien de temps dure une réparation typique ?", "a": "La plupart des réparations d'écran et de batterie sont effectuées le jour même, souvent en 45 à 90 minutes pour les visites en magasin." },
+      "warranty": { "q": "Proposez-vous une garantie sur les réparations ?", "a": "Oui, chaque réparation comprend une garantie allant de 90 jours à 12 mois selon le service." },
+      "methods": { "q": "Quelles méthodes de service sont disponibles ?", "a": "Visite en magasin, retrait et livraison, réparation par courrier et réparation sur site — la disponibilité dépend de votre localisation et de votre appareil." },
+      "track": { "q": "Puis-je suivre ma réparation ou ma commande ?", "a": "Oui, utilisez les liens « Suivre une réparation » ou « Suivre une commande » dans la barre de navigation avec votre numéro de réservation ou de commande." },
+      "payment": { "q": "Quels moyens de paiement acceptez-vous ?", "a": "Nous acceptons toutes les principales cartes et les moyens de paiement locaux populaires via notre paiement sécurisé alimenté par Adyen." }
+    }
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "backHome": "Retour à l'accueil"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "items": [
+      "Nous ne collectons que les informations nécessaires pour traiter vos réservations de réparation et vos commandes — y compris les coordonnées, les informations sur l'appareil et les adresses de livraison.",
+      "Le traitement des paiements est géré en toute sécurité par Adyen. Nous ne stockons jamais votre numéro de carte complet ou votre CVV sur nos serveurs.",
+      "Vos données ne sont jamais vendues à des tiers. Nous les utilisons uniquement pour exécuter les commandes, gérer les réservations de réparation et améliorer nos services.",
+      "Vous pouvez demander l'accès, la correction ou la suppression de vos données personnelles à tout moment en contactant notre équipe d'assistance."
+    ]
+  },
+  "terms": {
+    "title": "Conditions générales",
+    "items": [
+      "En réservant une réparation ou en passant une commande chez JAM Smart Tech, vous acceptez les prix, les conditions de garantie et les délais de service présentés au moment de la réservation ou du paiement.",
+      "Le prix des réparations est déterminé par la catégorie, la marque, le modèle, la configuration de l'appareil et le service de réparation choisi, et est confirmé avant tout paiement.",
+      "Les commandes sont soumises à la disponibilité des produits. Nous nous réservons le droit d'annuler ou de rembourser les commandes qui ne peuvent pas être exécutées.",
+      "La couverture de la garantie varie selon le type de réparation et est indiquée sur la page de service concernée et sur la confirmation de réservation."
+    ]
+  }
+}

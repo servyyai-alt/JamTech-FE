@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, ShoppingCart, User, Wrench, Package, Menu, X, LogOut, Heart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useCart } from "../../context/CartContext.jsx";
+import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 
 const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/repair", label: "Repair Services" },
-  { to: "/shop", label: "Shop" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", key: "home" },
+  { to: "/repair", key: "repairServices" },
+  { to: "/shop", key: "shop" },
+  { to: "/about", key: "about" },
+  { to: "/contact", key: "contact" },
 ];
 
 const Navbar = () => {
+  const { t } = useTranslation("nav");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -46,7 +49,7 @@ const Navbar = () => {
         <nav className="hidden items-center gap-7 lg:flex">
           {navLinks.map((l) => (
             <Link key={l.to} to={l.to} className="text-sm font-medium text-ink-700 transition hover:text-primary-600">
-              {l.label}
+              {t(l.key)}
             </Link>
           ))}
         </nav>
@@ -56,19 +59,19 @@ const Navbar = () => {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search products, repairs..."
+            placeholder={t("searchPlaceholder")}
             className="w-full rounded-full border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm outline-none focus:border-primary-400 focus:bg-white"
           />
         </form>
 
         <div className="flex items-center gap-1.5">
-          <Link to="/track-repair" title="Track Repair" className="hidden rounded-full p-2 text-ink-700 hover:bg-gray-100 md:inline-flex">
+          <Link to="/track-repair" title={t("trackRepair")} className="hidden rounded-full p-2 text-ink-700 hover:bg-gray-100 md:inline-flex">
             <Wrench size={20} />
           </Link>
-          <Link to="/track-order" title="Track Order" className="hidden rounded-full p-2 text-ink-700 hover:bg-gray-100 md:inline-flex">
+          <Link to="/track-order" title={t("trackOrder")} className="hidden rounded-full p-2 text-ink-700 hover:bg-gray-100 md:inline-flex">
             <Package size={20} />
           </Link>
-          <Link to="/profile/wishlist" title="Wishlist" aria-label="Wishlist" className="relative rounded-full p-2 text-ink-700 hover:bg-gray-100">
+          <Link to="/profile/wishlist" title={t("wishlist")} aria-label={t("wishlist")} className="relative rounded-full p-2 text-ink-700 hover:bg-gray-100">
             <Heart size={20} />
             {!!user?.wishlist?.length && (
               <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary-600 px-1 text-[10px] font-bold text-white">
@@ -92,12 +95,12 @@ const Navbar = () => {
               </button>
               <div className="invisible absolute right-0 mt-1 w-48 rounded-xl border border-gray-100 bg-white p-2 opacity-0 shadow-premium transition group-hover:visible group-hover:opacity-100">
                 <p className="truncate px-3 py-1 text-xs text-gray-400">{user.email}</p>
-                <Link to="/profile" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">Profile</Link>
-                <Link to="/profile/orders" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">Orders</Link>
-                <Link to="/profile/repairs" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">Repair Bookings</Link>
-                {user.role === "admin" && <Link to="/admin" className="block rounded-lg px-3 py-2 text-sm font-semibold text-primary-600 hover:bg-gray-50">Admin Dashboard</Link>}
+                <Link to="/profile" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">{t("profile")}</Link>
+                <Link to="/profile/orders" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">{t("orders")}</Link>
+                <Link to="/profile/repairs" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">{t("repairBookings")}</Link>
+                {user.role === "admin" && <Link to="/admin" className="block rounded-lg px-3 py-2 text-sm font-semibold text-primary-600 hover:bg-gray-50">{t("adminDashboard")}</Link>}
                 <button onClick={logout} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50">
-                  <LogOut size={14} /> Logout
+                  <LogOut size={14} /> {t("logout")}
                 </button>
               </div>
             </div>
@@ -106,6 +109,8 @@ const Navbar = () => {
               <User size={20} />
             </Link>
           )}
+
+          <LanguageSwitcher className="ml-1 hidden md:inline-flex" />
 
           <button className="rounded-full p-2 text-ink-700 hover:bg-gray-100 lg:hidden" onClick={() => setMobileOpen((v) => !v)}>
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -117,25 +122,28 @@ const Navbar = () => {
         <div className="border-t border-gray-100 bg-white px-4 py-4 lg:hidden">
           <form onSubmit={handleSearch} className="relative mb-4">
             <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="input pl-9" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("search")} className="input pl-9" />
           </form>
           <div className="flex flex-col gap-1">
             {navLinks.map((l) => (
               <Link key={l.to} to={l.to} onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-50">
-                {l.label}
+                {t(l.key)}
               </Link>
             ))}
-            <Link to="/track-repair" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-50">Track Repair</Link>
-            <Link to="/track-order" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-50">Track Order</Link>
+            <Link to="/track-repair" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-50">{t("trackRepair")}</Link>
+            <Link to="/track-order" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-50">{t("trackOrder")}</Link>
             {user ? (
               <>
-                <Link to="/profile" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-50">Profile</Link>
-                {user.role === "admin" && <Link to="/admin" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-semibold text-primary-600 hover:bg-gray-50">Admin Dashboard</Link>}
-                <button onClick={logout} className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-red-600 hover:bg-red-50">Logout</button>
+                <Link to="/profile" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-50">{t("profile")}</Link>
+                {user.role === "admin" && <Link to="/admin" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-semibold text-primary-600 hover:bg-gray-50">{t("adminDashboard")}</Link>}
+                <button onClick={logout} className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-red-600 hover:bg-red-50">{t("logout")}</button>
               </>
             ) : (
-              <Link to="/login" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-50">Login / Register</Link>
+              <Link to="/login" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-50">{t("loginRegister")}</Link>
             )}
+          </div>
+          <div className="mt-3 flex justify-center">
+            <LanguageSwitcher />
           </div>
         </div>
       )}

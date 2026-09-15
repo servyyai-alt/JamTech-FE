@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import * as catalogService from "../../services/catalogService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
@@ -11,6 +12,7 @@ const RepairVariantSelect = () => {
   const { categorySlug, brandSlug, modelSlug } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation("repair");
   const { category, brand } = location.state || {};
   const [model, setModel] = useState(location.state?.model || null);
   const [variants, setVariants] = useState([]);
@@ -37,7 +39,7 @@ const RepairVariantSelect = () => {
         }
         setVariants(variantRes.data);
       } catch {
-        setError("Could not load variants for this model.");
+        setError(t("error.loadVariants"));
       } finally {
         setLoading(false);
       }
@@ -56,7 +58,7 @@ const RepairVariantSelect = () => {
     <div className="container-px section-y mx-auto max-w-4xl">
       <RepairStepper current={3} />
       <div className="mb-8 text-center">
-        <h1 className="font-display text-2xl font-bold text-ink-900 md:text-3xl">Choose Your Configuration</h1>
+        <h1 className="font-display text-2xl font-bold text-ink-900 md:text-3xl">{t("title")}</h1>
         <p className="mt-1 text-gray-500">{model?.name}</p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">

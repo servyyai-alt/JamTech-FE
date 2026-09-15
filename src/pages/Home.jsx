@@ -9,8 +9,12 @@ import * as catalogService from "../services/catalogService.js";
 import * as productService from "../services/productService.js";
 import ProductCard from "../components/ecommerce/ProductCard.jsx";
 import SkeletonCard from "../components/common/SkeletonCard.jsx";
+import { useTranslation } from "react-i18next";
 
 /* ─── constants ─────────────────────────────────────────────── */
+const CATEGORY_KEYS = {
+  Smartphones: "smartphones", Tablets: "tablets", Computers: "computers", "Gaming Devices": "gaming_devices",
+};
 const CATEGORY_ICONS = {
   Smartphones: Smartphone, Tablets: Tablet, Computers: Laptop, "Gaming Devices": Gamepad2,
 };
@@ -21,33 +25,29 @@ const FALLBACK_CATEGORIES = [
   { name: "Gaming Devices", slug: "gaming-devices" },
 ];
 const REPAIR_SERVICES = [
-  { icon: ScreenShare, name: "Screen Replacement", time: "45–60 min", warranty: "90-day warranty", color: "#F97316" },
-  { icon: Battery, name: "Battery Replacement", time: "30 min", warranty: "12-month warranty", color: "#F59E0B" },
-  { icon: MessageSquareText, name: "Software & Diagnostics", time: "Same day", warranty: "Free diagnosis", color: "#EF4444" },
-  { icon: Wrench, name: "General Repair", time: "Varies", warranty: "Genuine parts", color: "#8B5CF6" },
+  { key: "screen", icon: ScreenShare, color: "#F97316" },
+  { key: "battery", icon: Battery, color: "#F59E0B" },
+  { key: "software", icon: MessageSquareText, color: "#EF4444" },
+  { key: "general", icon: Wrench, color: "#8B5CF6" },
 ];
 const HOW_IT_WORKS = [
-  { title: "Choose Your Device", desc: "Select category, brand and exact model in seconds.", icon: Smartphone },
-  { title: "Pick a Repair", desc: "See transparent pricing before you commit to anything.", icon: ShieldCheck },
-  { title: "Book & Track", desc: "Store visit, pickup, mail-in or on-site — your choice.", icon: Truck },
-  { title: "Get It Fixed", desc: "Certified technicians, genuine parts, real warranty.", icon: Award },
+  { key: "choose", icon: Smartphone },
+  { key: "pick", icon: ShieldCheck },
+  { key: "book", icon: Truck },
+  { key: "fix", icon: Award },
 ];
 const REVIEWS = [
-  { name: "Aisha K.", role: "Verified Customer", text: "Screen replacement on my iPhone was done same day. Looks absolutely brand new — couldn't be happier.", rating: 5, device: "iPhone 14 Pro" },
-  { name: "Marco R.", role: "Verified Customer", text: "Ordered a charger and a case — fast delivery, great packaging, genuinely fair prices. Will be back.", rating: 5, device: "Samsung Galaxy" },
-  { name: "Lena T.", role: "Verified Customer", text: "Booked a pickup repair for my laptop battery. Super smooth from start to finish, kept me updated throughout.", rating: 4, device: "MacBook Pro" },
-  { name: "James O.", role: "Verified Customer", text: "Gaming console repair was handled with care. They even cleaned the unit — above and beyond service.", rating: 5, device: "PlayStation 5" },
-  { name: "Priya M.", role: "Verified Customer", text: "Software issue resolved remotely within hours. Saved me a trip to the store entirely.", rating: 5, device: "Dell XPS" },
-];
-const MARQUEE_ITEMS = [
-  "Certified Technicians", "Same-Day Repairs", "90-Day Warranty", "Genuine Parts",
-  "Free Diagnostics", "Pickup & Delivery", "All Major Brands", "Competitive Pricing",
+  { key: "aisha", rating: 5 },
+  { key: "marco", rating: 5 },
+  { key: "lena", rating: 4 },
+  { key: "james", rating: 5 },
+  { key: "priya", rating: 5 },
 ];
 const STATS = [
-  { value: "50K+", label: "Devices Repaired" },
-  { value: "4.9★", label: "Average Rating" },
-  { value: "2 Hr", label: "Avg. Turnaround" },
-  { value: "100%", label: "Parts Guaranteed" },
+  { key: "devicesRepaired" },
+  { key: "avgRating" },
+  { key: "avgTurnaround" },
+  { key: "partsGuaranteed" },
 ];
 
 /* ─── hooks ─────────────────────────────────────────────────── */
@@ -93,6 +93,9 @@ function StarRow({ rating }) {
 
 /* ─── main ───────────────────────────────────────────────────── */
 const Home = () => {
+  const { t } = useTranslation("home");
+  const marqueeItems = t("marquee.items", { returnObjects: true });
+  const catName = (name) => t(`categoryNames.${CATEGORY_KEYS[name] || name.toLowerCase().replace(/\s+/g, "_")}`, { defaultValue: name });
   const [categories, setCategories] = useState([]);
   const [featured, setFeatured] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
@@ -201,29 +204,29 @@ const Home = () => {
           <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? "none" : "translateY(32px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.25)", borderRadius: 100, padding: "6px 16px", marginBottom: 24 }}>
               <Zap size={13} style={{ color: "#F97316" }} />
-              <span style={{ fontSize: 12, fontWeight: 600, color: "#EA580C", letterSpacing: "0.02em" }}>Certified repairs · Genuine parts · Real warranty</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#EA580C", letterSpacing: "0.02em" }}>{t("hero.badge")}</span>
             </div>
 
             <h1 className="syne" style={{ fontSize: "clamp(2.4rem, 5vw, 4rem)", fontWeight: 800, lineHeight: 1.08, color: "#1A1A2E", marginBottom: 20 }}>
-              Device broken?<br />
-              <span style={{ background: "linear-gradient(90deg, #F97316, #F59E0B)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>We fix that fast.</span>
+              {t("hero.titlePart1")}<br />
+              <span style={{ background: "linear-gradient(90deg, #F97316, #F59E0B)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{t("hero.titlePart2")}</span>
             </h1>
 
             <p style={{ fontSize: 17, lineHeight: 1.75, color: "#6B7280", maxWidth: 480, marginBottom: 36 }}>
-              Premium repair services for phones, tablets, computers and consoles — plus a full accessories store. Most repairs done same day.
+              {t("hero.subtitle")}
             </p>
 
             <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 44 }}>
-              <Link to="/repair" className="btn-o solid"><Wrench size={17} /> Book a Repair</Link>
-              <Link to="/shop" className="btn-o outline"><ShoppingBag size={17} /> Shop Accessories</Link>
+              <Link to="/repair" className="btn-o solid"><Wrench size={17} /> {t("hero.ctaRepair")}</Link>
+              <Link to="/shop" className="btn-o outline"><ShoppingBag size={17} /> {t("hero.ctaShop")}</Link>
             </div>
 
             {/* stats */}
             <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
               {STATS.map((s, i) => (
                 <div key={i} style={{ opacity: heroVisible ? 1 : 0, transition: `opacity 0.5s ease ${0.3 + i * 0.1}s` }}>
-                  <div className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 800, color: "#F97316", lineHeight: 1 }}>{s.value}</div>
-                  <div style={{ fontSize: 12, color: "#9CA3AF", marginTop: 3 }}>{s.label}</div>
+                  <div className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 800, color: "#F97316", lineHeight: 1 }}>{t(`stats.${s.key}.value`)}</div>
+                  <div style={{ fontSize: 12, color: "#9CA3AF", marginTop: 3 }}>{t(`stats.${s.key}.label`)}</div>
                 </div>
               ))}
             </div>
@@ -242,7 +245,7 @@ const Home = () => {
                 transform: heroVisible ? "none" : "scale(0.95)",
                 transition: "opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s",
               }}>
-                <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=800&q=85" alt="Technician repairing device" style={{ width: "100%", height: 400, objectFit: "cover", display: "block" }} />
+                <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=800&q=85" alt={t("hero.imgAlt")} style={{ width: "100%", height: 400, objectFit: "cover", display: "block" }} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(26,26,46,0.3) 0%, transparent 60%)" }} />
               </div>
 
@@ -259,8 +262,8 @@ const Home = () => {
                   <CheckCircle2 size={18} style={{ color: "#fff" }} />
                 </div>
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "#1A1A2E" }}>Repair Complete</div>
-                  <div style={{ fontSize: 11, color: "#9CA3AF" }}>iPhone 15 · Screen fixed</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "#1A1A2E" }}>{t("heroBadge.title")}</div>
+                  <div style={{ fontSize: 11, color: "#9CA3AF" }}>{t("heroBadge.subtitle")}</div>
                 </div>
               </div>
 
@@ -274,7 +277,7 @@ const Home = () => {
               }}>
                 <Star size={15} style={{ color: "#F97316", fill: "#F97316" }} />
                 <span style={{ fontSize: 13, fontWeight: 700, color: "#1A1A2E" }}>4.9</span>
-                <span style={{ fontSize: 11, color: "#9CA3AF" }}>50k+ reviews</span>
+                <span style={{ fontSize: 11, color: "#9CA3AF" }}>{t("ratingBadge.value")}</span>
               </div>
 
               {/* pulse ring on badge */}
@@ -287,7 +290,7 @@ const Home = () => {
       {/* ── MARQUEE TICKER ──────────────────────────────────────── */}
       <div style={{ background: "linear-gradient(90deg, #F97316, #F59E0B)", padding: "13px 0", overflow: "hidden" }}>
         <div className="marquee-track">
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+          {[...marqueeItems, ...marqueeItems].map((item, i) => (
             <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 14, padding: "0 24px", whiteSpace: "nowrap", fontSize: 13, fontWeight: 600, color: "#fff" }}>
               <span style={{ width: 5, height: 5, borderRadius: "50%", background: "rgba(255,255,255,0.5)", display: "inline-block", flexShrink: 0 }} />
               {item}
@@ -301,11 +304,11 @@ const Home = () => {
         <Reveal>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40, flexWrap: "wrap", gap: 16 }}>
             <div>
-              <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase" }}>What needs fixing?</p>
-              <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E" }}>Choose Your Device</h2>
+              <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase" }}>{t("categories.kicker")}</p>
+              <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E" }}>{t("categories.title")}</h2>
             </div>
             <Link to="/repair" style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 14, fontWeight: 600, color: "#F97316", textDecoration: "none" }}>
-              All services <ArrowRight size={14} />
+              {t("categories.allServices")} <ArrowRight size={14} />
             </Link>
           </div>
         </Reveal>
@@ -321,11 +324,11 @@ const Home = () => {
                       <Icon size={26} />
                     </div>
                     <div>
-                      <div className="syne" style={{ fontSize: 16, fontWeight: 700, color: "#1A1A2E", marginBottom: 4 }}>{cat.name}</div>
-                      <div style={{ fontSize: 13, color: "#9CA3AF" }}>Repair & parts available</div>
+                      <div className="syne" style={{ fontSize: 16, fontWeight: 700, color: "#1A1A2E", marginBottom: 4 }}>{catName(cat.name)}</div>
+                      <div style={{ fontSize: 13, color: "#9CA3AF" }}>{t("categories.subtitle")}</div>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, fontWeight: 600, color: "#F97316" }}>
-                      Book now <ArrowRight size={12} />
+                      {t("categories.bookNow")} <ArrowRight size={12} />
                     </div>
                   </div>
                 </Link>
@@ -339,20 +342,20 @@ const Home = () => {
       <section style={{ background: "#FFF7ED", padding: "80px clamp(20px,5vw,60px)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <Reveal>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase" }}>Most requested</p>
-            <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E", marginBottom: 40 }}>Popular Repair Services</h2>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase" }}>{t("repairServices.kicker")}</p>
+            <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E", marginBottom: 40 }}>{t("repairServices.title")}</h2>
           </Reveal>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             {REPAIR_SERVICES.map((s, i) => (
-              <Reveal key={s.name} delay={i * 0.1}>
+              <Reveal key={s.key} delay={i * 0.1}>
                 <div className="svc-card lift" style={{ "--svc-color": s.color, "--svc-bg": `${s.color}0d`, borderRadius: 20, padding: "28px 24px", background: "#fff" }}>
                   <div style={{ width: 50, height: 50, borderRadius: 14, background: `${s.color}15`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
                     <s.icon size={24} style={{ color: s.color }} />
                   </div>
-                  <div className="syne" style={{ fontSize: 16, fontWeight: 700, color: "#1A1A2E", marginBottom: 10 }}>{s.name}</div>
+                  <div className="syne" style={{ fontSize: 16, fontWeight: 700, color: "#1A1A2E", marginBottom: 10 }}>{t(`repairServices.${s.key}.name`)}</div>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: 12, color: "#6B7280", background: "#F3F4F6", borderRadius: 6, padding: "3px 10px" }}>{s.time}</span>
-                    <span style={{ fontSize: 12, color: s.color, background: `${s.color}15`, borderRadius: 6, padding: "3px 10px", fontWeight: 600 }}>{s.warranty}</span>
+                    <span style={{ fontSize: 12, color: "#6B7280", background: "#F3F4F6", borderRadius: 6, padding: "3px 10px" }}>{t(`repairServices.${s.key}.time`)}</span>
+                    <span style={{ fontSize: 12, color: s.color, background: `${s.color}15`, borderRadius: 6, padding: "3px 10px", fontWeight: 600 }}>{t(`repairServices.${s.key}.warranty`)}</span>
                   </div>
                 </div>
               </Reveal>
@@ -364,12 +367,12 @@ const Home = () => {
       {/* ── HOW IT WORKS ────────────────────────────────────────── */}
       <section style={{ padding: "80px clamp(20px,5vw,60px)", maxWidth: 1280, margin: "0 auto" }}>
         <Reveal>
-          <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase", textAlign: "center" }}>Simple process</p>
-          <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E", textAlign: "center", marginBottom: 60 }}>How It Works</h2>
+          <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase", textAlign: "center" }}>{t("howItWorks.kicker")}</p>
+          <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E", textAlign: "center", marginBottom: 60 }}>{t("howItWorks.title")}</h2>
         </Reveal>
         <div style={{ display: "flex", alignItems: "flex-start", flexWrap: "wrap" }}>
           {HOW_IT_WORKS.map((step, i) => (
-            <React.Fragment key={step.title}>
+            <React.Fragment key={step.key}>
               <Reveal delay={i * 0.1} style={{ flex: "1 1 200px", textAlign: "center", padding: "0 12px" }}>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                   <div style={{ position: "relative", marginBottom: 20 }}>
@@ -378,8 +381,8 @@ const Home = () => {
                     </div>
                     <div style={{ position: "absolute", top: -6, right: -6, width: 22, height: 22, borderRadius: "50%", background: "linear-gradient(135deg, #F97316, #F59E0B)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: "#fff", boxShadow: "0 2px 8px rgba(249,115,22,0.4)" }}>{i + 1}</div>
                   </div>
-                  <div className="syne" style={{ fontSize: 15, fontWeight: 700, color: "#1A1A2E", marginBottom: 8 }}>{step.title}</div>
-                  <p style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.65, maxWidth: 180 }}>{step.desc}</p>
+                  <div className="syne" style={{ fontSize: 15, fontWeight: 700, color: "#1A1A2E", marginBottom: 8 }}>{t(`howItWorks.${step.key}.title`)}</div>
+                  <p style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.65, maxWidth: 180 }}>{t(`howItWorks.${step.key}.desc`)}</p>
                 </div>
               </Reveal>
               {i < HOW_IT_WORKS.length - 1 && <div className="step-conn" style={{ marginTop: 32 }} />}
@@ -392,23 +395,23 @@ const Home = () => {
       <section style={{ background: "linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)", padding: "80px clamp(20px,5vw,60px)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <Reveal>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#FB923C", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase", textAlign: "center" }}>Why us</p>
-            <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#fff", textAlign: "center", marginBottom: 60 }}>The JAM Smart Tech Difference</h2>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "#FB923C", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase", textAlign: "center" }}>{t("whyUs.kicker")}</p>
+            <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#fff", textAlign: "center", marginBottom: 60 }}>{t("whyUs.title")}</h2>
           </Reveal>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 24 }}>
             {[
-              { icon: ShieldCheck, color: "#F97316", title: "Certified Technicians", desc: "Every repair handled by trained specialists using genuine OEM parts backed by warranty." },
-              { icon: Truck, color: "#F59E0B", title: "Flexible Service", desc: "Walk in, book a pickup, mail it in, or have us come to you — whatever fits your schedule." },
-              { icon: Clock, color: "#EF4444", title: "Fast Turnaround", desc: "Most repairs completed same day. Track your repair status in real time from any device." },
-              { icon: HeadphonesIcon, color: "#8B5CF6", title: "After-Service Support", desc: "Our support team is available post-repair to ensure everything is working perfectly." },
+              { key: "certified", icon: ShieldCheck, color: "#F97316" },
+              { key: "flexible", icon: Truck, color: "#F59E0B" },
+              { key: "fast", icon: Clock, color: "#EF4444" },
+              { key: "support", icon: HeadphonesIcon, color: "#8B5CF6" },
             ].map((item, i) => (
-              <Reveal key={item.title} delay={i * 0.1}>
+              <Reveal key={item.key} delay={i * 0.1}>
                 <div className="lift" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "28px 24px" }}>
                   <div style={{ width: 48, height: 48, borderRadius: 14, background: `${item.color}20`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
                     <item.icon size={22} style={{ color: item.color }} />
                   </div>
-                  <div className="syne" style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{item.title}</div>
-                  <p style={{ fontSize: 13, color: "#94A3B8", lineHeight: 1.65 }}>{item.desc}</p>
+                  <div className="syne" style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{t(`whyUs.${item.key}.title`)}</div>
+                  <p style={{ fontSize: 13, color: "#94A3B8", lineHeight: 1.65 }}>{t(`whyUs.${item.key}.desc`)}</p>
                 </div>
               </Reveal>
             ))}
@@ -422,11 +425,11 @@ const Home = () => {
           <Reveal>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32, paddingRight: "clamp(20px,5vw,60px)", flexWrap: "wrap", gap: 16 }}>
               <div>
-                <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 6, textTransform: "uppercase" }}>Hand-picked</p>
-                <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E" }}>Featured Products</h2>
+                <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 6, textTransform: "uppercase" }}>{t("featured.kicker")}</p>
+                <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E" }}>{t("featured.title")}</h2>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <Link to="/shop" style={{ fontSize: 14, fontWeight: 600, color: "#F97316", textDecoration: "none", marginRight: 8, display: "flex", alignItems: "center", gap: 6 }}>View all <ArrowRight size={14} /></Link>
+                <Link to="/shop" style={{ fontSize: 14, fontWeight: 600, color: "#F97316", textDecoration: "none", marginRight: 8, display: "flex", alignItems: "center", gap: 6 }}>{t("featured.viewAll")} <ArrowRight size={14} /></Link>
                 {[ChevronLeft, ChevronRight].map((Ic, j) => (
                   <button key={j} onClick={() => scroll(featCarouselRef, j === 0 ? -1 : 1)} style={{ width: 38, height: 38, borderRadius: "50%", border: "2px solid #E5E7EB", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#6B7280", transition: "all 0.2s" }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = "#F97316"; e.currentTarget.style.color = "#F97316"; }}
@@ -449,11 +452,11 @@ const Home = () => {
           <Reveal>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32, paddingRight: "clamp(20px,5vw,60px)", flexWrap: "wrap", gap: 16 }}>
               <div>
-                <p style={{ fontSize: 12, fontWeight: 600, color: "#F59E0B", letterSpacing: "0.08em", marginBottom: 6, textTransform: "uppercase" }}>Top rated</p>
-                <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E" }}>Best Sellers</h2>
+                <p style={{ fontSize: 12, fontWeight: 600, color: "#F59E0B", letterSpacing: "0.08em", marginBottom: 6, textTransform: "uppercase" }}>{t("bestSellers.kicker")}</p>
+                <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E" }}>{t("bestSellers.title")}</h2>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <Link to="/shop" style={{ fontSize: 14, fontWeight: 600, color: "#F97316", textDecoration: "none", marginRight: 8, display: "flex", alignItems: "center", gap: 6 }}>View all <ArrowRight size={14} /></Link>
+                <Link to="/shop" style={{ fontSize: 14, fontWeight: 600, color: "#F97316", textDecoration: "none", marginRight: 8, display: "flex", alignItems: "center", gap: 6 }}>{t("bestSellers.viewAll")} <ArrowRight size={14} /></Link>
                 {[ChevronLeft, ChevronRight].map((Ic, j) => (
                   <button key={j} onClick={() => scroll(bestCarouselRef, j === 0 ? -1 : 1)} style={{ width: 38, height: 38, borderRadius: "50%", border: "2px solid #E5E7EB", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#6B7280", transition: "all 0.2s" }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = "#F97316"; e.currentTarget.style.color = "#F97316"; }}
@@ -474,8 +477,8 @@ const Home = () => {
       <section style={{ background: "#FFF7ED", padding: "80px clamp(20px,5vw,60px)" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <Reveal>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase", textAlign: "center" }}>Customer stories</p>
-            <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E", textAlign: "center", marginBottom: 48 }}>What Customers Say</h2>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase", textAlign: "center" }}>{t("reviews.kicker")}</p>
+            <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E", textAlign: "center", marginBottom: 48 }}>{t("reviews.title")}</h2>
           </Reveal>
 
           {/* featured large quote */}
@@ -483,12 +486,12 @@ const Home = () => {
             <div style={{ position: "absolute", top: 20, right: 28, fontSize: 80, lineHeight: 1, color: "rgba(249,115,22,0.08)", fontFamily: "serif", fontWeight: 900 }}>"</div>
             <StarRow rating={REVIEWS[reviewIdx].rating} />
             <p style={{ fontSize: "clamp(15px,2vw,18px)", color: "#374151", lineHeight: 1.8, margin: "18px 0 22px", fontStyle: "italic" }}>
-              "{REVIEWS[reviewIdx].text}"
+              "{t(`reviews.items.${REVIEWS[reviewIdx].key}.text`)}"
             </p>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
               <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: "#1A1A2E" }}>{REVIEWS[reviewIdx].name}</div>
-                <div style={{ fontSize: 12, color: "#9CA3AF" }}>{REVIEWS[reviewIdx].role} · {REVIEWS[reviewIdx].device}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#1A1A2E" }}>{t(`reviews.items.${REVIEWS[reviewIdx].key}.name`)}</div>
+                <div style={{ fontSize: 12, color: "#9CA3AF" }}>{t("reviews.role")} · {t(`reviews.items.${REVIEWS[reviewIdx].key}.device`)}</div>
               </div>
               <div style={{ display: "flex", gap: 6 }}>
                 {REVIEWS.map((_, i) => (
@@ -501,12 +504,12 @@ const Home = () => {
           {/* mini cards */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
             {REVIEWS.slice(0, 3).map((r, i) => (
-              <Reveal key={r.name} delay={i * 0.08}>
+              <Reveal key={r.key} delay={i * 0.08}>
                 <div className="lift" onClick={() => setReviewIdx(i)} style={{ background: "#fff", borderRadius: 18, padding: "20px 22px", cursor: "pointer", border: `2px solid ${reviewIdx === i ? "#F97316" : "#F3F4F6"}`, transition: "border-color 0.25s" }}>
                   <StarRow rating={r.rating} />
-                  <p style={{ fontSize: 13, color: "#6B7280", margin: "10px 0 12px", lineHeight: 1.65 }}>"{r.text.slice(0, 80)}…"</p>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: "#1A1A2E" }}>{r.name}</div>
-                  <div style={{ fontSize: 11, color: "#9CA3AF" }}>{r.device}</div>
+                  <p style={{ fontSize: 13, color: "#6B7280", margin: "10px 0 12px", lineHeight: 1.65 }}>"{t(`reviews.items.${r.key}.text`).slice(0, 80)}…"</p>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: "#1A1A2E" }}>{t(`reviews.items.${r.key}.name`)}</div>
+                  <div style={{ fontSize: 11, color: "#9CA3AF" }}>{t(`reviews.items.${r.key}.device`)}</div>
                 </div>
               </Reveal>
             ))}
@@ -521,26 +524,26 @@ const Home = () => {
             <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
               <Zap size={26} style={{ color: "#fff" }} />
             </div>
-            <h2 className="syne" style={{ fontSize: "clamp(1.5rem,3vw,2rem)", fontWeight: 700, color: "#fff", marginBottom: 10 }}>Stay in the loop</h2>
+            <h2 className="syne" style={{ fontSize: "clamp(1.5rem,3vw,2rem)", fontWeight: 700, color: "#fff", marginBottom: 10 }}>{t("newsletter.title")}</h2>
             <p style={{ fontSize: 15, color: "rgba(255,255,255,0.85)", marginBottom: 32, lineHeight: 1.7 }}>
-              Repair tips, exclusive deals and product launches — straight to your inbox. No spam.
+              {t("newsletter.subtitle")}
             </p>
             {subscribed ? (
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "rgba(255,255,255,0.2)", border: "1px solid rgba(255,255,255,0.35)", borderRadius: 16, padding: "16px 24px", color: "#fff", fontWeight: 600, fontSize: 15 }}>
-                <CheckCircle2 size={18} /> You're subscribed — thanks!
+                <CheckCircle2 size={18} /> {t("newsletter.success")}
               </div>
             ) : (
               <form onSubmit={(e) => { e.preventDefault(); if (email) setSubscribed(true); }} style={{ display: "flex", gap: 10, maxWidth: 440, margin: "0 auto", flexWrap: "wrap" }}>
                 <input
-                  type="email" required placeholder="your@email.com"
+                  type="email" required placeholder={t("newsletter.placeholder")}
                   value={email} onChange={(e) => setEmail(e.target.value)}
                   style={{ flex: 1, minWidth: 200, background: "#fff", border: "none", borderRadius: 12, padding: "14px 18px", color: "#1A1A2E", fontSize: 14, outline: "none" }}
                 />
                 <button type="submit" style={{ background: "#1A1A2E", color: "#fff", border: "none", borderRadius: 12, padding: "14px 24px", fontWeight: 600, fontSize: 15, cursor: "pointer", transition: "background 0.2s", fontFamily: "'Inter', sans-serif" }}
                   onMouseEnter={e => e.currentTarget.style.background = "#111"}
                   onMouseLeave={e => e.currentTarget.style.background = "#1A1A2E"}>
-                  Subscribe
-                </button>
+                    {t("newsletter.subscribe")}
+                  </button>
               </form>
             )}
           </div>

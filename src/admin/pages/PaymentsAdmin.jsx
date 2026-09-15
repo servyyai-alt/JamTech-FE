@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import api from "../../services/api.js";
 import Loader from "../../components/common/Loader.jsx";
 import EmptyState from "../../components/common/EmptyState.jsx";
@@ -10,6 +11,7 @@ const STATUS_COLOR = {
 };
 
 const PaymentsAdmin = () => {
+  const { t } = useTranslation("admin");
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,18 +23,18 @@ const PaymentsAdmin = () => {
 
   return (
     <div>
-      <h1 className="mb-6 font-display text-2xl font-bold text-ink-900">Payments</h1>
-      {payments.length === 0 ? <EmptyState title="No payments yet" /> : (
+      <h1 className="mb-6 font-display text-2xl font-bold text-ink-900">{t("payments.title")}</h1>
+      {payments.length === 0 ? <EmptyState title={t("payments.empty")} /> : (
         <div className="overflow-x-auto rounded-2xl border border-gray-100 bg-white shadow-sm">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-500">
               <tr>
-                <th className="px-4 py-3 font-semibold">Merchant Ref</th>
-                <th className="px-4 py-3 font-semibold">PSP Ref</th>
-                <th className="px-4 py-3 font-semibold">Type</th>
-                <th className="px-4 py-3 font-semibold">Amount</th>
-                <th className="px-4 py-3 font-semibold">Status</th>
-                <th className="px-4 py-3 font-semibold">Date</th>
+                <th className="px-4 py-3 font-semibold">{t("payments.merchantRef")}</th>
+                <th className="px-4 py-3 font-semibold">{t("payments.pspRef")}</th>
+                <th className="px-4 py-3 font-semibold">{t("payments.type")}</th>
+                <th className="px-4 py-3 font-semibold">{t("payments.amount")}</th>
+                <th className="px-4 py-3 font-semibold">{t("payments.status")}</th>
+                <th className="px-4 py-3 font-semibold">{t("payments.date")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">

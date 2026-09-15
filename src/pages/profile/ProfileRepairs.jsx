@@ -4,17 +4,19 @@ import * as bookingService from "../../services/bookingService.js";
 import Loader from "../../components/common/Loader.jsx";
 import EmptyState from "../../components/common/EmptyState.jsx";
 import StatusBadge from "../../components/common/StatusBadge.jsx";
+import { useTranslation } from "react-i18next";
 
 const ProfileRepairs = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation("profile");
 
   useEffect(() => {
     bookingService.getMyBookings().then((res) => setBookings(res.data)).finally(() => setLoading(false));
   }, []);
 
   if (loading) return <Loader />;
-  if (bookings.length === 0) return <EmptyState title="No repair bookings yet" description="Book a repair to see it here." action={<Link to="/repair" className="btn-primary mt-4">Book a Repair</Link>} />;
+  if (bookings.length === 0) return <EmptyState title={t("repairs.emptyTitle")} description={t("repairs.emptyDescription")} action={<Link to="/repair" className="btn-primary mt-4">{t("repairs.bookRepair")}</Link>} />;
 
   return (
     <div className="space-y-3">

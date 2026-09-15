@@ -1,29 +1,38 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import GenericCrudPage from "../components/GenericCrudPage.jsx";
 
-const RepairServicesAdmin = () => (
-  <GenericCrudPage
-    title="Repair Services"
-    resource="repairs/services"
-    description="Screen replacement, battery replacement, and other repair types."
-    fields={[
-      { name: "name", label: "Name", required: true },
-      { name: "slug", label: "Slug (auto if blank)" },
-      { name: "icon", label: "Icon (lucide name)" },
-      { name: "image", label: "Image URL" },
-      { name: "shortDescription", label: "Short Description" },
-      { name: "fullDescription", label: "Full Description", type: "textarea" },
-      { name: "estimatedTime", label: "Estimated Time (e.g. 45-60 min)" },
-      { name: "warranty", label: "Warranty (e.g. 90 days)" },
-      { name: "sortOrder", label: "Sort Order", type: "number" },
-      { name: "isActive", label: "Active", type: "checkbox" },
-    ]}
-    columns={[
-      { key: "name", label: "Name" },
-      { key: "estimatedTime", label: "Est. Time" },
-      { key: "warranty", label: "Warranty" },
-      { key: "isActive", label: "Active", render: (r) => (r.isActive ? "Yes" : "No") },
-    ]}
-  />
-);
+const RepairServicesAdmin = () => {
+  const { t } = useTranslation("admin");
+  return (
+    <GenericCrudPage
+      title={t("repairServices.title")}
+      resource="repairs/services"
+      description={t("repairServices.description")}
+      fields={[
+        { name: "name", label: t("fields.name"), required: true },
+        { name: "slug", label: t("fields.slug") },
+        { name: "icon", label: t("fields.icon") },
+        { name: "image", label: t("fields.image") },
+        { name: "shortDescription", label: t("fields.shortDescription") },
+        { name: "fullDescription", label: t("fields.fullDescription"), type: "textarea" },
+        { name: "estimatedTime", label: t("repairServices.estimatedTime") },
+        { name: "warranty", label: t("repairServices.warranty") },
+        { name: "sortOrder", label: t("fields.sortOrder"), type: "number" },
+        { name: "isActive", label: t("fields.active"), type: "checkbox" },
+        { name: "translations.fr.name", label: t("fields.nameFr"), section: "French Translation" },
+        { name: "translations.fr.shortDescription", label: t("fields.shortDescriptionFr"), type: "textarea" },
+        { name: "translations.fr.fullDescription", label: t("fields.fullDescriptionFr"), type: "textarea" },
+        { name: "translations.fr.estimatedTime", label: t("repairServices.estimatedTimeFr") },
+        { name: "translations.fr.warranty", label: t("repairServices.warrantyFr") },
+      ]}
+      columns={[
+        { key: "name", label: t("fields.name") },
+        { key: "estimatedTime", label: t("repairServices.estTime") },
+        { key: "warranty", label: t("repairServices.colWarranty") },
+        { key: "isActive", label: t("fields.active"), render: (r) => (r.isActive ? t("yes") : t("no")) },
+      ]}
+    />
+  );
+};
 export default RepairServicesAdmin;

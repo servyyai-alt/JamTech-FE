@@ -1,0 +1,72 @@
+{
+  "heading": "My Account",
+  "tabs": {
+    "profile": "Profile",
+    "addresses": "Addresses",
+    "orders": "Orders",
+    "repairs": "Repair Bookings",
+    "wishlist": "Wishlist",
+    "security": "Change Password"
+  },
+  "overview": {
+    "email": "Email",
+    "fullName": "Full Name",
+    "phone": "Phone",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes",
+    "profileUpdated": "Profile updated",
+    "updateFailed": "Update failed"
+  },
+  "addresses": {
+    "addAddress": "Add Address",
+    "default": "Default",
+    "addressSaved": "Address saved",
+    "saveFailed": "Failed to save address",
+    "addressRemoved": "Address removed",
+    "modal": {
+      "editTitle": "Edit Address",
+      "addTitle": "Add Address",
+      "label": "Label (Home, Work)",
+      "fullName": "Full Name",
+      "phone": "Phone",
+      "addressLine1": "Address Line 1",
+      "addressLine2": "Address Line 2",
+      "city": "City",
+      "postalCode": "Postal Code",
+      "country": "Country",
+      "setDefault": "Set as default",
+      "save": "Save Address"
+    }
+  },
+  "orders": {
+    "emptyTitle": "No orders yet",
+    "emptyDescription": "Your placed orders will appear here.",
+    "itemCount": "{{count}} item(s)",
+    "orderDetails": {
+      "notFound": "Order not found.",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "discount": "Discount",
+      "total": "Total",
+      "shippingAddress": "Shipping Address"
+    }
+  },
+  "repairs": {
+    "emptyTitle": "No repair bookings yet",
+    "emptyDescription": "Book a repair to see it here.",
+    "bookRepair": "Book a Repair"
+  },
+  "security": {
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "minChars": "Minimum 8 characters",
+    "updating": "Updating...",
+    "changePassword": "Change Password",
+    "passwordChanged": "Password changed successfully",
+    "changeFailed": "Failed to change password"
+  },
+  "wishlist": {
+    "emptyTitle": "Your wishlist is empty"
+  }
+}

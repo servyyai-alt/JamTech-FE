@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useToast } from "../../context/ToastContext.jsx";
 import * as bookingService from "../../services/bookingService.js";
@@ -9,15 +10,16 @@ import { formatPrice } from "../../components/common/PriceTag.jsx";
 import { Home, Truck, Mail, MapPin } from "lucide-react";
 
 const SERVICE_METHODS = [
-  { value: "Store Visit", label: "Store Visit", icon: Home, desc: "Bring your device to our store" },
-  { value: "Pickup & Delivery", label: "Pickup & Delivery", icon: Truck, desc: "We collect and return your device" },
-  { value: "Mail-in Repair", label: "Mail-in Repair", icon: Mail, desc: "Ship your device to us securely" },
-  { value: "On-site Repair", label: "On-site Repair", icon: MapPin, desc: "A technician comes to you" },
+  { value: "Store Visit", icon: Home },
+  { value: "Pickup & Delivery", icon: Truck },
+  { value: "Mail-in Repair", icon: Mail },
+  { value: "On-site Repair", icon: MapPin },
 ];
 
 const RepairBookingForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation("repair");
   const { category, brand, model, variant, service, price } = location.state || {};
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -30,8 +32,8 @@ const RepairBookingForm = () => {
   if (!category || !brand || !model || !service || !price) {
     return (
       <div className="container-px section-y mx-auto max-w-2xl text-center">
-        <p className="text-gray-500">Missing booking details. Please start the repair flow again.</p>
-        <button onClick={() => navigate("/repair")} className="btn-primary mt-4">Back to Repair Services</button>
+        <p className="text-gray-500">{t("error.missingBooking")}</p>
+        <button onClick={() => navigate("/repair")} className="btn-primary mt-4">{t("backToRepairServices")}</button>
       </div>
     );
   }
@@ -56,7 +58,7 @@ const RepairBookingForm = () => {
       const res = await bookingService.createBooking(payload);
       navigate(`/repair/booking-success/${res.data.bookingNumber}`, { state: { booking: res.data } });
     } catch (err) {
-      showToast(err.response?.data?.message || "Booking failed. Please try again.", "error");
+      showToast(err.response?.data?.message || t("error.bookingFailed"), "error");
     } finally {
       setSubmitting(false);
     }
@@ -70,7 +72,7 @@ const RepairBookingForm = () => {
       <div className="grid gap-8 lg:grid-cols-3">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 lg:col-span-2">
           <div className="card p-6">
-            <h3 className="mb-4 font-display font-semibold">Service Method</h3>
+            <h3 className="mb-4 font-display font-semibold">{t("serviceMethod")}</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               {SERVICE_METHODS.map((m) => (
                 <button
@@ -81,8 +83,8 @@ const RepairBookingForm = () => {
                 >
                   <m.icon size={20} className="mt-0.5 text-primary-600" />
                   <div>
-                    <p className="text-sm font-semibold">{m.label}</p>
-                    <p className="text-xs text-gray-500">{m.desc}</p>
+                    <p className="text-sm font-semibold">{t(`methods.${m.value}`, { defaultValue: m.value })}</p>
+                    <p className="text-xs text-gray-500">{t(`methodDesc.${m.value}`, { defaultValue: m.value })}</p>
                   </div>
                 </button>
               ))}
@@ -90,53 +92,53 @@ const RepairBookingForm = () => {
           </div>
 
           <div className="card p-6">
-            <h3 className="mb-4 font-display font-semibold">Preferred Date & Time</h3>
+            <h3 className="mb-4 font-display font-semibold">{t("preferredDateTime")}</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="label">Date *</label>
+                <label className="label">{t("date")} *</label>
                 <input type="date" min={new Date().toISOString().split("T")[0]} className="input" {...register("preferredDate", { required: true })} />
-                {errors.preferredDate && <p className="mt-1 text-xs text-red-500">Date is required</p>}
+                {errors.preferredDate && <p className="mt-1 text-xs text-red-500">{t("error.dateRequired")}</p>}
               </div>
               <div>
-                <label className="label">Time *</label>
+                <label className="label">{t("time")} *</label>
                 <input type="time" className="input" {...register("preferredTime", { required: true })} />
-                {errors.preferredTime && <p className="mt-1 text-xs text-red-500">Time is required</p>}
+                {errors.preferredTime && <p className="mt-1 text-xs text-red-500">{t("error.timeRequired")}</p>}
               </div>
             </div>
           </div>
 
           <div className="card p-6">
-            <h3 className="mb-4 font-display font-semibold">Your Details</h3>
+            <h3 className="mb-4 font-display font-semibold">{t("yourDetails")}</h3>
             <div className="grid gap-4 sm:grid-cols-2">
-              <div><label className="label">Full Name *</label><input className="input" {...register("name", { required: true })} />{errors.name && <p className="mt-1 text-xs text-red-500">Name is required</p>}</div>
-              <div><label className="label">Email *</label><input type="email" className="input" {...register("email", { required: true })} />{errors.email && <p className="mt-1 text-xs text-red-500">Email is required</p>}</div>
-              <div><label className="label">Phone *</label><input className="input" {...register("phone", { required: true })} />{errors.phone && <p className="mt-1 text-xs text-red-500">Phone is required</p>}</div>
+              <div><label className="label">{t("fullName")} *</label><input className="input" {...register("name", { required: true })} />{errors.name && <p className="mt-1 text-xs text-red-500">{t("error.nameRequired")}</p>}</div>
+              <div><label className="label">{t("email")} *</label><input type="email" className="input" {...register("email", { required: true })} />{errors.email && <p className="mt-1 text-xs text-red-500">{t("error.emailRequired")}</p>}</div>
+              <div><label className="label">{t("phone")} *</label><input className="input" {...register("phone", { required: true })} />{errors.phone && <p className="mt-1 text-xs text-red-500">{t("error.phoneRequired")}</p>}</div>
               {needsAddress && (
                 <>
-                  <div className="sm:col-span-2"><label className="label">Address *</label><input className="input" {...register("address", { required: needsAddress })} /></div>
-                  <div><label className="label">City *</label><input className="input" {...register("city", { required: needsAddress })} /></div>
-                  <div><label className="label">Postal Code *</label><input className="input" {...register("postalCode", { required: needsAddress })} /></div>
-                  <div><label className="label">Country *</label><input className="input" {...register("country", { required: needsAddress })} /></div>
+                  <div className="sm:col-span-2"><label className="label">{t("address")} *</label><input className="input" {...register("address", { required: needsAddress })} /></div>
+                  <div><label className="label">{t("city")} *</label><input className="input" {...register("city", { required: needsAddress })} /></div>
+                  <div><label className="label">{t("postalCode")} *</label><input className="input" {...register("postalCode", { required: needsAddress })} /></div>
+                  <div><label className="label">{t("country")} *</label><input className="input" {...register("country", { required: needsAddress })} /></div>
                 </>
               )}
             </div>
           </div>
 
           <button type="submit" disabled={submitting} className="btn-primary w-full disabled:opacity-60">
-            {submitting ? "Confirming Booking..." : "Confirm Booking"}
+            {submitting ? t("confirmingBooking") : t("confirmBooking")}
           </button>
         </form>
 
         <div className="card sticky top-24 h-fit p-6">
-          <h3 className="mb-4 font-display font-semibold">Booking Summary</h3>
+          <h3 className="mb-4 font-display font-semibold">{t("bookingSummary")}</h3>
           <dl className="space-y-2 text-sm">
-            <div className="flex justify-between"><dt className="text-gray-500">Device</dt><dd className="font-medium">{brand.name} {model.name}</dd></div>
-            {variant && <div className="flex justify-between"><dt className="text-gray-500">Config</dt><dd className="font-medium">{variant.label}</dd></div>}
-            <div className="flex justify-between"><dt className="text-gray-500">Repair</dt><dd className="font-medium">{service.name}</dd></div>
-            <div className="flex justify-between"><dt className="text-gray-500">Method</dt><dd className="font-medium">{serviceMethod}</dd></div>
+            <div className="flex justify-between"><dt className="text-gray-500">{t("device")}</dt><dd className="font-medium">{brand.name} {model.name}</dd></div>
+            {variant && <div className="flex justify-between"><dt className="text-gray-500">{t("config")}</dt><dd className="font-medium">{variant.label}</dd></div>}
+            <div className="flex justify-between"><dt className="text-gray-500">{t("repair")}</dt><dd className="font-medium">{service.name}</dd></div>
+            <div className="flex justify-between"><dt className="text-gray-500">{t("method")}</dt><dd className="font-medium">{t(`methods.${serviceMethod}`, { defaultValue: serviceMethod })}</dd></div>
           </dl>
           <div className="mt-4 flex justify-between border-t border-gray-100 pt-4">
-            <span className="font-display font-semibold">Total</span>
+            <span className="font-display font-semibold">{t("total")}</span>
             <span className="font-display text-xl font-bold text-primary-600">{formatPrice(price.finalPrice ?? price.regularPrice)}</span>
           </div>
         </div>

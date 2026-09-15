@@ -1,0 +1,72 @@
+{
+  "heading": "Mon compte",
+  "tabs": {
+    "profile": "Profil",
+    "addresses": "Adresses",
+    "orders": "Commandes",
+    "repairs": "Rendez-vous de réparation",
+    "wishlist": "Liste de souhaits",
+    "security": "Changer le mot de passe"
+  },
+  "overview": {
+    "email": "E-mail",
+    "fullName": "Nom complet",
+    "phone": "Téléphone",
+    "saving": "Enregistrement...",
+    "saveChanges": "Enregistrer les modifications",
+    "profileUpdated": "Profil mis à jour",
+    "updateFailed": "Échec de la mise à jour"
+  },
+  "addresses": {
+    "addAddress": "Ajouter une adresse",
+    "default": "Par défaut",
+    "addressSaved": "Adresse enregistrée",
+    "saveFailed": "Échec de l'enregistrement de l'adresse",
+    "addressRemoved": "Adresse supprimée",
+    "modal": {
+      "editTitle": "Modifier l'adresse",
+      "addTitle": "Ajouter une adresse",
+      "label": "Libellé (Domicile, Travail)",
+      "fullName": "Nom complet",
+      "phone": "Téléphone",
+      "addressLine1": "Adresse ligne 1",
+      "addressLine2": "Adresse ligne 2",
+      "city": "Ville",
+      "postalCode": "Code postal",
+      "country": "Pays",
+      "setDefault": "Définir par défaut",
+      "save": "Enregistrer l'adresse"
+    }
+  },
+  "orders": {
+    "emptyTitle": "Aucune commande pour l'instant",
+    "emptyDescription": "Vos commandes passées apparaîtront ici.",
+    "itemCount": "{{count}} article(s)",
+    "orderDetails": {
+      "notFound": "Commande introuvable.",
+      "subtotal": "Sous-total",
+      "shipping": "Livraison",
+      "tax": "Taxes",
+      "discount": "Remise",
+      "total": "Total",
+      "shippingAddress": "Adresse de livraison"
+    }
+  },
+  "repairs": {
+    "emptyTitle": "Aucun rendez-vous de réparation",
+    "emptyDescription": "Réservez une réparation pour la voir ici.",
+    "bookRepair": "Réserver une réparation"
+  },
+  "security": {
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "minChars": "8 caractères minimum",
+    "updating": "Mise à jour...",
+    "changePassword": "Changer le mot de passe",
+    "passwordChanged": "Mot de passe modifié avec succès",
+    "changeFailed": "Échec du changement de mot de passe"
+  },
+  "wishlist": {
+    "emptyTitle": "Votre liste de souhaits est vide"
+  }
+}

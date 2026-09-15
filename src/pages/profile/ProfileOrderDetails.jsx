@@ -5,16 +5,18 @@ import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
 import StatusBadge from "../../components/common/StatusBadge.jsx";
 import { formatPrice } from "../../components/common/PriceTag.jsx";
+import { useTranslation } from "react-i18next";
 
 const ProfileOrderDetails = () => {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t } = useTranslation("profile");
 
   useEffect(() => {
-    orderService.getOrder(id).then((res) => setOrder(res.data)).catch(() => setError("Order not found.")).finally(() => setLoading(false));
-  }, [id]);
+    orderService.getOrder(id).then((res) => setOrder(res.data)).catch(() => setError(t("orderDetails.notFound"))).finally(() => setLoading(false));
+  }, [id, t]);
 
   if (loading) return <Loader />;
   if (error) return <ErrorState message={error} />;
@@ -31,15 +33,15 @@ const ProfileOrderDetails = () => {
         ))}
       </div>
       <div className="space-y-1 border-t border-gray-100 pt-4 text-sm">
-        <div className="flex justify-between text-gray-500"><span>Subtotal</span><span>{formatPrice(order.subtotal)}</span></div>
-        <div className="flex justify-between text-gray-500"><span>Shipping</span><span>{formatPrice(order.shippingCost)}</span></div>
-        <div className="flex justify-between text-gray-500"><span>Tax</span><span>{formatPrice(order.taxAmount)}</span></div>
-        {order.discountAmount > 0 && <div className="flex justify-between text-emerald-600"><span>Discount</span><span>-{formatPrice(order.discountAmount)}</span></div>}
-        <div className="flex justify-between border-t border-gray-100 pt-2 font-semibold"><span>Total</span><span>{formatPrice(order.totalAmount, order.currency)}</span></div>
+        <div className="flex justify-between text-gray-500"><span>{t("orderDetails.subtotal")}</span><span>{formatPrice(order.subtotal)}</span></div>
+        <div className="flex justify-between text-gray-500"><span>{t("orderDetails.shipping")}</span><span>{formatPrice(order.shippingCost)}</span></div>
+        <div className="flex justify-between text-gray-500"><span>{t("orderDetails.tax")}</span><span>{formatPrice(order.taxAmount)}</span></div>
+        {order.discountAmount > 0 && <div className="flex justify-between text-emerald-600"><span>{t("orderDetails.discount")}</span><span>-{formatPrice(order.discountAmount)}</span></div>}
+        <div className="flex justify-between border-t border-gray-100 pt-2 font-semibold"><span>{t("orderDetails.total")}</span><span>{formatPrice(order.totalAmount, order.currency)}</span></div>
       </div>
       {order.shippingAddress && (
         <div className="mt-4 border-t border-gray-100 pt-4 text-sm text-gray-600">
-          <p className="mb-1 font-semibold text-ink-900">Shipping Address</p>
+          <p className="mb-1 font-semibold text-ink-900">{t("orderDetails.shippingAddress")}</p>
           <p>{order.shippingAddress.fullName}</p>
           <p>{order.shippingAddress.addressLine1}, {order.shippingAddress.city}, {order.shippingAddress.postalCode}, {order.shippingAddress.country}</p>
         </div>

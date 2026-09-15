@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
+import "./i18n.js";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(

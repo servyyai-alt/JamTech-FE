@@ -1,0 +1,102 @@
+{
+  "hero": {
+    "badge": "Réparations certifiées · Pièces d'origine · Garantie réelle",
+    "titlePart1": "Appareil en panne ?",
+    "titlePart2": "On répare vite.",
+    "subtitle": "Services de réparation haut de gamme pour téléphones, tablettes, ordinateurs et consoles — plus une boutique d'accessoires complète. La plupart des réparations sont effectuées le jour même.",
+    "ctaRepair": "Réserver une réparation",
+    "ctaShop": "Acheter des accessoires",
+    "imgAlt": "Technicien en train de réparer un appareil"
+  },
+  "heroBadge": {
+    "title": "Réparation terminée",
+    "subtitle": "iPhone 15 · Écran réparé"
+  },
+  "ratingBadge": {
+    "value": "50k+ avis"
+  },
+  "stats": {
+    "devicesRepaired": { "value": "50K+", "label": "Appareils réparés" },
+    "avgRating": { "value": "4.9★", "label": "Note moyenne" },
+    "avgTurnaround": { "value": "2 h", "label": "Délai moyen" },
+    "partsGuaranteed": { "value": "100%", "label": "Pièces garanties" }
+  },
+  "marquee": {
+    "items": [
+      "Techniciens certifiés",
+      "Réparations le jour même",
+      "Garantie 90 jours",
+      "Pièces d'origine",
+      "Diagnostics gratuits",
+      "Retrait & livraison",
+      "Toutes les grandes marques",
+      "Prix compétitifs"
+    ]
+  },
+  "categories": {
+    "kicker": "Quoi réparer ?",
+    "title": "Choisissez votre appareil",
+    "allServices": "Tous les services",
+    "subtitle": "Réparation et pièces disponibles",
+    "bookNow": "Réserver maintenant"
+  },
+  "categoryNames": {
+    "smartphones": "Smartphones",
+    "tablets": "Tablettes",
+    "computers": "Ordinateurs",
+    "gaming_devices": "Consoles de jeux"
+  },
+  "repairServices": {
+    "kicker": "Les plus demandés",
+    "title": "Services de réparation populaires",
+    "screen": { "name": "Remplacement d'écran", "time": "45–60 min", "warranty": "Garantie 90 jours" },
+    "battery": { "name": "Remplacement de batterie", "time": "30 min", "warranty": "Garantie 12 mois" },
+    "software": { "name": "Logiciels et diagnostics", "time": "Le jour même", "warranty": "Diagnostic gratuit" },
+    "general": { "name": "Réparation générale", "time": "Variable", "warranty": "Pièces d'origine" }
+  },
+  "howItWorks": {
+    "kicker": "Processus simple",
+    "title": "Comment ça marche",
+    "choose": { "title": "Choisissez votre appareil", "desc": "Sélectionnez la catégorie, la marque et le modèle exact en quelques secondes." },
+    "pick": { "title": "Choisissez une réparation", "desc": "Des prix transparents avant tout engagement." },
+    "book": { "title": "Réservez et suivez", "desc": "En magasin, retrait, envoi postal ou sur site — à vous de choisir." },
+    "fix": { "title": "On le répare", "desc": "Techniciens certifiés, pièces d'origine, vraie garantie." }
+  },
+  "whyUs": {
+    "kicker": "Pourquoi nous",
+    "title": "La différence JAM Smart Tech",
+    "certified": { "title": "Techniciens certifiés", "desc": "Chaque réparation est effectuée par des spécialistes formés utilisant des pièces OEM d'origine garanties." },
+    "flexible": { "title": "Service flexible", "desc": "Venez en magasin, réservez un retrait, envoyez par courrier ou faites-vous dépanner sur place — selon votre emploi du temps." },
+    "fast": { "title": "Délai rapide", "desc": "La plupart des réparations sont effectuées le jour même. Suivez l'état de votre réparation en temps réel depuis n'importe quel appareil." },
+    "support": { "title": "Support après réparation", "desc": "Notre équipe d'assistance reste disponible après la réparation pour garantir un fonctionnement parfait." }
+  },
+  "featured": {
+    "kicker": "Sélectionnés à la main",
+    "title": "Produits en vedette",
+    "viewAll": "Tout voir"
+  },
+  "bestSellers": {
+    "kicker": "Les mieux notés",
+    "title": "Meilleures ventes",
+    "viewAll": "Tout voir"
+  },
+  "reviews": {
+    "kicker": "Témoignages clients",
+    "title": "Ce que disent nos clients",
+    "role": "Client vérifié",
+    "items": {
+      "aisha": { "name": "Aisha K.", "text": "Le remplacement de l'écran de mon iPhone a été effectué le jour même. Il a l'air flambant neuf — je ne pourrais pas être plus heureuse.", "device": "iPhone 14 Pro" },
+      "marco": { "name": "Marco R.", "text": "J'ai commandé un chargeur et une coque — livraison rapide, bel emballage, prix vraiment honnêtes. Je reviendrai.", "device": "Samsung Galaxy" },
+      "lena": { "name": "Lena T.", "text": "J'ai réservé une réparation avec retrait pour la batterie de mon ordinateur portable. Très fluide du début à la fin, tenue au courant à chaque étape.", "device": "MacBook Pro" },
+      "james": { "name": "James O.", "text": "La réparation de ma console de jeux a été réalisée avec soin. Ils ont même nettoyé l'appareil — un service au-delà de l'attendu.", "device": "PlayStation 5" },
+      "priya": { "name": "Priya M.", "text": "Problème logiciel résolu à distance en quelques heures. Cela m'a évité un déplacement au magasin.", "device": "Dell XPS" }
+    }
+  },
+  "newsletter": {
+    "title": "Restez informé",
+    "subtitle": "Conseils de réparation, offres exclusives et lancements de produits — directement dans votre boîte mail. Pas de spam.",
+    "success": "Inscription confirmée — merci !",
+    "placeholder": "votre@email.com",
+    "subscribe": "S'abonner"
+  }
+}

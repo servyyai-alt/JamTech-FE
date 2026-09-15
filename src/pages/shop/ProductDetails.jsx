@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Truck, ShieldCheck, RotateCcw, Minus, Plus, Heart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import * as productService from "../../services/productService.js";
 import { useCart } from "../../context/CartContext.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
@@ -13,6 +14,7 @@ import PriceTag from "../../components/common/PriceTag.jsx";
 import ProductCard from "../../components/ecommerce/ProductCard.jsx";
 
 const ProductDetails = () => {
+  const { t } = useTranslation("shop");
   const { slug } = useParams();
   const [data, setData] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -34,7 +36,7 @@ const ProductDetails = () => {
         if (res.data.variants?.length) setSelectedVariant(res.data.variants[0]);
         setActiveImage(0);
       })
-      .catch(() => setError("Product not found."))
+      .catch(() => setError(t("product.notFound")))
       .finally(() => setLoading(false));
   }, [slug]);
 
@@ -64,14 +66,14 @@ const ProductDetails = () => {
       price: activePrice,
       quantity,
     });
-    showToast("Added to cart", "success");
+    showToast(t("product.addedToCart"), "success");
   };
 
   const handleWishlist = async () => {
-    if (!user) return showToast("Please log in to save items", "info");
+    if (!user) return showToast(t("wishlist.loginRequired"), "info");
     await authService.toggleWishlist(product._id);
     await refreshUser();
-    showToast("Wishlist updated", "success");
+    showToast(t("wishlist.updated"), "success");
   };
 
   return (
@@ -97,12 +99,12 @@ const ProductDetails = () => {
 
           <div className="mt-5"><PriceTag regularPrice={selectedVariant?.price || product.regularPrice} salePrice={selectedVariant?.discountPrice || product.salePrice} size="lg" /></div>
           <p className={`mt-1 text-sm font-medium ${activeStock > 0 ? "text-emerald-600" : "text-red-500"}`}>
-            {activeStock > 0 ? `In Stock (${activeStock} available)` : "Out of Stock"}
+            {activeStock > 0 ? t("product.inStock", { count: activeStock }) : t("product.outOfStock")}
           </p>
 
           {variants?.length > 0 && (
             <div className="mt-5">
-              <p className="label">Select Option</p>
+              <p className="label">{t("product.selectOption")}</p>
               <div className="flex flex-wrap gap-2">
                 {variants.map((v) => (
                   <button key={v._id} onClick={() => setSelectedVariant(v)} className={`rounded-lg border-2 px-3 py-2 text-sm ${selectedVariant?._id === v._id ? "border-primary-500 bg-primary-50" : "border-gray-200"}`}>
@@ -119,16 +121,16 @@ const ProductDetails = () => {
               <span className="w-8 text-center text-sm font-semibold">{quantity}</span>
               <button onClick={() => setQuantity((q) => Math.min(activeStock, q + 1))} className="p-3"><Plus size={14} /></button>
             </div>
-            <button onClick={handleAddToCart} disabled={activeStock <= 0} className="btn-primary flex-1 disabled:opacity-50">Add to Cart</button>
+            <button onClick={handleAddToCart} disabled={activeStock <= 0} className="btn-primary flex-1 disabled:opacity-50">{t("product.addToCart")}</button>
             <button onClick={handleWishlist} className="rounded-xl border border-gray-200 p-3.5 hover:bg-gray-50">
               <Heart size={18} className={user?.wishlist?.includes(product._id) ? "fill-red-500 text-red-500" : ""} />
             </button>
           </div>
 
           <div className="mt-6 grid grid-cols-3 gap-3 border-t border-gray-100 pt-6 text-center text-xs text-gray-500">
-            <div className="flex flex-col items-center gap-1"><Truck size={18} className="text-primary-600" />{product.deliveryEstimate || "2-4 days"}</div>
-            <div className="flex flex-col items-center gap-1"><ShieldCheck size={18} className="text-primary-600" />{product.warranty || "Standard warranty"}</div>
-            <div className="flex flex-col items-center gap-1"><RotateCcw size={18} className="text-primary-600" />{product.returnsPolicy || "14 day returns"}</div>
+            <div className="flex flex-col items-center gap-1"><Truck size={18} className="text-primary-600" />{product.deliveryEstimate || t("product.deliveryEstimate")}</div>
+            <div className="flex flex-col items-center gap-1"><ShieldCheck size={18} className="text-primary-600" />{product.warranty || t("product.warranty")}</div>
+            <div className="flex flex-col items-center gap-1"><RotateCcw size={18} className="text-primary-600" />{product.returnsPolicy || t("product.returnsPolicy")}</div>
           </div>
 
           {product.shortDescription && <p className="mt-6 text-sm text-gray-600">{product.shortDescription}</p>}
@@ -137,12 +139,12 @@ const ProductDetails = () => {
 
       <div className="mt-14 grid gap-10 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <h2 className="mb-3 font-display text-xl font-bold">Description</h2>
+          <h2 className="mb-3 font-display text-xl font-bold">{t("product.description")}</h2>
           <p className="text-sm leading-relaxed text-gray-600">{product.description}</p>
 
           {product.specifications?.length > 0 && (
             <div className="mt-8">
-              <h2 className="mb-3 font-display text-xl font-bold">Specifications</h2>
+              <h2 className="mb-3 font-display text-xl font-bold">{t("product.specifications")}</h2>
               <dl className="divide-y divide-gray-100 rounded-xl border border-gray-100">
                 {product.specifications.map((s, i) => (
                   <div key={i} className="flex justify-between px-4 py-2.5 text-sm odd:bg-gray-50">
@@ -155,9 +157,9 @@ const ProductDetails = () => {
         </div>
 
         <div>
-          <h2 className="mb-3 font-display text-xl font-bold">Reviews ({reviews.length})</h2>
+          <h2 className="mb-3 font-display text-xl font-bold">{t("product.reviews", { count: reviews.length })}</h2>
           {reviews.length === 0 ? (
-            <p className="text-sm text-gray-400">No reviews yet.</p>
+            <p className="text-sm text-gray-400">{t("product.noReviews")}</p>
           ) : (
             <div className="space-y-4">
               {reviews.map((r) => (
@@ -174,7 +176,7 @@ const ProductDetails = () => {
 
       {related?.length > 0 && (
         <div className="mt-16">
-          <h2 className="mb-6 font-display text-xl font-bold">Related Products</h2>
+          <h2 className="mb-6 font-display text-xl font-bold">{t("product.relatedProducts")}</h2>
           <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
             {related.map((p) => <ProductCard key={p._id} product={p} />)}
           </div>
