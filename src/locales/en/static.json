@@ -36,7 +36,7 @@
       "warranty": { "q": "Do you offer a warranty on repairs?", "a": "Yes, every repair includes a warranty ranging from 90 days to 12 months depending on the service." },
       "methods": { "q": "What service methods are available?", "a": "Store visit, pickup & delivery, mail-in repair, and on-site repair — availability depends on your location and device." },
       "track": { "q": "Can I track my repair or order?", "a": "Yes, use the Track Repair or Track Order links in the navbar with your booking or order number." },
-      "payment": { "q": "What payment methods do you accept?", "a": "We accept all major cards and popular local payment methods through our secure Adyen-powered checkout." }
+      "payment": { "q": "What payment methods do you accept?", "a": "We accept all major cards and popular local payment methods through our secure Stripe-powered checkout." }
     }
   },
   "notFound": {
@@ -48,7 +48,7 @@
     "title": "Privacy Policy",
     "items": [
       "We collect only the information necessary to process your repair bookings and orders — including contact details, device information, and shipping addresses.",
-      "Payment processing is handled securely by Adyen. We never store your full card number or CVV on our servers.",
+      "Payment processing is handled securely by Stripe. We never store your full card number or CVV on our servers.",
       "Your data is never sold to third parties. We use it solely to fulfill orders, manage repair bookings, and improve our services.",
       "You can request access to, correction of, or deletion of your personal data at any time by contacting our support team."
     ]

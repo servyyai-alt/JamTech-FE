@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { useToast } from "../../context/ToastContext.jsx";
 import * as orderService from "../../services/orderService.js";
 import { formatPrice } from "../../components/common/PriceTag.jsx";
-import AdyenDropIn from "../../components/payment/AdyenDropIn.jsx";
+import * as paymentService from "../../services/paymentService.js";
 
 const Checkout = () => {
   const { t } = useTranslation("cart");
@@ -74,30 +74,19 @@ const Checkout = () => {
 
       const res = await orderService.createOrder(payload);
       setOrder(res.data);
+      
+      const paymentRes = await paymentService.createPaymentSession("order", res.data._id);
+      if (paymentRes.success && paymentRes.data.url) {
+        window.location.href = paymentRes.data.url;
+      } else {
+        throw new Error("Payment session creation failed");
+      }
     } catch (err) {
-      showToast(err.response?.data?.message || t("checkout.orderFailed"), "error");
+      showToast(err.response?.data?.message || err.message || t("checkout.orderFailed"), "error");
     } finally {
       setPlacing(false);
     }
   };
-
-  const handlePaymentResult = (result) => {
-    clearCart();
-    const success = result.resultCode === "Authorised" || result.resultCode === "Received";
-    navigate(success ? "/payment-success" : "/payment-failed", { state: { orderNumber: order.orderNumber } });
-  };
-
-  if (order) {
-    return (
-      <div className="container-px section-y mx-auto max-w-xl">
-        <h1 className="mb-2 text-center font-display text-2xl font-bold">{t("checkout.completePayment")}</h1>
-        <p className="mb-6 text-center text-sm text-gray-500">{t("checkout.orderLine", { orderNumber: order.orderNumber, amount: formatPrice(order.totalAmount, order.currency) })}</p>
-        <div className="card p-6">
-          <AdyenDropIn referenceType="order" referenceId={order._id} onPaymentResult={handlePaymentResult} />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="container-px section-y mx-auto max-w-6xl">

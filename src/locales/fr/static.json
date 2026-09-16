@@ -36,7 +36,7 @@
       "warranty": { "q": "Proposez-vous une garantie sur les réparations ?", "a": "Oui, chaque réparation comprend une garantie allant de 90 jours à 12 mois selon le service." },
       "methods": { "q": "Quelles méthodes de service sont disponibles ?", "a": "Visite en magasin, retrait et livraison, réparation par courrier et réparation sur site — la disponibilité dépend de votre localisation et de votre appareil." },
       "track": { "q": "Puis-je suivre ma réparation ou ma commande ?", "a": "Oui, utilisez les liens « Suivre une réparation » ou « Suivre une commande » dans la barre de navigation avec votre numéro de réservation ou de commande." },
-      "payment": { "q": "Quels moyens de paiement acceptez-vous ?", "a": "Nous acceptons toutes les principales cartes et les moyens de paiement locaux populaires via notre paiement sécurisé alimenté par Adyen." }
+      "payment": { "q": "Quels moyens de paiement acceptez-vous ?", "a": "Nous acceptons toutes les principales cartes et les moyens de paiement locaux populaires via notre paiement sécurisé alimenté par Stripe." }
     }
   },
   "notFound": {
@@ -48,7 +48,7 @@
     "title": "Politique de confidentialité",
     "items": [
       "Nous ne collectons que les informations nécessaires pour traiter vos réservations de réparation et vos commandes — y compris les coordonnées, les informations sur l'appareil et les adresses de livraison.",
-      "Le traitement des paiements est géré en toute sécurité par Adyen. Nous ne stockons jamais votre numéro de carte complet ou votre CVV sur nos serveurs.",
+      "Le traitement des paiements est géré en toute sécurité par Stripe. Nous ne stockons jamais votre numéro de carte complet ou votre CVV sur nos serveurs.",
       "Vos données ne sont jamais vendues à des tiers. Nous les utilisons uniquement pour exécuter les commandes, gérer les réservations de réparation et améliorer nos services.",
       "Vous pouvez demander l'accès, la correction ou la suppression de vos données personnelles à tout moment en contactant notre équipe d'assistance."
     ]

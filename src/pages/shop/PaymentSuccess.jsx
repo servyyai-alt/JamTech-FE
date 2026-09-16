@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { CheckCircle2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useCart } from "../../context/CartContext.jsx";
 
 const PaymentSuccess = () => {
   const { t } = useTranslation("cart");
   const { state } = useLocation();
+  const { clearCart } = useCart();
+  
+  useEffect(() => {
+    clearCart();
+  }, [clearCart]);
+
   return (
     <div className="container-px section-y mx-auto max-w-lg text-center">
       <CheckCircle2 className="mx-auto mb-4 text-emerald-500" size={64} />
