@@ -18,7 +18,7 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items]);
 
-  // item: { productId, variantId, title, image, price, quantity, variantLabel, stock }
+  // item: { productId, variantId, title, image, price, currency, quantity, variantLabel, stock }
   const addItem = (item) => {
     setItems((prev) => {
       const key = `${item.productId}_${item.variantId || "base"}`;

@@ -8,9 +8,21 @@ import Loader from "../../components/common/Loader.jsx";
 import EmptyState from "../../components/common/EmptyState.jsx";
 import { formatPrice } from "../../components/common/PriceTag.jsx";
 
+const CURRENCIES = [
+  { code: "EUR", label: "EUR (€)" },
+  { code: "USD", label: "USD ($)" },
+  { code: "GBP", label: "GBP (£)" },
+  { code: "INR", label: "INR (₹)" },
+  { code: "PKR", label: "PKR (₨)" },
+  { code: "AED", label: "AED (د.إ)" },
+  { code: "SAR", label: "SAR (﷼)" },
+  { code: "CAD", label: "CAD (CA$)" },
+  { code: "AUD", label: "AUD (A$)" },
+];
+
 const emptyForm = {
   title: "", category: "", brand: "", images: "", shortDescription: "", description: "",
-  regularPrice: "", salePrice: "", stock: "", warranty: "", deliveryEstimate: "",
+  regularPrice: "", salePrice: "", stock: "", currency: "EUR", warranty: "", deliveryEstimate: "",
   isFeatured: false, isBestSeller: false, isActive: true,
   frTitle: "", frShortDescription: "", frDescription: "", frWarranty: "",
 };
@@ -125,7 +137,7 @@ const ProductsAdmin = () => {
                     <span className="font-medium">{p.title}</span>
                   </td>
                   <td className="px-4 py-3">{p.category?.name || "—"}</td>
-                  <td className="px-4 py-3">{formatPrice(p.salePrice || p.regularPrice)}</td>
+                  <td className="px-4 py-3">{formatPrice(p.salePrice || p.regularPrice, p.currency)}</td>
                   <td className="px-4 py-3">{p.stock}</td>
                   <td className="px-4 py-3">{p.isActive ? <span className="text-emerald-600">{t("products.active")}</span> : <span className="text-gray-400">{t("products.inactive")}</span>}</td>
                   <td className="px-4 py-3 text-right">
@@ -161,6 +173,12 @@ const ProductsAdmin = () => {
               <div className="sm:col-span-2"><label className="label">{t("products.descriptionField")}</label><textarea rows={3} className="input" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
               <div><label className="label">{t("products.regularPriceField")}</label><input required type="number" className="input" value={form.regularPrice} onChange={(e) => setForm({ ...form, regularPrice: Number(e.target.value) })} /></div>
               <div><label className="label">{t("products.salePriceField")}</label><input type="number" className="input" value={form.salePrice} onChange={(e) => setForm({ ...form, salePrice: Number(e.target.value) })} /></div>
+              <div>
+                <label className="label">{t("products.currencyField")}</label>
+                <select className="input" value={form.currency} onChange={(e) => setForm({ ...form, currency: e.target.value })}>
+                  {CURRENCIES.map((c) => <option key={c.code} value={c.code}>{c.label}</option>)}
+                </select>
+              </div>
               <div><label className="label">{t("products.stockField")}</label><input type="number" className="input" value={form.stock} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} /></div>
               <div><label className="label">{t("products.warrantyField")}</label><input className="input" value={form.warranty} onChange={(e) => setForm({ ...form, warranty: e.target.value })} /></div>
               <p className="sm:col-span-2 pt-2 font-display text-xs font-bold uppercase tracking-wider text-gray-400">French Translation</p>

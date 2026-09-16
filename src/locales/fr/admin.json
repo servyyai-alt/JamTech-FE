@@ -82,6 +82,7 @@
     "descriptionField": "Description",
     "regularPriceField": "Prix habituel *",
     "salePriceField": "Prix de vente",
+    "currencyField": "Devise",
     "stockField": "Stock",
     "warrantyField": "Garantie",
     "titleFrField": "Titre (français)",

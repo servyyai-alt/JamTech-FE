@@ -10,6 +10,9 @@ import * as productService from "../services/productService.js";
 import ProductCard from "../components/ecommerce/ProductCard.jsx";
 import SkeletonCard from "../components/common/SkeletonCard.jsx";
 import { useTranslation } from "react-i18next";
+import bg_image from "../assets/bg_image.png";
+import bg_image1 from "../assets/bg_image1.png";
+
 
 /* ─── constants ─────────────────────────────────────────────── */
 const CATEGORY_KEYS = {
@@ -138,6 +141,11 @@ const Home = () => {
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         .syne { font-family: 'Syne', sans-serif; }
+        .hero-display { font-family: 'Space Grotesk', sans-serif; }
+
+        /* hero layout */
+        .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 60px; align-items: center; }
+        @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 52px; } }
 
         /* marquee */
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -181,6 +189,8 @@ const Home = () => {
         .btn-o.solid:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(249,115,22,0.45); }
         .btn-o.outline { background: transparent; color: #1A1A2E; border: 2px solid #E5E7EB; }
         .btn-o.outline:hover { border-color: #F97316; color: #F97316; background: #FFF7ED; }
+        .btn-o-glass { display: inline-flex; align-items: center; gap: 9px; padding: 14px 28px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.2s; text-decoration: none; }
+        .btn-o-glass:hover { transform: translateY(-2px); background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.45); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
 
         /* input focus */
         input:focus { outline: none; border-color: #F97316 !important; box-shadow: 0 0 0 3px rgba(249,115,22,0.12); }
@@ -189,99 +199,125 @@ const Home = () => {
       `}</style>
 
       {/* ── HERO ───────────────────────────────────────────────── */}
-      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #FFF7ED 0%, #FFFBF5 50%, #FEF3C7 100%)", minHeight: "92vh", display: "flex", alignItems: "center" }}>
+      <section style={{ position: "relative", minHeight: "94vh", display: "flex", alignItems: "center", overflow: "hidden", background: "#0B0F19" }}>
 
-        {/* decorative circles */}
-        <div style={{ position: "absolute", top: "-15%", right: "-8%", width: 560, height: 560, borderRadius: "50%", background: "radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "-20%", left: "-10%", width: 480, height: 480, borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
+        {/* full-bleed background image */}
+        <img
+          src={bg_image}
+          alt=""
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 28%", opacity: 0.45 }}
+        />
 
-        {/* subtle dot grid */}
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(249,115,22,0.08) 1px, transparent 1px)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
+        {/* overlay gradients for readability */}
+        {/* <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(11,15,25,0.96) 0%, rgba(11,15,25,0.82) 38%, rgba(11,15,25,0.45) 68%, rgba(11,15,25,0.28) 100%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(11,15,25,0.6) 0%, transparent 22%, transparent 72%, rgba(11,15,25,0.72) 100%)" }} /> */}
 
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px clamp(20px,5vw,60px)", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+        {/* grid texture */}
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+          maskImage: "radial-gradient(ellipse at 30% 50%, black 0%, transparent 75%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 30% 50%, black 0%, transparent 75%)",
+          pointerEvents: "none",
+        }} />
 
-          {/* left copy */}
-          <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? "none" : "translateY(32px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.25)", borderRadius: 100, padding: "6px 16px", marginBottom: 24 }}>
-              <Zap size={13} style={{ color: "#F97316" }} />
-              <span style={{ fontSize: 12, fontWeight: 600, color: "#EA580C", letterSpacing: "0.02em" }}>{t("hero.badge")}</span>
-            </div>
+        {/* brand glow orbs */}
+        <div style={{ position: "absolute", top: "-12%", right: "4%", width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(249,115,22,0.3) 0%, transparent 65%)", filter: "blur(8px)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-26%", left: "16%", width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
 
-            <h1 className="syne" style={{ fontSize: "clamp(2.4rem, 5vw, 4rem)", fontWeight: 800, lineHeight: 1.08, color: "#1A1A2E", marginBottom: 20 }}>
-              {t("hero.titlePart1")}<br />
-              <span style={{ background: "linear-gradient(90deg, #F97316, #F59E0B)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{t("hero.titlePart2")}</span>
-            </h1>
+        <div style={{ position: "relative", maxWidth: 1280, margin: "0 auto", padding: "104px clamp(20px,5vw,60px)", width: "100%" }}>
+          <div className="hero-grid">
 
-            <p style={{ fontSize: 17, lineHeight: 1.75, color: "#6B7280", maxWidth: 480, marginBottom: 36 }}>
-              {t("hero.subtitle")}
-            </p>
+            {/* left copy */}
+            <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? "none" : "translateY(32px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}>
 
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 44 }}>
-              <Link to="/repair" className="btn-o solid"><Wrench size={17} /> {t("hero.ctaRepair")}</Link>
-              <Link to="/shop" className="btn-o outline"><ShoppingBag size={17} /> {t("hero.ctaShop")}</Link>
-            </div>
-
-            {/* stats */}
-            <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
-              {STATS.map((s, i) => (
-                <div key={i} style={{ opacity: heroVisible ? 1 : 0, transition: `opacity 0.5s ease ${0.3 + i * 0.1}s` }}>
-                  <div className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 800, color: "#F97316", lineHeight: 1 }}>{t(`stats.${s.key}.value`)}</div>
-                  <div style={{ fontSize: 12, color: "#9CA3AF", marginTop: 3 }}>{t(`stats.${s.key}.label`)}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* right — floating image */}
-          <div style={{ display: "flex", justifyContent: "center", position: "relative" }}>
-            <div className="hero-float" style={{ position: "relative", width: "100%", maxWidth: 440 }}>
-
-              {/* main image */}
-              <div style={{
-                borderRadius: 28, overflow: "hidden",
-                border: "3px solid rgba(249,115,22,0.15)",
-                boxShadow: "0 32px 80px rgba(249,115,22,0.2), 0 0 0 1px rgba(249,115,22,0.08)",
-                opacity: heroVisible ? 1 : 0,
-                transform: heroVisible ? "none" : "scale(0.95)",
-                transition: "opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s",
-              }}>
-                <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=800&q=85" alt={t("hero.imgAlt")} style={{ width: "100%", height: 400, objectFit: "cover", display: "block" }} />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(26,26,46,0.3) 0%, transparent 60%)" }} />
+              {/* live badge */}
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: 100, padding: "8px 18px", marginBottom: 26 }}>
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22C55E", boxShadow: "0 0 0 4px rgba(34,197,94,0.25)" }} />
+                <span style={{ fontSize: 12.5, fontWeight: 600, color: "#FDBA74", letterSpacing: "0.04em", textTransform: "uppercase" }}>{t("hero.badge")}</span>
               </div>
 
-              {/* badge 1 — repair complete */}
-              <div className="lift" style={{
-                position: "absolute", bottom: 32, left: -28,
-                background: "#fff", borderRadius: 18, padding: "12px 16px",
-                display: "flex", alignItems: "center", gap: 10,
-                boxShadow: "0 12px 40px rgba(0,0,0,0.12)", border: "1px solid #F3F4F6",
-                opacity: heroVisible ? 1 : 0, transform: heroVisible ? "none" : "translateX(-20px)",
-                transition: "opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s",
-              }}>
-                <div style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg, #F97316, #F59E0B)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <CheckCircle2 size={18} style={{ color: "#fff" }} />
-                </div>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "#1A1A2E" }}>{t("heroBadge.title")}</div>
-                  <div style={{ fontSize: 11, color: "#9CA3AF" }}>{t("heroBadge.subtitle")}</div>
-                </div>
+              <h1 className="hero-display" style={{ fontSize: "clamp(2.5rem, 5.4vw, 4.1rem)", fontWeight: 700, lineHeight: 1.06, color: "#fff", marginBottom: 22, letterSpacing: "-0.02em" }}>
+                {t("hero.titlePart1")}<br />
+                <span style={{ background: "linear-gradient(92deg, #FB923C, #F59E0B 55%, #FBBF24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{t("hero.titlePart2")}</span>
+              </h1>
+
+              <p style={{ fontSize: 17, lineHeight: 1.75, color: "#CBD5E1", maxWidth: 500, marginBottom: 38 }}>
+                {t("hero.subtitle")}
+              </p>
+
+              <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 48 }}>
+                <Link to="/repair" className="btn-o solid"><Wrench size={17} /> {t("hero.ctaRepair")} <ArrowRight size={16} style={{ transition: "transform 0.2s" }} /></Link>
+                <Link to="/shop" className="btn-o-glass"><ShoppingBag size={17} /> {t("hero.ctaShop")}</Link>
               </div>
 
-              {/* badge 2 — rating */}
-              <div className="lift" style={{
-                position: "absolute", top: 20, right: -20,
-                background: "#fff", borderRadius: 14, padding: "10px 14px",
-                display: "flex", alignItems: "center", gap: 7,
-                boxShadow: "0 8px 28px rgba(0,0,0,0.1)", border: "1px solid #F3F4F6",
-                opacity: heroVisible ? 1 : 0, transition: "opacity 0.6s ease 0.65s",
-              }}>
-                <Star size={15} style={{ color: "#F97316", fill: "#F97316" }} />
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#1A1A2E" }}>4.9</span>
-                <span style={{ fontSize: 11, color: "#9CA3AF" }}>{t("ratingBadge.value")}</span>
+              {/* stats */}
+              <div style={{ display: "flex", flexWrap: "wrap", borderTop: "1px solid rgba(255,255,255,0.12)", paddingTop: 26 }}>
+                {STATS.map((s, i) => (
+                  <div key={i} style={{ opacity: heroVisible ? 1 : 0, transition: `opacity 0.5s ease ${0.3 + i * 0.1}s`, paddingRight: 38, borderRight: i < STATS.length - 1 ? "1px solid rgba(255,255,255,0.12)" : "none" }}>
+                    <div className="hero-display" style={{ fontSize: "clamp(1.7rem, 3vw, 2.3rem)", fontWeight: 700, color: "#FDBA74", lineHeight: 1 }}>{t(`stats.${s.key}.value`)}</div>
+                    <div style={{ fontSize: 12, color: "#94A3B8", marginTop: 4 }}>{t(`stats.${s.key}.label`)}</div>
+                  </div>
+                ))}
               </div>
+            </div>
 
-              {/* pulse ring on badge */}
-              <div style={{ position: "absolute", top: 14, right: -26, width: 50, height: 50, borderRadius: "50%", border: "2px solid rgba(249,115,22,0.4)", pointerEvents: "none" }} className="ring" />
+            {/* right — floating composition */}
+            <div style={{ display: "flex", justifyContent: "center", position: "relative" }}>
+              <div className="hero-float" style={{ position: "relative", width: "100%", maxWidth: 460 }}>
+
+                {/* main image card */}
+                <div style={{
+                  borderRadius: 30, overflow: "hidden", position: "relative",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  boxShadow: "0 40px 90px rgba(0,0,0,0.55)",
+                  opacity: heroVisible ? 1 : 0,
+                  transform: heroVisible ? "none" : "scale(0.95) rotate(1.5deg)",
+                  transition: "opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s",
+                }}>
+                  <img src={bg_image1} alt={t("hero.imgAlt")} style={{ width: "100%", height: 430, objectFit: "cover", display: "block" }} />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(11,15,25,0.55) 0%, transparent 55%)" }} />
+                </div>
+
+                {/* rating badge */}
+                <div className="lift" style={{
+                  position: "absolute", top: 18, right: -22,
+                  background: "rgba(11,15,25,0.75)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.18)", borderRadius: 16, padding: "12px 16px",
+                  display: "flex", alignItems: "center", gap: 10, boxShadow: "0 14px 40px rgba(0,0,0,0.4)",
+                  opacity: heroVisible ? 1 : 0, transition: "opacity 0.6s ease 0.5s",
+                }}>
+                  <span style={{ width: 40, height: 40, borderRadius: 12, background: "linear-gradient(135deg,#F97316,#F59E0B)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Star size={19} style={{ color: "#fff", fill: "#fff" }} />
+                  </span>
+                  <div>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", lineHeight: 1.1 }}>4.9/5</div>
+                    <div style={{ fontSize: 11, color: "#94A3B8" }}>{t("ratingBadge.value")}</div>
+                  </div>
+                </div>
+
+                {/* repair complete badge */}
+                <div className="lift" style={{
+                  position: "absolute", bottom: 26, left: -26,
+                  background: "rgba(11,15,25,0.75)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.18)", borderRadius: 18, padding: "12px 16px",
+                  display: "flex", alignItems: "center", gap: 10, boxShadow: "0 14px 40px rgba(0,0,0,0.4)",
+                  opacity: heroVisible ? 1 : 0, transform: heroVisible ? "none" : "translateX(-20px)",
+                  transition: "opacity 0.6s ease 0.65s, transform 0.6s ease 0.65s",
+                }}>
+                  <div style={{ width: 38, height: 38, borderRadius: 12, background: "linear-gradient(135deg,#22C55E,#10B981)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <CheckCircle2 size={19} style={{ color: "#fff" }} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: "#fff" }}>{t("heroBadge.title")}</div>
+                    <div style={{ fontSize: 11, color: "#94A3B8" }}>{t("heroBadge.subtitle")}</div>
+                  </div>
+                </div>
+
+                {/* pulse ring */}
+                <div style={{ position: "absolute", top: 58, right: -44, width: 46, height: 46, borderRadius: "50%", border: "2px solid rgba(249,115,22,0.5)", pointerEvents: "none" }} className="ring" />
+              </div>
             </div>
           </div>
         </div>

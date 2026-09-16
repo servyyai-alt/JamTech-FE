@@ -23,6 +23,7 @@ const ProductCard = ({ product }) => {
       title: product.title,
       image: product.images?.[0],
       price: product.salePrice && product.salePrice < product.regularPrice ? product.salePrice : product.regularPrice,
+      currency: product.currency,
       quantity: 1,
     });
     showToast(t("product.addedToCart"), "success");
@@ -62,7 +63,7 @@ const ProductCard = ({ product }) => {
         <h3 className="line-clamp-2 font-display text-sm font-semibold text-ink-900">{product.title}</h3>
         {product.numReviews > 0 && <StarRating rating={product.rating} size={12} count={product.numReviews} />}
         <div className="mt-auto flex items-center justify-between pt-2">
-          <PriceTag regularPrice={product.regularPrice} salePrice={product.salePrice} size="sm" />
+          <PriceTag regularPrice={product.regularPrice} salePrice={product.salePrice} currency={product.currency} size="sm" />
           <button
             onClick={handleAddToCart}
             disabled={product.stock <= 0}

@@ -82,6 +82,7 @@
     "descriptionField": "Description",
     "regularPriceField": "Regular Price *",
     "salePriceField": "Sale Price",
+    "currencyField": "Currency",
     "stockField": "Stock",
     "warrantyField": "Warranty",
     "titleFrField": "Title (French)",

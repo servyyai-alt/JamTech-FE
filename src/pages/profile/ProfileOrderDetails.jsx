@@ -29,14 +29,14 @@ const ProfileOrderDetails = () => {
       </div>
       <div className="mb-4 space-y-2">
         {order.items.map((it, i) => (
-          <div key={i} className="flex justify-between text-sm"><span>{it.title}{it.variantLabel ? ` (${it.variantLabel})` : ""} × {it.quantity}</span><span>{formatPrice(it.price * it.quantity)}</span></div>
+          <div key={i} className="flex justify-between text-sm"><span>{it.title}{it.variantLabel ? ` (${it.variantLabel})` : ""} × {it.quantity}</span><span>{formatPrice(it.price * it.quantity, order.currency)}</span></div>
         ))}
       </div>
       <div className="space-y-1 border-t border-gray-100 pt-4 text-sm">
-        <div className="flex justify-between text-gray-500"><span>{t("orderDetails.subtotal")}</span><span>{formatPrice(order.subtotal)}</span></div>
-        <div className="flex justify-between text-gray-500"><span>{t("orderDetails.shipping")}</span><span>{formatPrice(order.shippingCost)}</span></div>
-        <div className="flex justify-between text-gray-500"><span>{t("orderDetails.tax")}</span><span>{formatPrice(order.taxAmount)}</span></div>
-        {order.discountAmount > 0 && <div className="flex justify-between text-emerald-600"><span>{t("orderDetails.discount")}</span><span>-{formatPrice(order.discountAmount)}</span></div>}
+        <div className="flex justify-between text-gray-500"><span>{t("orderDetails.subtotal")}</span><span>{formatPrice(order.subtotal, order.currency)}</span></div>
+        <div className="flex justify-between text-gray-500"><span>{t("orderDetails.shipping")}</span><span>{formatPrice(order.shippingCost, order.currency)}</span></div>
+        <div className="flex justify-between text-gray-500"><span>{t("orderDetails.tax")}</span><span>{formatPrice(order.taxAmount, order.currency)}</span></div>
+        {order.discountAmount > 0 && <div className="flex justify-between text-emerald-600"><span>{t("orderDetails.discount")}</span><span>-{formatPrice(order.discountAmount, order.currency)}</span></div>}
         <div className="flex justify-between border-t border-gray-100 pt-2 font-semibold"><span>{t("orderDetails.total")}</span><span>{formatPrice(order.totalAmount, order.currency)}</span></div>
       </div>
       {order.shippingAddress && (

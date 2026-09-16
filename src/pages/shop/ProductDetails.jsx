@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Truck, ShieldCheck, RotateCcw, Minus, Plus, Heart } from "lucide-react";
+import { useParams, Link } from "react-router-dom";
+import { Truck, ShieldCheck, RotateCcw, Minus, Plus, Heart, Star, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import * as productService from "../../services/productService.js";
 import { useCart } from "../../context/CartContext.jsx";
@@ -18,11 +18,18 @@ const ProductDetails = () => {
   const { slug } = useParams();
   const [data, setData] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [reviewPage, setReviewPage] = useState(1);
+  const [reviewTotal, setReviewTotal] = useState(0);
+  const [loadingReviews, setLoadingReviews] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userRating, setUserRating] = useState(0);
+  const [userTitle, setUserTitle] = useState("");
+  const [userComment, setUserComment] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const { addItem } = useCart();
   const { user, refreshUser } = useAuth();
   const { showToast } = useToast();
@@ -42,7 +49,17 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (data?.product?._id) {
-      productService.getProductReviews(data.product._id).then((res) => setReviews(res.data || []));
+      let cancelled = false;
+      setLoadingReviews(true);
+      productService.getProductReviews(data.product._id, 1)
+        .then((res) => {
+          if (cancelled) return;
+          setReviews(res.data || []);
+          setReviewPage(1);
+          setReviewTotal(res.total || 0);
+        })
+        .finally(() => { if (!cancelled) setLoadingReviews(false); });
+      return () => { cancelled = true; };
     }
   }, [data]);
 
@@ -64,6 +81,7 @@ const ProductDetails = () => {
       variantLabel: selectedVariant?.label,
       image: images?.[0],
       price: activePrice,
+      currency: product.currency,
       quantity,
     });
     showToast(t("product.addedToCart"), "success");
@@ -75,6 +93,54 @@ const ProductDetails = () => {
     await refreshUser();
     showToast(t("wishlist.updated"), "success");
   };
+
+  const refreshReviews = async () => {
+    const res = await productService.getProductReviews(product._id, 1);
+    setReviews(res.data || []);
+    setReviewPage(1);
+    setReviewTotal(res.total || 0);
+  };
+
+  const loadMoreReviews = async () => {
+    const next = reviewPage + 1;
+    setLoadingReviews(true);
+    try {
+      const res = await productService.getProductReviews(product._id, next);
+      setReviews((prev) => [...prev, ...(res.data || [])]);
+      setReviewPage(next);
+      setReviewTotal(res.total || 0);
+    } finally {
+      setLoadingReviews(false);
+    }
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!userRating) return showToast(t("product.ratingRequired"), "info");
+    setSubmitting(true);
+    try {
+      await productService.createReview(product._id, { rating: userRating, title: userTitle, comment: userComment });
+      setUserRating(0); setUserTitle(""); setUserComment("");
+      await refreshReviews();
+      showToast(t("product.submitted"), "success");
+    } catch (err) {
+      showToast(err.response?.data?.message || t("product.failed"), "error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteReview = async (id) => {
+    try {
+      await productService.deleteReview(id);
+      await refreshReviews();
+      showToast(t("product.deleted"), "success");
+    } catch {
+      showToast(t("product.failed"), "error");
+    }
+  };
+
+  const myReview = user ? reviews.find((r) => r.user?._id === user._id) : null;
 
   return (
     <div className="container-px section-y mx-auto max-w-6xl">
@@ -97,7 +163,7 @@ const ProductDetails = () => {
           <h1 className="mt-1 font-display text-2xl font-bold text-ink-900 md:text-3xl">{product.title}</h1>
           <div className="mt-2"><StarRating rating={product.rating} count={product.numReviews} /></div>
 
-          <div className="mt-5"><PriceTag regularPrice={selectedVariant?.price || product.regularPrice} salePrice={selectedVariant?.discountPrice || product.salePrice} size="lg" /></div>
+          <div className="mt-5"><PriceTag regularPrice={selectedVariant?.price || product.regularPrice} salePrice={selectedVariant?.discountPrice || product.salePrice} currency={product.currency} size="lg" /></div>
           <p className={`mt-1 text-sm font-medium ${activeStock > 0 ? "text-emerald-600" : "text-red-500"}`}>
             {activeStock > 0 ? t("product.inStock", { count: activeStock }) : t("product.outOfStock")}
           </p>
@@ -158,6 +224,37 @@ const ProductDetails = () => {
 
         <div>
           <h2 className="mb-3 font-display text-xl font-bold">{t("product.reviews", { count: reviews.length })}</h2>
+
+          {myReview ? (
+            <div className="mb-5 rounded-xl border border-gold-500/40 bg-gold-50 p-4">
+              <div className="mb-1 flex items-center justify-between">
+                <p className="text-sm font-semibold">{t("product.yourReview")}</p>
+                <button onClick={() => handleDeleteReview(myReview._id)} className="flex items-center gap-1 text-xs font-medium text-red-500 hover:underline"><Trash2 size={13} />{t("product.deleteReview")}</button>
+              </div>
+              <StarRating rating={myReview.rating} size={13} showValue={false} />
+              {myReview.title && <p className="mt-1 text-sm font-medium">{myReview.title}</p>}
+              <p className="mt-1 text-sm text-gray-600">{myReview.comment}</p>
+            </div>
+          ) : user ? (
+            <form onSubmit={handleSubmitReview} className="mb-5 space-y-3 rounded-xl border border-gray-200 p-4">
+              <p className="text-sm font-semibold">{t("product.writeReview")}</p>
+              <div className="flex gap-1">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button key={n} type="button" onClick={() => setUserRating(n)} aria-label={`${n} star`}>
+                    <Star size={20} className={`transition hover:scale-110 ${n <= userRating ? "fill-gold-500 text-gold-500" : "fill-gray-200 text-gray-200"}`} />
+                  </button>
+                ))}
+              </div>
+              <input className="input" placeholder={t("product.titlePlaceholder")} value={userTitle} onChange={(e) => setUserTitle(e.target.value)} />
+              <textarea required rows={3} className="input" placeholder={t("product.commentPlaceholder")} value={userComment} onChange={(e) => setUserComment(e.target.value)} />
+              <button type="submit" disabled={submitting} className="btn-primary w-full disabled:opacity-60">{submitting ? t("product.submitting") : t("product.submit")}</button>
+            </form>
+          ) : (
+            <div className="mb-5 rounded-xl border border-gray-200 p-4 text-sm">
+              <Link to="/login" className="font-medium text-primary-600 underline">{t("product.loginToReview")}</Link>
+            </div>
+          )}
+
           {reviews.length === 0 ? (
             <p className="text-sm text-gray-400">{t("product.noReviews")}</p>
           ) : (
@@ -165,10 +262,16 @@ const ProductDetails = () => {
               {reviews.map((r) => (
                 <div key={r._id} className="border-b border-gray-100 pb-4">
                   <StarRating rating={r.rating} size={13} showValue={false} />
-                  <p className="mt-1 text-sm font-semibold">{r.user?.name}</p>
-                  <p className="text-sm text-gray-600">{r.comment}</p>
+                  {r.title && <p className="mt-1 text-sm font-semibold">{r.title}</p>}
+                  <p className="text-sm text-gray-500">{r.user?.name}</p>
+                  <p className="mt-1 text-sm text-gray-600">{r.comment}</p>
                 </div>
               ))}
+              {reviewPage < Math.ceil(reviewTotal / 10) && (
+                <button onClick={loadMoreReviews} disabled={loadingReviews} className="btn-o w-full !py-2 text-sm disabled:opacity-60">
+                  {loadingReviews ? t("product.loadingMore") : t("product.loadMore", { count: reviews.length, total: reviewTotal })}
+                </button>
+              )}
             </div>
           )}
         </div>

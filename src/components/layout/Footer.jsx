@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Youtube, ShieldCheck, Truck, Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import logo from "../../assets/Logo.png";
 
 const Footer = () => {
   const { t } = useTranslation("nav");
@@ -11,10 +12,9 @@ const Footer = () => {
     <footer className="mt-20 bg-ink-900 text-gray-300">
       <div className="container-px mx-auto grid max-w-7xl gap-10 py-16 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-2">
-          <div className="mb-4 flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-600 to-gold-500 font-display text-lg font-extrabold text-white">J</div>
-            <span className="font-display text-lg font-extrabold text-white">JAM Smart Tech</span>
-          </div>
+          <Link to="/" className="mb-4 flex w-fit items-center">
+            <img src={logo} alt="JAM Smart Tech" className="h-12 w-auto rounded-xl bg-white p-1.5 object-contain" />
+          </Link>
           <p className="mb-5 max-w-sm text-sm text-gray-400">{f("tagline")}</p>
           <div className="flex gap-3">
             {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (

@@ -11,6 +11,7 @@ import EmptyState from "../../components/common/EmptyState.jsx";
 const Cart = () => {
   const { t } = useTranslation("cart");
   const { items, updateQuantity, removeItem, subtotal, coupon, setCoupon } = useCart();
+  const cartCurrency = items[0]?.currency || "EUR";
   const [couponCode, setCouponCode] = useState("");
   const [applying, setApplying] = useState(false);
   const { showToast } = useToast();
@@ -22,7 +23,7 @@ const Cart = () => {
     try {
       const res = await orderService.validateCoupon(couponCode.trim(), subtotal);
       setCoupon(res.data);
-      showToast(t("coupon.applied", { discount: formatPrice(res.data.discount) }), "success");
+      showToast(t("coupon.applied", { discount: formatPrice(res.data.discount, res.data.currency || cartCurrency) }), "success");
     } catch (err) {
       showToast(err.response?.data?.message || t("coupon.invalid"), "error");
     } finally {
@@ -54,7 +55,7 @@ const Cart = () => {
               <div className="flex-1">
                 <p className="font-display font-semibold">{item.title}</p>
                 {item.variantLabel && <p className="text-xs text-gray-500">{item.variantLabel}</p>}
-                <p className="mt-1 font-semibold text-primary-600">{formatPrice(item.price)}</p>
+                <p className="mt-1 font-semibold text-primary-600">{formatPrice(item.price, item.currency)}</p>
               </div>
               <div className="flex flex-col items-end justify-between">
                 <button onClick={() => removeItem(item.productId, item.variantId)} className="text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>
@@ -78,13 +79,13 @@ const Cart = () => {
             <button onClick={applyCoupon} disabled={applying} className="btn-secondary !px-4 !py-2 text-sm">{applying ? "..." : t("coupon.apply")}</button>
           </div>
           <dl className="space-y-2 text-sm">
-            <div className="flex justify-between"><dt className="text-gray-500">{t("summary.subtotal")}</dt><dd>{formatPrice(subtotal)}</dd></div>
-            {coupon && <div className="flex justify-between text-emerald-600"><dt>{t("summary.coupon", { code: coupon.code })}</dt><dd>-{formatPrice(coupon.discount)}</dd></div>}
+            <div className="flex justify-between"><dt className="text-gray-500">{t("summary.subtotal")}</dt><dd>{formatPrice(subtotal, cartCurrency)}</dd></div>
+            {coupon && <div className="flex justify-between text-emerald-600"><dt>{t("summary.coupon", { code: coupon.code })}</dt><dd>-{formatPrice(coupon.discount, coupon.currency || cartCurrency)}</dd></div>}
             <div className="flex justify-between text-gray-500"><dt>{t("summary.shippingTax")}</dt><dd>{t("summary.calculatedAtCheckout")}</dd></div>
           </dl>
           <div className="mt-4 flex justify-between border-t border-gray-100 pt-4">
             <span className="font-display font-semibold">{t("summary.estimatedTotal")}</span>
-            <span className="font-display text-xl font-bold text-primary-600">{formatPrice(subtotal - (coupon?.discount || 0))}</span>
+            <span className="font-display text-xl font-bold text-primary-600">{formatPrice(subtotal - (coupon?.discount || 0), cartCurrency)}</span>
           </div>
           <button onClick={() => navigate("/checkout")} className="btn-primary mt-5 w-full">{t("checkout.proceedToCheckout")}</button>
         </div>

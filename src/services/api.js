@@ -2,7 +2,7 @@ import axios from "axios";
 import i18n from "../i18n.js";
 
 const api = axios.create({
-  baseURL: "/api",
+  baseURL: import.meta.env.VITE_API_URL || "/api",
   withCredentials: true,
 });
 
