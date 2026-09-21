@@ -10,7 +10,7 @@ import * as authService from "../../services/authService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
 import StarRating from "../../components/common/StarRating.jsx";
-import PriceTag from "../../components/common/PriceTag.jsx";
+import PriceTag, { formatPrice } from "../../components/common/PriceTag.jsx";
 import ProductCard from "../../components/ecommerce/ProductCard.jsx";
 
 const ProductDetails = () => {
@@ -30,7 +30,8 @@ const ProductDetails = () => {
   const [userTitle, setUserTitle] = useState("");
   const [userComment, setUserComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const { addItem } = useCart();
+  const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
+  const { addItem, items, subtotal } = useCart();
   const { user, refreshUser } = useAuth();
   const { showToast } = useToast();
 
@@ -84,7 +85,7 @@ const ProductDetails = () => {
       currency: product.currency,
       quantity,
     });
-    showToast(t("product.addedToCart"), "success");
+    setCartDrawerOpen(true);
   };
 
   const handleWishlist = async () => {
@@ -282,6 +283,50 @@ const ProductDetails = () => {
           <h2 className="mb-6 font-display text-xl font-bold">{t("product.relatedProducts")}</h2>
           <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
             {related.map((p) => <ProductCard key={p._id} product={p} />)}
+          </div>
+        </div>
+      )}
+
+      {cartDrawerOpen && (
+        <div className={`fixed inset-0 z-[100] transition-opacity`}>
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setCartDrawerOpen(false)} />
+          <div className={`absolute top-0 bottom-0 right-0 flex w-full max-w-sm flex-col bg-white shadow-2xl animate-fade-left animate-duration-[300ms]`}>
+            <div className="flex items-center justify-between border-b border-gray-100 p-5">
+              <h2 className="font-display text-lg font-bold text-ink-900 flex items-center gap-2"><ShieldCheck className="text-primary-600" size={20} /> Added to Cart</h2>
+              <button onClick={() => setCartDrawerOpen(false)} className="rounded-full p-2 text-gray-400 hover:bg-gray-100"><Minus size={18} className="rotate-45" /></button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="flex flex-col gap-4 mb-8">
+                {items.length > 0 ? items.map((item, idx) => (
+                  <div key={idx} className="flex gap-4 border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-gray-100 bg-gray-50">
+                      <img src={item.image || ""} alt={item.title} className="h-full w-full object-cover" />
+                    </div>
+                    <div className="flex flex-1 flex-col justify-center">
+                      <h3 className="font-semibold text-ink-900 text-sm">{item.title}</h3>
+                      {item.variantLabel && <p className="text-xs text-gray-500 mt-0.5">{item.variantLabel}</p>}
+                      <div className="mt-1 flex items-center justify-between">
+                        <p className="font-bold text-primary-600 text-sm">{formatPrice(item.price, item.currency)}</p>
+                        <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
+                      </div>
+                    </div>
+                  </div>
+                )) : (
+                  <p className="text-center text-gray-500 text-sm py-4">Your cart is empty.</p>
+                )}
+              </div>
+              
+              <div className="flex justify-between items-center mb-6 border-t border-gray-100 pt-4">
+                <span className="font-semibold text-ink-900">Subtotal</span>
+                <span className="font-bold text-primary-600 text-lg">{formatPrice(subtotal, items[0]?.currency || "EUR")}</span>
+              </div>
+
+              <div className="flex flex-col gap-3 mt-auto">
+                <Link to="/checkout" className="btn-primary w-full text-center">Proceed to Checkout</Link>
+                <Link to="/shop" className="btn-secondary w-full text-center">Continue Shopping</Link>
+              </div>
+            </div>
           </div>
         </div>
       )}
