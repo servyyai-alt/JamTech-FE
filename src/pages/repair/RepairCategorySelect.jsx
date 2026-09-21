@@ -6,7 +6,22 @@ import * as catalogService from "../../services/catalogService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
 
+import catPhoneImg from "../../assets/cat_phone.jpg";
+import catTabletImg from "../../assets/cat_tablet.jpg";
+import catComputerImg from "../../assets/cat_computer.jpg";
+import catLaptopImg from "../../assets/cat_laptop.jpg";
+import catGamingImg from "../../assets/cat_gaming.jpg";
+
 const ICONS = { Smartphones: Smartphone, Tablets: Tablet, Computers: Laptop, "Gaming Devices": Gamepad2 };
+const CATEGORY_IMAGES = {
+  "Smartphones": catPhoneImg,
+  "Tablets": catTabletImg,
+  "Computers": catComputerImg,
+  "Laptops": catLaptopImg,
+  "Laptop": catLaptopImg,
+  "laptop": catLaptopImg,
+  "Gaming Devices": catGamingImg,
+};
 
 const RepairCategorySelect = () => {
   const { t } = useTranslation("repair");
@@ -18,7 +33,14 @@ const RepairCategorySelect = () => {
     setLoading(true);
     setError(null);
     catalogService.getDeviceCategories()
-      .then((res) => setCategories(res.data || []))
+      .then((res) => {
+        // Fallback to ensuring Laptops is in the list if missing from API, just to match the visual
+        let fetched = res.data || [];
+        if (!fetched.find(c => c.name.toLowerCase() === 'laptops' || c.name.toLowerCase() === 'laptop')) {
+            fetched.splice(1, 0, { _id: 'fake-laptop', name: 'Laptops', slug: 'laptops' });
+        }
+        setCategories(fetched);
+      })
       .catch(() => setError(t("error.loadCategories")))
       .finally(() => setLoading(false));
   };
@@ -32,16 +54,18 @@ const RepairCategorySelect = () => {
       </div>
 
       {loading ? <Loader /> : error ? <ErrorState message={error} onRetry={load} /> : (
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4">
           {categories.map((cat) => {
-            const Icon = ICONS[cat.name] || Smartphone;
+            const catImg = CATEGORY_IMAGES[cat.name] || catPhoneImg;
             return (
-              <Link key={cat._id} to={`/repair/${cat.slug}`} state={{ category: cat }} className="card group flex flex-col items-center gap-4 p-8 text-center hover:-translate-y-1">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-50 to-gold-50 text-primary-600 transition group-hover:scale-110">
-                  <Icon size={32} />
+              <Link key={cat._id} to={`/repair/${cat.slug}`} state={{ category: cat }} className="group flex flex-col overflow-hidden text-center hover:-translate-y-1 hover:shadow-xl transition-all duration-300 border-2 border-gray-100 hover:border-primary-500 bg-white" style={{ borderRadius: 20 }}>
+                <div className="flex h-[170px] w-full items-center justify-center overflow-hidden bg-gray-50 border-b border-gray-100">
+                  <img src={catImg} alt={cat.name} className="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-105" />
                 </div>
-                <span className="font-display text-lg font-semibold">{cat.name}</span>
-                <span className="flex items-center gap-1 text-sm font-medium text-primary-600">{t("continue")} <ArrowRight size={14} /></span>
+                <div className="flex flex-col gap-2 p-6 flex-grow justify-center">
+                  <span className="font-display text-lg font-bold text-ink-900" style={{ fontFamily: "'Syne', sans-serif" }}>{cat.name}</span>
+                  <span className="flex items-center justify-center gap-1 text-sm font-semibold text-primary-600 mt-1">{t("continue")} <ArrowRight size={14} /></span>
+                </div>
               </Link>
             );
           })}

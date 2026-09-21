@@ -78,7 +78,15 @@ const Dashboard = () => {
           <h3 className="mb-4 font-display font-semibold">{t("dashboard.popularBrands")}</h3>
           <ResponsiveContainer width="100%" height={260}>
             <PieChart>
-              <Pie data={brands} dataKey="count" nameKey="name" innerRadius={50} outerRadius={80} paddingAngle={2}>
+              <Pie 
+                data={brands} 
+                dataKey="count" 
+                nameKey="name" 
+                innerRadius={50} 
+                outerRadius={80} 
+                paddingAngle={2}
+                label={({ name }) => name}
+              >
                 {brands.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Pie>
               <Tooltip />

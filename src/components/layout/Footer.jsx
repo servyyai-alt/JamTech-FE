@@ -9,7 +9,7 @@ const Footer = () => {
   const f = (key) => t(`footer.${key}`);
 
   return (
-    <footer className="mt-20 bg-ink-900 text-gray-300">
+    <footer className="bg-ink-900 text-gray-300">
       <div className="container-px mx-auto grid max-w-7xl gap-10 py-16 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-2">
           <Link to="/" className="mb-4 flex w-fit items-center">

@@ -12,17 +12,32 @@ import SkeletonCard from "../components/common/SkeletonCard.jsx";
 import { useTranslation } from "react-i18next";
 import bg_image from "../assets/bg_image.png";
 import bg_image1 from "../assets/bg_image1.png";
-
+import heroVideo from "../assets/Create_a_premium_cinematic_br (1).mp4";
+import catPhoneImg from "../assets/cat_phone.jpg";
+import catTabletImg from "../assets/cat_tablet.jpg";
+import catComputerImg from "../assets/cat_computer.jpg";
+import catLaptopImg from "../assets/cat_laptop.jpg";
+import catGamingImg from "../assets/cat_gaming.jpg";
 
 /* ─── constants ─────────────────────────────────────────────── */
 const CATEGORY_KEYS = {
-  Smartphones: "smartphones", Tablets: "tablets", Computers: "computers", "Gaming Devices": "gaming_devices",
+  Smartphones: "smartphones", Tablets: "tablets", Computers: "computers", Laptops: "laptops", "Gaming Devices": "gaming_devices",
+};
+const CATEGORY_IMAGES = {
+  "Smartphones": catPhoneImg,
+  "Tablets": catTabletImg,
+  "Computers": catComputerImg,
+  "Laptops": catLaptopImg,
+  "Laptop": catLaptopImg,
+  "laptop": catLaptopImg,
+  "Gaming Devices": catGamingImg,
 };
 const CATEGORY_ICONS = {
-  Smartphones: Smartphone, Tablets: Tablet, Computers: Laptop, "Gaming Devices": Gamepad2,
+  Smartphones: Smartphone, Tablets: Tablet, Computers: Laptop, Laptops: Laptop, "Gaming Devices": Gamepad2,
 };
 const FALLBACK_CATEGORIES = [
   { name: "Smartphones", slug: "smartphones" },
+  { name: "Laptops", slug: "laptops" },
   { name: "Tablets", slug: "tablets" },
   { name: "Computers", slug: "computers" },
   { name: "Gaming Devices", slug: "gaming-devices" },
@@ -70,13 +85,17 @@ function useInView(threshold = 0.12) {
   return [ref, inView];
 }
 
-function Reveal({ children, delay = 0, className = "", style = {} }) {
+function Reveal({ children, delay = 0, className = "", style = {}, direction = "up", duration = 0.6 }) {
   const [ref, inView] = useInView();
+  
+  let transformHidden = "translateY(26px)";
+  if (direction === "left") transformHidden = "translateX(-60px)";
+  
   return (
     <div ref={ref} className={className} style={{
       opacity: inView ? 1 : 0,
-      transform: inView ? "translateY(0)" : "translateY(26px)",
-      transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
+      transform: inView ? "translate(0, 0)" : transformHidden,
+      transition: `opacity ${duration}s cubic-bezier(0.25, 1, 0.5, 1) ${delay}s, transform ${duration}s cubic-bezier(0.25, 1, 0.5, 1) ${delay}s`,
       ...style,
     }}>
       {children}
@@ -171,9 +190,9 @@ const Home = () => {
 
         /* cat card */
         .cat-card { transition: all 0.25s ease; border: 2px solid #F3F4F6; background: #fff; }
-        .cat-card:hover { border-color: #F97316; background: #FFF7ED; }
-        .cat-card:hover .cat-icon { background: linear-gradient(135deg, #F97316, #F59E0B); color: #fff; transform: scale(1.1) rotate(-5deg); }
-        .cat-icon { transition: all 0.25s ease; background: #FFF7ED; color: #F97316; }
+        .cat-card:hover { border-color: #F97316; background: #FFF7ED; box-shadow: 0 10px 25px rgba(249,115,22,0.1); }
+        .cat-card:hover img.cat-image { transform: scale(1.05); }
+        .cat-image { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
 
         /* svc card */
         .svc-card { border: 2px solid #F3F4F6; transition: all 0.25s ease; }
@@ -199,7 +218,7 @@ const Home = () => {
       `}</style>
 
       {/* ── HERO ───────────────────────────────────────────────── */}
-      <section style={{ position: "relative", minHeight: "94vh", display: "flex", alignItems: "center", overflow: "hidden", background: "#0B0F19" }}>
+      <section style={{ position: "relative", height: "calc(100vh - 122px)", minHeight: "550px", display: "flex", alignItems: "center", overflow: "hidden", background: "#0B0F19" }}>
 
         {/* full-bleed background image */}
         <img
@@ -226,7 +245,7 @@ const Home = () => {
         <div style={{ position: "absolute", top: "-12%", right: "4%", width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(249,115,22,0.3) 0%, transparent 65%)", filter: "blur(8px)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: "-26%", left: "16%", width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
 
-        <div style={{ position: "relative", maxWidth: 1280, margin: "0 auto", padding: "104px clamp(20px,5vw,60px)", width: "100%" }}>
+        <div style={{ position: "relative", maxWidth: 1280, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)", width: "100%" }}>
           <div className="hero-grid">
 
             {/* left copy */}
@@ -267,7 +286,7 @@ const Home = () => {
             <div style={{ display: "flex", justifyContent: "center", position: "relative" }}>
               <div className="hero-float" style={{ position: "relative", width: "100%", maxWidth: 460 }}>
 
-                {/* main image card */}
+                {/* main video card */}
                 <div style={{
                   borderRadius: 30, overflow: "hidden", position: "relative",
                   border: "1px solid rgba(255,255,255,0.2)",
@@ -276,8 +295,16 @@ const Home = () => {
                   transform: heroVisible ? "none" : "scale(0.95) rotate(1.5deg)",
                   transition: "opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s",
                 }}>
-                  <img src={bg_image1} alt={t("hero.imgAlt")} style={{ width: "100%", height: 430, objectFit: "cover", display: "block" }} />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(11,15,25,0.55) 0%, transparent 55%)" }} />
+                  <video 
+                    ref={(el) => { if (el) el.playbackRate = 0.7; }}
+                    src={heroVideo} 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline
+                    style={{ width: "100%", height: 430, objectFit: "cover", display: "block" }} 
+                  />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(11,15,25,0.55) 0%, transparent 55%)", pointerEvents: "none" }} />
                 </div>
 
                 {/* rating badge */}
@@ -350,21 +377,23 @@ const Home = () => {
         </Reveal>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 16 }}>
           {displayCats.map((cat, i) => {
-            const Icon = CATEGORY_ICONS[cat.name] || Smartphone;
+            const catImg = CATEGORY_IMAGES[cat.name] || catPhoneImg;
             const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, "-");
             return (
               <Reveal key={cat.name} delay={i * 0.08}>
                 <Link to={`/repair/${slug}`} style={{ textDecoration: "none" }}>
-                  <div className="cat-card lift" style={{ borderRadius: 20, padding: "28px 24px", display: "flex", flexDirection: "column", gap: 16, cursor: "pointer" }}>
-                    <div className="cat-icon" style={{ width: 52, height: 52, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <Icon size={26} />
+                  <div className="cat-card lift" style={{ borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column", cursor: "pointer", background: "#fff", border: "2px solid #F3F4F6", height: "100%" }}>
+                    <div style={{ height: 170, width: "100%", background: "#f8f9fa", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", borderBottom: "1px solid #F3F4F6" }}>
+                      <img src={catImg} alt={cat.name} className="cat-image" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     </div>
-                    <div>
-                      <div className="syne" style={{ fontSize: 16, fontWeight: 700, color: "#1A1A2E", marginBottom: 4 }}>{catName(cat.name)}</div>
-                      <div style={{ fontSize: 13, color: "#9CA3AF" }}>{t("categories.subtitle")}</div>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, fontWeight: 600, color: "#F97316" }}>
-                      {t("categories.bookNow")} <ArrowRight size={12} />
+                    <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 8, flexGrow: 1 }}>
+                      <div style={{ flexGrow: 1 }}>
+                        <div className="syne" style={{ fontSize: 16, fontWeight: 700, color: "#1A1A2E", marginBottom: 4 }}>{catName(cat.name)}</div>
+                        <div style={{ fontSize: 13, color: "#9CA3AF" }}>{t("categories.subtitle")}</div>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 13, fontWeight: 600, color: "#F97316", marginTop: 4 }}>
+                        {t("categories.bookNow")} <ArrowRight size={12} />
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -409,7 +438,7 @@ const Home = () => {
         <div style={{ display: "flex", alignItems: "flex-start", flexWrap: "wrap" }}>
           {HOW_IT_WORKS.map((step, i) => (
             <React.Fragment key={step.key}>
-              <Reveal delay={i * 0.1} style={{ flex: "1 1 200px", textAlign: "center", padding: "0 12px" }}>
+              <Reveal direction="left" duration={1.2} delay={i * 0.35} style={{ flex: "1 1 200px", textAlign: "center", padding: "0 12px" }}>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                   <div style={{ position: "relative", marginBottom: 20 }}>
                     <div style={{ width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg, #FFF7ED, #FEF3C7)", border: "2px solid #FED7AA", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -421,7 +450,11 @@ const Home = () => {
                   <p style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.65, maxWidth: 180 }}>{t(`howItWorks.${step.key}.desc`)}</p>
                 </div>
               </Reveal>
-              {i < HOW_IT_WORKS.length - 1 && <div className="step-conn" style={{ marginTop: 32 }} />}
+              {i < HOW_IT_WORKS.length - 1 && (
+                <Reveal direction="left" duration={1.2} delay={i * 0.35 + 0.17} style={{ flex: 1 }}>
+                  <div className="step-conn" style={{ marginTop: 32 }} />
+                </Reveal>
+              )}
             </React.Fragment>
           ))}
         </div>

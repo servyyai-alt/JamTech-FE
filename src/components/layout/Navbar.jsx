@@ -50,14 +50,19 @@ const Navbar = () => {
           ))}
         </nav>
 
-        <form onSubmit={handleSearch} className="relative hidden max-w-xs flex-1 md:block">
-          <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+        <form onSubmit={handleSearch} className="relative hidden max-w-sm flex-1 md:block group">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <Search className="text-gray-400 transition-colors group-focus-within:text-primary-500" size={18} />
+          </div>
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("searchPlaceholder")}
-            className="w-full rounded-full border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm outline-none focus:border-primary-400 focus:bg-white"
+            className="w-full rounded-full border-2 border-gray-100 bg-gray-50/80 py-2.5 pl-11 pr-24 text-sm font-medium text-ink-900 outline-none transition-all placeholder:text-gray-400 focus:border-primary-500 focus:bg-white focus:shadow-[0_0_0_4px_rgba(249,115,22,0.1)]"
           />
+          <button type="submit" className="absolute inset-y-1.5 right-1.5 flex items-center justify-center rounded-full bg-primary-600 px-4 text-xs font-bold text-white shadow-sm transition-all hover:bg-primary-700 hover:shadow-md active:scale-95">
+            Search
+          </button>
         </form>
 
         <div className="flex items-center gap-1.5">

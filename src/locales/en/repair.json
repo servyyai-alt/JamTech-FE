@@ -95,7 +95,7 @@
   "quotePending": "Quote pending",
   "price": "Price",
   "trackThisRepair": "Track This Repair",
-  "trackingSubtitle": "Enter your booking number to see live status.",
+  "trackingSubtitle": "Track your requests below.",
   "trackingPlaceholder": "e.g. REP-2026-00001",
   "paymentStatus": "Payment Status"
 }

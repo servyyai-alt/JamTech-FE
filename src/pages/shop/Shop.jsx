@@ -19,42 +19,76 @@ const SORT_OPTIONS = [
 const FilterPanel = ({ categories, filters, setFilters }) => {
   const { t } = useTranslation("shop");
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="mb-3 font-display font-semibold">{t("filter.category")}</h4>
-        <div className="space-y-2">
+    <div className="rounded-[24px] border border-gray-100 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+      {/* Category Filter */}
+      <div className="mb-8">
+        <h4 className="mb-4 text-xs font-bold uppercase tracking-wider text-gray-400">{t("filter.category")}</h4>
+        <div className="flex flex-col gap-1">
           {categories.map((c) => (
-            <label key={c._id} className="flex items-center gap-2 text-sm">
-              <input type="radio" name="category" checked={filters.category === c._id} onChange={() => setFilters((f) => ({ ...f, category: c._id, page: 1 }))} />
-              {c.name}
+            <label key={c._id} className="group flex cursor-pointer items-center justify-between rounded-xl p-2.5 transition-colors hover:bg-gray-50">
+              <span className={`text-sm font-medium transition-colors ${filters.category === c._id ? "text-primary-600 font-bold" : "text-gray-600 group-hover:text-ink-900"}`}>{c.name}</span>
+              <div className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all ${filters.category === c._id ? "border-primary-500 bg-primary-500" : "border-gray-300 bg-white"}`}>
+                {filters.category === c._id && <div className="h-2 w-2 rounded-full bg-white" />}
+              </div>
+              <input type="radio" name="category" className="hidden" checked={filters.category === c._id} onChange={() => setFilters((f) => ({ ...f, category: c._id, page: 1 }))} />
             </label>
           ))}
           {filters.category && (
-            <button onClick={() => setFilters((f) => ({ ...f, category: "", page: 1 }))} className="text-xs font-medium text-primary-600">{t("filter.clearCategory")}</button>
+            <button onClick={() => setFilters((f) => ({ ...f, category: "", page: 1 }))} className="mt-2 text-left text-xs font-semibold text-red-500 hover:text-red-600">{t("filter.clearCategory")}</button>
           )}
         </div>
       </div>
-      <div>
-        <h4 className="mb-3 font-display font-semibold">{t("filter.priceRange")}</h4>
-        <div className="flex items-center gap-2">
-          <input type="number" placeholder={t("filter.min")} className="input !py-2 text-sm" value={filters.minPrice} onChange={(e) => setFilters((f) => ({ ...f, minPrice: e.target.value, page: 1 }))} />
-          <span className="text-gray-400">–</span>
-          <input type="number" placeholder={t("filter.max")} className="input !py-2 text-sm" value={filters.maxPrice} onChange={(e) => setFilters((f) => ({ ...f, maxPrice: e.target.value, page: 1 }))} />
+
+      <hr className="my-6 border-gray-100" />
+
+      {/* Price Range */}
+      <div className="mb-8">
+        <h4 className="mb-4 text-xs font-bold uppercase tracking-wider text-gray-400">{t("filter.priceRange")}</h4>
+        <div className="flex items-center gap-3">
+          <input type="number" placeholder={t("filter.min")} className="w-full rounded-xl border border-gray-100 bg-gray-50 px-3 py-2.5 text-sm font-medium outline-none transition-all focus:border-primary-500 focus:bg-white" value={filters.minPrice} onChange={(e) => setFilters((f) => ({ ...f, minPrice: e.target.value, page: 1 }))} />
+          <span className="text-gray-400">-</span>
+          <input type="number" placeholder={t("filter.max")} className="w-full rounded-xl border border-gray-100 bg-gray-50 px-3 py-2.5 text-sm font-medium outline-none transition-all focus:border-primary-500 focus:bg-white" value={filters.maxPrice} onChange={(e) => setFilters((f) => ({ ...f, maxPrice: e.target.value, page: 1 }))} />
         </div>
       </div>
-      <div>
-        <h4 className="mb-3 font-display font-semibold">{t("filter.rating")}</h4>
-        {[4, 3, 2].map((r) => (
-          <label key={r} className="flex items-center gap-2 text-sm">
-            <input type="radio" name="rating" checked={String(filters.minRating) === String(r)} onChange={() => setFilters((f) => ({ ...f, minRating: r, page: 1 }))} />
-            {t("filter.ratingAndUp", { count: r })}
-          </label>
-        ))}
-        {filters.minRating && <button onClick={() => setFilters((f) => ({ ...f, minRating: "", page: 1 }))} className="mt-1 text-xs font-medium text-primary-600">{t("filter.clearRating")}</button>}
+
+      <hr className="my-6 border-gray-100" />
+
+      {/* Rating */}
+      <div className="mb-8">
+        <h4 className="mb-4 text-xs font-bold uppercase tracking-wider text-gray-400">{t("filter.rating")}</h4>
+        <div className="flex flex-col gap-1">
+          {[4, 3, 2].map((r) => (
+            <label key={r} className="group flex cursor-pointer items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-gray-50">
+              <div className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all ${String(filters.minRating) === String(r) ? "border-primary-500 bg-primary-500" : "border-gray-300 bg-white"}`}>
+                {String(filters.minRating) === String(r) && <div className="h-2 w-2 rounded-full bg-white" />}
+              </div>
+              <span className={`text-sm font-medium transition-colors ${String(filters.minRating) === String(r) ? "text-primary-600 font-bold" : "text-gray-600 group-hover:text-ink-900"}`}>{t("filter.ratingAndUp", { count: r })}</span>
+              <input type="radio" name="rating" className="hidden" checked={String(filters.minRating) === String(r)} onChange={() => setFilters((f) => ({ ...f, minRating: r, page: 1 }))} />
+            </label>
+          ))}
+          {filters.minRating && <button onClick={() => setFilters((f) => ({ ...f, minRating: "", page: 1 }))} className="mt-2 text-left text-xs font-semibold text-red-500 hover:text-red-600">{t("filter.clearRating")}</button>}
+        </div>
       </div>
-      <div className="space-y-2">
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={filters.inStock} onChange={(e) => setFilters((f) => ({ ...f, inStock: e.target.checked, page: 1 }))} /> {t("filter.inStockOnly")}</label>
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={filters.discount} onChange={(e) => setFilters((f) => ({ ...f, discount: e.target.checked, page: 1 }))} /> {t("filter.onSale")}</label>
+
+      <hr className="my-6 border-gray-100" />
+
+      {/* Toggles */}
+      <div className="flex flex-col gap-3">
+        <label className="group flex cursor-pointer items-center justify-between rounded-xl p-2 transition-colors hover:bg-gray-50">
+          <span className="text-sm font-medium text-gray-700">{t("filter.inStockOnly")}</span>
+          <div className={`relative h-6 w-11 rounded-full transition-colors ${filters.inStock ? "bg-primary-500" : "bg-gray-200"}`}>
+            <div className={`absolute top-1 h-4 w-4 rounded-full bg-white transition-all ${filters.inStock ? "left-6" : "left-1"}`} />
+          </div>
+          <input type="checkbox" className="hidden" checked={filters.inStock} onChange={(e) => setFilters((f) => ({ ...f, inStock: e.target.checked, page: 1 }))} />
+        </label>
+        
+        <label className="group flex cursor-pointer items-center justify-between rounded-xl p-2 transition-colors hover:bg-gray-50">
+          <span className="text-sm font-medium text-gray-700">{t("filter.onSale")}</span>
+          <div className={`relative h-6 w-11 rounded-full transition-colors ${filters.discount ? "bg-primary-500" : "bg-gray-200"}`}>
+            <div className={`absolute top-1 h-4 w-4 rounded-full bg-white transition-all ${filters.discount ? "left-6" : "left-1"}`} />
+          </div>
+          <input type="checkbox" className="hidden" checked={filters.discount} onChange={(e) => setFilters((f) => ({ ...f, discount: e.target.checked, page: 1 }))} />
+        </label>
       </div>
     </div>
   );
@@ -77,6 +111,10 @@ const Shop = () => {
   useEffect(() => {
     productService.getCategories().then((res) => setCategories(res.data || []));
   }, []);
+
+  useEffect(() => {
+    setFilters((prev) => ({ ...prev, search: searchParams.get("search") || "", page: 1 }));
+  }, [searchParams]);
 
   useEffect(() => {
     setLoading(true);

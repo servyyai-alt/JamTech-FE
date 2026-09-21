@@ -51,7 +51,7 @@
   },
   "tracking": {
     "title": "Track Your Order",
-    "description": "Enter your order number to see status.",
+    "description": "Track your orders below.",
     "placeholder": "e.g. ORD-2026-00001",
     "notFound": "Order not found."
   },
