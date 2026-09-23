@@ -62,12 +62,14 @@ const ProductCard = ({ product }) => {
         {product.brand && <span className="text-xs font-medium uppercase tracking-wide text-gray-400">{product.brand}</span>}
         <h3 className="line-clamp-2 font-display text-sm font-semibold text-ink-900">{product.title}</h3>
         {product.numReviews > 0 && <StarRating rating={product.rating} size={12} count={product.numReviews} />}
-        <div className="mt-auto flex items-center justify-between pt-2">
-          <PriceTag regularPrice={product.regularPrice} salePrice={product.salePrice} currency={product.currency} size="sm" />
+        <div className="mt-auto flex items-center justify-between gap-2 pt-2">
+          <div className="min-w-0 flex-1">
+            <PriceTag regularPrice={product.regularPrice} salePrice={product.salePrice} currency={product.currency} size="sm" />
+          </div>
           <button
             onClick={handleAddToCart}
             disabled={product.stock <= 0}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-ink-900 text-white transition hover:bg-primary-600 disabled:opacity-30"
+            className="flex shrink-0 h-9 w-9 items-center justify-center rounded-full bg-ink-900 text-white transition hover:bg-primary-600 disabled:opacity-30"
           >
             <ShoppingCart size={15} />
           </button>

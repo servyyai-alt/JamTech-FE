@@ -9,7 +9,7 @@ const PriceTag = ({ regularPrice, salePrice, currency = "EUR", size = "md" }) =>
   const sizes = { sm: "text-base", md: "text-xl", lg: "text-2xl" };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-baseline gap-1.5">
       <span className={`font-display font-bold text-ink-900 ${sizes[size]}`}>
         {formatPrice(hasDiscount ? salePrice : regularPrice, currency)}
       </span>
