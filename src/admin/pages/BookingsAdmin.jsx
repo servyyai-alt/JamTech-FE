@@ -27,6 +27,12 @@ const BookingsAdmin = () => {
 
   useEffect(load, []);
 
+  useEffect(() => {
+    if (selected) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+    return () => { document.body.style.overflow = "auto"; };
+  }, [selected]);
+
   const handleStatusChange = async (id, status) => {
     try {
       await adminService.updateBookingStatus(id, status);

@@ -108,13 +108,13 @@ const Checkout = () => {
               <SavedAddressPicker addresses={savedAddresses} selectedId={billingSelId} onSelect={(a) => applyAddress(a, "billing")} t={t} />
             )}
             <div className="grid gap-4 sm:grid-cols-2">
-              <div><label className="label">{t("checkout.fullName")}</label><input className="input" {...register("fullName", { required: true })} /></div>
-              <div><label className="label">{t("checkout.phone")}</label><input className="input" {...register("phone", { required: true })} /></div>
+              <div><label className="label">{t("checkout.fullName")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s]/gu, "")} {...register("fullName", { required: true })} /></div>
+              <div><label className="label">{t("checkout.phone")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\d\+\-\s\(\)]/g, "")} {...register("phone", { required: true })} /></div>
               <div className="sm:col-span-2"><label className="label">{t("checkout.addressLine1")}</label><input className="input" {...register("addressLine1", { required: true })} /></div>
               <div className="sm:col-span-2"><label className="label">{t("checkout.addressLine2")}</label><input className="input" {...register("addressLine2")} /></div>
-              <div><label className="label">{t("checkout.city")}</label><input className="input" {...register("city", { required: true })} /></div>
-              <div><label className="label">{t("checkout.postalCode")}</label><input className="input" {...register("postalCode", { required: true })} /></div>
-              <div><label className="label">{t("checkout.country")}</label><input className="input" {...register("country", { required: true })} /></div>
+              <div><label className="label">{t("checkout.city")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s\-]/gu, "")} {...register("city", { required: true })} /></div>
+              <div><label className="label">{t("checkout.postalCode")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^0-9]/g, "")} {...register("postalCode", { required: true })} /></div>
+              <div><label className="label">{t("checkout.country")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s]/gu, "")} {...register("country", { required: true })} /></div>
             </div>
           </div>
 
@@ -129,12 +129,12 @@ const Checkout = () => {
                   <SavedAddressPicker addresses={savedAddresses} selectedId={shipSelId} onSelect={(a) => applyAddress(a, "shipping")} t={t} />
                 )}
                 <div className="grid gap-4 sm:grid-cols-2">
-                <div><label className="label">{t("checkout.fullName")}</label><input className="input" {...register("shipFullName", { required: !sameAsBilling })} /></div>
-                <div><label className="label">{t("checkout.phone")}</label><input className="input" {...register("shipPhone", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.fullName")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s]/gu, "")} {...register("shipFullName", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.phone")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\d\+\-\s\(\)]/g, "")} {...register("shipPhone", { required: !sameAsBilling })} /></div>
                 <div className="sm:col-span-2"><label className="label">{t("checkout.addressLine1")}</label><input className="input" {...register("shipAddressLine1", { required: !sameAsBilling })} /></div>
-                <div><label className="label">{t("checkout.city")}</label><input className="input" {...register("shipCity", { required: !sameAsBilling })} /></div>
-                <div><label className="label">{t("checkout.postalCode")}</label><input className="input" {...register("shipPostalCode", { required: !sameAsBilling })} /></div>
-                <div><label className="label">{t("checkout.country")}</label><input className="input" {...register("shipCountry", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.city")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s\-]/gu, "")} {...register("shipCity", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.postalCode")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^0-9]/g, "")} {...register("shipPostalCode", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.country")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s]/gu, "")} {...register("shipCountry", { required: !sameAsBilling })} /></div>
               </div>
               </>
             )}

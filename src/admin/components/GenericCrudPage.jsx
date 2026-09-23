@@ -41,6 +41,7 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
   const [selectOptions, setSelectOptions] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
   const { showToast } = useToast();
 
   const load = async () => {
@@ -86,6 +87,12 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
     // Field configuration is static for a mounted CRUD page.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resource]);
+
+  useEffect(() => {
+    if (modalOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+    return () => { document.body.style.overflow = "auto"; };
+  }, [modalOpen]);
 
   const openCreate = () => {
     const initial = {};
@@ -147,14 +154,23 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-ink-900">{title}</h1>
           {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
         </div>
-        <button onClick={openCreate} className="btn-primary !px-4 !py-2.5 text-sm">
-          <Plus size={16} /> {t("crud.addNew")}
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <input 
+            type="search" 
+            placeholder="Search..." 
+            className="input !py-2 !w-64"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button onClick={openCreate} className="btn-primary !px-4 !py-2.5 text-sm whitespace-nowrap">
+            <Plus size={16} /> {t("crud.addNew")}
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -171,7 +187,9 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {items.map((row) => (
+              {items
+                .filter((row) => !searchQuery || JSON.stringify(row).toLowerCase().includes(searchQuery.toLowerCase()))
+                .map((row) => (
                 <tr key={row._id} className="hover:bg-gray-50">
                   {columns.map((c) => (
                     <td key={c.key} className="px-4 py-3">{c.render ? c.render(row) : String(row[c.key] ?? "—")}</td>
@@ -239,6 +257,51 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
                         <input type="checkbox" checked={!!value} onChange={(e) => handleChange(f.name, e.target.checked)} />
                         {f.label}
                       </label>
+                    ) : f.type === "image" ? (
+                      <div 
+                        className="flex flex-col gap-3 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 p-4 transition-colors focus-within:border-primary-500 hover:border-primary-400"
+                        onPaste={(e) => {
+                          const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
+                          if (!items) return;
+                          for (let index in items) {
+                            if (items[index].kind === 'file') {
+                              const blob = items[index].getAsFile();
+                              const reader = new FileReader();
+                              reader.onload = (event) => handleChange(f.name, event.target.result);
+                              reader.readAsDataURL(blob);
+                            }
+                          }
+                        }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <label className="btn-secondary !py-2.5 cursor-pointer text-sm whitespace-nowrap m-0">
+                            Upload File
+                            <input type="file" accept="image/*" className="hidden" onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                const reader = new FileReader();
+                                reader.onload = (event) => handleChange(f.name, event.target.result);
+                                reader.readAsDataURL(file);
+                              }
+                            }} />
+                          </label>
+                        </div>
+                        <p className="text-xs text-gray-400 m-0">Or paste an image directly into this area (Ctrl+V)</p>
+                        {value && (
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            <div className="relative group rounded-lg border border-gray-200 p-1 bg-white">
+                              <img src={value} alt="" className="h-16 w-16 object-cover rounded-md" />
+                              <button 
+                                type="button"
+                                onClick={() => handleChange(f.name, "")}
+                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                              >
+                                <X size={12} />
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     ) : (
                       <input type={f.type || "text"} className="input" placeholder={f.placeholder} required={f.required} value={value || ""} onChange={(e) => handleChange(f.name, f.type === "number" ? Number(e.target.value) : e.target.value)} />
                     )}

@@ -15,7 +15,7 @@ const ModelsAdmin = () => {
         { name: "brand", label: t("fields.brand"), type: "select", optionsResource: "device-catalog/brands", required: true },
         { name: "deviceCategory", label: t("fields.deviceCategory"), type: "select", optionsResource: "device-catalog/categories", required: true },
         { name: "deviceType", label: t("models.deviceType") },
-        { name: "image", label: t("fields.image") },
+        { name: "image", label: t("fields.image"), type: "image" },
         { name: "releaseYear", label: t("models.releaseYear"), type: "number" },
         { name: "isActive", label: t("fields.active"), type: "checkbox" },
         { name: "translations.fr.name", label: t("fields.nameFr"), section: "French Translation" },

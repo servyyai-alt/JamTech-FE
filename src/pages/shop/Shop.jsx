@@ -157,7 +157,10 @@ const Shop = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:grid-cols-3 xl:grid-cols-4">
                 {products.map((p) => <ProductCard key={p._id} product={p} />)}
               </div>
-              <Pagination page={meta.page} pages={meta.pages} onChange={(p) => setFilters((f) => ({ ...f, page: p }))} />
+              <Pagination page={meta.page} pages={meta.pages} onChange={(p) => {
+                setFilters((f) => ({ ...f, page: p }));
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }} />
             </>
           )}
         </div>

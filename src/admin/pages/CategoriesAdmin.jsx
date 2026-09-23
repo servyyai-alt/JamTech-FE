@@ -13,7 +13,7 @@ const CategoriesAdmin = () => {
         { name: "name", label: t("fields.name"), required: true },
         { name: "slug", label: t("fields.slug") },
         { name: "icon", label: t("fields.icon") },
-        { name: "image", label: t("fields.image") },
+        { name: "image", label: t("fields.image"), type: "image" },
         { name: "sortOrder", label: t("fields.sortOrder"), type: "number" },
         { name: "isActive", label: t("fields.active"), type: "checkbox" },
         { name: "translations.fr.name", label: t("fields.nameFr"), section: "French Translation" },
