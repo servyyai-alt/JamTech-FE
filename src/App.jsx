@@ -4,6 +4,7 @@ import MainLayout from "./components/layout/MainLayout.jsx";
 import AdminLayout from "./components/layout/AdminLayout.jsx";
 import ProtectedRoute from "./components/layout/ProtectedRoute.jsx";
 import Loader from "./components/common/Loader.jsx";
+import ScrollToTop from "./components/common/ScrollToTop.jsx";
 
 // Public pages
 const Home = lazy(() => import("./pages/Home.jsx"));
@@ -70,6 +71,7 @@ const SettingsAdmin = lazy(() => import("./admin/pages/SettingsAdmin.jsx"));
 function App() {
   return (
     <Suspense fallback={<Loader full />}>
+      <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
@@ -89,7 +91,7 @@ function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/product/:slug" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/track-order" element={<OrderTracking />} />

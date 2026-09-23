@@ -13,8 +13,9 @@ const Footer = () => {
     <footer className="bg-ink-900 text-gray-300">
       <div className="container-px mx-auto grid max-w-7xl gap-10 py-16 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-2">
-          <Link to="/" className="mb-4 flex w-fit items-center">
+          <Link to="/" className="mb-4 flex w-fit flex-col gap-3">
             <img src={logo} alt="JAM Smart Tech" className="h-16 w-auto rounded-xl bg-white p-1.5 object-contain" />
+            <span className="font-display text-xl font-bold tracking-wide text-white">Jam Smart Tech</span>
           </Link>
           <p className="mb-5 max-w-sm text-sm text-gray-400">{f("tagline")}</p>
           <div className="flex gap-3">
@@ -66,11 +67,15 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-white/10 py-6 flex flex-col items-center justify-center gap-3 text-xs text-gray-500">
-        <p>© {new Date().getFullYear()} JAM Smart Tech. {f("rights")}</p>
-        <div className="flex items-center gap-2">
-          <span>Powered by</span>
-          <img src={leastActionLogo} alt="Least Action Company" className="h-8 w-auto" />
+      <div className="border-t border-white/10 py-6">
+        <div className="container-px mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 text-xs text-gray-500 sm:flex-row">
+          <p>© {new Date().getFullYear()} JAM Smart Tech. {f("rights")}</p>
+          <div className="flex items-center gap-2">
+            <span>Powered by</span>
+            <a href="https://www.leastactioncompany.com/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+              <img src={leastActionLogo} alt="Least Action Company" className="h-8 w-auto" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

@@ -19,7 +19,7 @@ const BrandsAdmin = () => {
           optionsResource: "device-catalog/categories",
           required: true,
         },
-        { name: "logo", label: t("brands.logo") },
+        { name: "logo", label: t("brands.logo"), type: "image" },
         { name: "sortOrder", label: t("fields.sortOrder"), type: "number" },
         { name: "isActive", label: t("fields.active"), type: "checkbox" },
         { name: "translations.fr.name", label: t("fields.nameFr"), section: "French Translation" },

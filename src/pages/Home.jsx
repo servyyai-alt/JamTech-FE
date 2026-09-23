@@ -124,8 +124,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [reviewIdx, setReviewIdx] = useState(0);
   const [heroVisible, setHeroVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
+
   const featCarouselRef = useRef(null);
   const bestCarouselRef = useRef(null);
 
@@ -610,38 +609,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── NEWSLETTER ──────────────────────────────────────────── */}
-      <section style={{ padding: "80px clamp(20px,5vw,60px)", background: "linear-gradient(135deg, #F97316 0%, #F59E0B 100%)" }}>
-        <Reveal>
-          <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
-            <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-              <Zap size={26} style={{ color: "#fff" }} />
-            </div>
-            <h2 className="syne" style={{ fontSize: "clamp(1.5rem,3vw,2rem)", fontWeight: 700, color: "#fff", marginBottom: 10 }}>{t("newsletter.title")}</h2>
-            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.85)", marginBottom: 32, lineHeight: 1.7 }}>
-              {t("newsletter.subtitle")}
-            </p>
-            {subscribed ? (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "rgba(255,255,255,0.2)", border: "1px solid rgba(255,255,255,0.35)", borderRadius: 16, padding: "16px 24px", color: "#fff", fontWeight: 600, fontSize: 15 }}>
-                <CheckCircle2 size={18} /> {t("newsletter.success")}
-              </div>
-            ) : (
-              <form onSubmit={(e) => { e.preventDefault(); if (email) setSubscribed(true); }} style={{ display: "flex", gap: 10, maxWidth: 440, margin: "0 auto", flexWrap: "wrap" }}>
-                <input
-                  type="email" required placeholder={t("newsletter.placeholder")}
-                  value={email} onChange={(e) => setEmail(e.target.value)}
-                  style={{ flex: 1, minWidth: 200, background: "#fff", border: "none", borderRadius: 12, padding: "14px 18px", color: "#1A1A2E", fontSize: 14, outline: "none" }}
-                />
-                <button type="submit" style={{ background: "#1A1A2E", color: "#fff", border: "none", borderRadius: 12, padding: "14px 24px", fontWeight: 600, fontSize: 15, cursor: "pointer", transition: "background 0.2s", fontFamily: "'Inter', sans-serif" }}
-                  onMouseEnter={e => e.currentTarget.style.background = "#111"}
-                  onMouseLeave={e => e.currentTarget.style.background = "#1A1A2E"}>
-                    {t("newsletter.subscribe")}
-                  </button>
-              </form>
-            )}
-          </div>
-        </Reveal>
-      </section>
+
     </div>
   );
 };

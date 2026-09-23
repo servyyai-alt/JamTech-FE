@@ -71,7 +71,12 @@ const ManualQuoteForm = () => {
   const input = (name, labelKey, options = {}) => (
     <div>
       <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-gray-500">{t(labelKey)}{options.required !== false && " *"}</label>
-      <input className="w-full rounded-xl bg-gray-50 px-4 py-3.5 text-sm font-medium text-ink-900 border border-gray-100 outline-none transition-all focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/15" type={options.type || "text"} {...register(name, { required: options.required !== false })} />
+      <input 
+        className="w-full rounded-xl bg-gray-50 px-4 py-3.5 text-sm font-medium text-ink-900 border border-gray-100 outline-none transition-all focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/15" 
+        type={options.type || "text"} 
+        onInput={options.onInput}
+        {...register(name, { required: options.required !== false })} 
+      />
       {errors[name] && <p className="mt-1.5 text-xs font-semibold text-red-500">{t("error.fieldRequired", { field: t(labelKey) })}</p>}
     </div>
   );
@@ -136,15 +141,15 @@ const ManualQuoteForm = () => {
             <h2 className="font-display text-lg font-bold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>{t("contactDetails")}</h2>
           </div>
           <div className="p-6 sm:p-8 grid gap-5 sm:grid-cols-2">
-            {input("name", "fullName")}
+            {input("name", "fullName", { onInput: (e) => e.target.value = e.target.value.replace(/[^\p{L}\s]/gu, "") })}
             {input("email", "email", { type: "email", required: false })}
-            {input("phone", "phone")}
+            {input("phone", "phone", { onInput: (e) => e.target.value = e.target.value.replace(/[^\d\+\-\s\(\)]/g, "") })}
             {needsAddress && (
               <>
                 <div className="sm:col-span-2">{input("address", "address", { required: needsAddress })}</div>
-                {input("city", "city", { required: needsAddress })}
-                {input("postalCode", "postalCode", { required: needsAddress })}
-                {input("country", "country", { required: needsAddress })}
+                {input("city", "city", { required: needsAddress, onInput: (e) => e.target.value = e.target.value.replace(/[^\p{L}\s\-]/gu, "") })}
+                {input("postalCode", "postalCode", { required: needsAddress, onInput: (e) => e.target.value = e.target.value.replace(/[^0-9]/g, "") })}
+                {input("country", "country", { required: needsAddress, onInput: (e) => e.target.value = e.target.value.replace(/[^\p{L}\s]/gu, "") })}
               </>
             )}
           </div>

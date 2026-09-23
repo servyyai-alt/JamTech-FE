@@ -52,6 +52,12 @@ const ProductsAdmin = () => {
   };
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    if (modalOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+    return () => { document.body.style.overflow = "auto"; };
+  }, [modalOpen]);
+
   const openCreate = () => { setForm(emptyForm); setEditing(null); setModalOpen(true); };
   const openEdit = (p) => {
     setForm({
@@ -197,24 +203,12 @@ const ProductsAdmin = () => {
                 </select>
               </div>
               <div className="sm:col-span-2">
-                <label className="label">{t("products.imageUrls")} (Upload, Paste, or URL)</label>
+                <label className="label">{t("products.imageUrls")} (Upload or Paste)</label>
                 <div 
                   className="flex flex-col gap-3 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 p-4 transition-colors focus-within:border-primary-500 hover:border-primary-400"
                   onPaste={handleImagePaste}
                 >
                   <div className="flex items-center gap-3">
-                    <input 
-                      type="url" 
-                      placeholder="Paste image URL and press Enter" 
-                      className="input flex-1" 
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && e.target.value) {
-                          e.preventDefault();
-                          setForm({ ...form, images: [...form.images, e.target.value] });
-                          e.target.value = '';
-                        }
-                      }}
-                    />
                     <label className="btn-secondary !py-2.5 cursor-pointer text-sm whitespace-nowrap m-0">
                       Upload File
                       <input type="file" multiple accept="image/*" className="hidden" onChange={handleFileUpload} />
