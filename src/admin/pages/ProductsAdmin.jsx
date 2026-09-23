@@ -21,7 +21,7 @@ const CURRENCIES = [
 ];
 
 const emptyForm = {
-  title: "", category: "", brand: "", images: "", shortDescription: "", description: "",
+  title: "", category: "", brand: "", images: [], shortDescription: "", description: "",
   regularPrice: "", salePrice: "", stock: "", currency: "EUR", warranty: "", deliveryEstimate: "",
   isFeatured: false, isBestSeller: false, isActive: true,
   frTitle: "", frShortDescription: "", frDescription: "", frWarranty: "",
@@ -56,7 +56,7 @@ const ProductsAdmin = () => {
   const openEdit = (p) => {
     setForm({
       ...emptyForm, ...p,
-      images: (p.images || []).join(", "),
+      images: p.images || [],
       category: p.category?._id || p.category || "",
       frTitle: p.translations?.fr?.title || "",
       frShortDescription: p.translations?.fr?.shortDescription || "",
@@ -74,7 +74,7 @@ const ProductsAdmin = () => {
       const { frTitle, frShortDescription, frDescription, frWarranty, ...rest } = form;
       const payload = {
         ...rest,
-        images: form.images.split(",").map((s) => s.trim()).filter(Boolean),
+        images: form.images,
         translations: {
           fr: {
             title: frTitle,
@@ -98,6 +98,34 @@ const ProductsAdmin = () => {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleImagePaste = (e) => {
+    const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
+    if (!items) return;
+    for (let index in items) {
+      const item = items[index];
+      if (item.kind === 'file') {
+        const blob = item.getAsFile();
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setForm((prev) => ({ ...prev, images: [...prev.images, event.target.result] }));
+        };
+        reader.readAsDataURL(blob);
+      }
+    }
+  };
+
+  const handleFileUpload = (e) => {
+    const files = e.target.files;
+    if (!files) return;
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setForm((prev) => ({ ...prev, images: [...prev.images, event.target.result] }));
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleDelete = async (id) => {
@@ -168,7 +196,50 @@ const ProductsAdmin = () => {
                   {categories.map((c) => <option key={c._id} value={c._id}>{c.name}</option>)}
                 </select>
               </div>
-              <div className="sm:col-span-2"><label className="label">{t("products.imageUrls")}</label><input className="input" value={form.images} onChange={(e) => setForm({ ...form, images: e.target.value })} /></div>
+              <div className="sm:col-span-2">
+                <label className="label">{t("products.imageUrls")} (Upload, Paste, or URL)</label>
+                <div 
+                  className="flex flex-col gap-3 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 p-4 transition-colors focus-within:border-primary-500 hover:border-primary-400"
+                  onPaste={handleImagePaste}
+                >
+                  <div className="flex items-center gap-3">
+                    <input 
+                      type="url" 
+                      placeholder="Paste image URL and press Enter" 
+                      className="input flex-1" 
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && e.target.value) {
+                          e.preventDefault();
+                          setForm({ ...form, images: [...form.images, e.target.value] });
+                          e.target.value = '';
+                        }
+                      }}
+                    />
+                    <label className="btn-secondary !py-2.5 cursor-pointer text-sm whitespace-nowrap m-0">
+                      Upload File
+                      <input type="file" multiple accept="image/*" className="hidden" onChange={handleFileUpload} />
+                    </label>
+                  </div>
+                  <p className="text-xs text-gray-400 m-0">Or paste an image directly into this area (Ctrl+V)</p>
+                  
+                  {form.images?.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {form.images.map((img, idx) => (
+                        <div key={idx} className="relative group rounded-lg border border-gray-200 p-1 bg-white">
+                          <img src={img} alt="" className="h-16 w-16 object-cover rounded-md" />
+                          <button 
+                            type="button"
+                            onClick={() => setForm({ ...form, images: form.images.filter((_, i) => i !== idx) })}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                          >
+                            <X size={12} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className="sm:col-span-2"><label className="label">{t("products.shortDescriptionField")}</label><input className="input" value={form.shortDescription} onChange={(e) => setForm({ ...form, shortDescription: e.target.value })} /></div>
               <div className="sm:col-span-2"><label className="label">{t("products.descriptionField")}</label><textarea rows={3} className="input" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
               <div><label className="label">{t("products.regularPriceField")}</label><input required type="number" className="input" value={form.regularPrice} onChange={(e) => setForm({ ...form, regularPrice: Number(e.target.value) })} /></div>

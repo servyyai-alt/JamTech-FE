@@ -135,7 +135,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await login(data.email, data.password);
+      await login(data.email.trim(), data.password);
       showToast(t("login.welcomeBack"), "success");
       navigate(location.state?.from?.pathname || "/");
     } catch (err) {
@@ -146,10 +146,10 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-70px)] flex-col lg:flex-row bg-slate-50 overflow-hidden">
+    <div className="flex min-h-[calc(100vh-70px)] flex-col lg:flex-row bg-slate-50 overflow-y-auto lg:overflow-hidden">
       
       {/* Left side: Animated Showcase */}
-      <div className="w-full lg:w-1/2 h-[300px] lg:h-auto shrink-0 relative overflow-hidden">
+      <div className="w-full lg:w-1/2 h-auto min-h-[480px] lg:min-h-0 lg:h-auto shrink-0 relative overflow-hidden">
         <DeviceShowcase />
       </div>
 
@@ -227,3 +227,8 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+
+

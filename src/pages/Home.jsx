@@ -164,12 +164,24 @@ const Home = () => {
 
         /* hero layout */
         .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 60px; align-items: center; }
-        @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 52px; } }
+        .hero-section { position: relative; height: calc(100vh - 122px); min-height: 550px; display: flex; align-items: center; overflow: hidden; background: #0B0F19; }
+        @media (max-width: 900px) { 
+          .hero-grid { grid-template-columns: 1fr; gap: 40px; } 
+          .hero-section { height: auto; min-height: calc(100vh - 122px); padding: 40px 0; }
+        }
 
         /* marquee */
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
-        .marquee-track:hover { animation-play-state: paused; }
+        .marquee-track { display: flex; width: max-content; }
+        @media (max-width: 768px) {
+          .marquee-track { animation: marquee 12s linear infinite; }
+          .marquee-track:hover { animation-play-state: paused; }
+          .step-conn-wrapper { display: none !important; }
+        }
+        @media (min-width: 769px) {
+          .marquee-track { justify-content: center; width: 100%; flex-wrap: wrap; gap: 12px; }
+          .md-hidden { display: none !important; }
+        }
 
         /* hero float */
         @keyframes hfloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
@@ -200,25 +212,37 @@ const Home = () => {
 
         /* step connector */
         .step-conn { flex: 1; height: 2px; background: linear-gradient(to right, #F97316, #FED7AA); margin: 0 8px; margin-bottom: 44px; }
-        @media (max-width: 767px) { .step-conn { display: none; } .p-carousel > * { flex: 0 0 220px; } }
+        @media (max-width: 767px) { .step-conn { display: none; } .p-carousel { display: grid; grid-template-columns: 1fr; gap: 20px; overflow-x: visible; padding-right: 20px; } .carousel-nav { display: none !important; } }
 
         /* btn */
-        .btn-o { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; }
+        .btn-o { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; justify-content: center; }
         .btn-o.solid { background: linear-gradient(135deg, #F97316, #F59E0B); color: #fff; box-shadow: 0 6px 20px rgba(249,115,22,0.35); }
         .btn-o.solid:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(249,115,22,0.45); }
         .btn-o.outline { background: transparent; color: #1A1A2E; border: 2px solid #E5E7EB; }
         .btn-o.outline:hover { border-color: #F97316; color: #F97316; background: #FFF7ED; }
-        .btn-o-glass { display: inline-flex; align-items: center; gap: 9px; padding: 14px 28px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.2s; text-decoration: none; }
+        .btn-o-glass { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 14px 28px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: all 0.2s; text-decoration: none; }
         .btn-o-glass:hover { transform: translateY(-2px); background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.45); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
 
         /* input focus */
         input:focus { outline: none; border-color: #F97316 !important; box-shadow: 0 0 0 3px rgba(249,115,22,0.12); }
+        
+        .hero-stats { display: flex; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 26px; row-gap: 20px; }
+        .hero-stat-item { padding-right: 38px; border-right: 1px solid rgba(255,255,255,0.12); }
+        .hero-stat-item:last-child { border-right: none; padding-right: 0; }
+        .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+        
+        @media (max-width: 600px) {
+          .hero-stat-item { padding-right: 20px; width: 50%; border-right: none; }
+          .hero-stat-item:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.12); }
+          .hero-buttons { flex-direction: column; width: 100%; }
+          .hero-buttons > * { width: 100%; }
+        }
 
-        @media (prefers-reduced-motion: reduce) { .hero-float, .marquee-track, .ring { animation: none; } }
+        @media (prefers-reduced-motion: reduce) { .hero-float, .ring { animation: none; } }
       `}</style>
 
       {/* ── HERO ───────────────────────────────────────────────── */}
-      <section style={{ position: "relative", height: "calc(100vh - 122px)", minHeight: "550px", display: "flex", alignItems: "center", overflow: "hidden", background: "#0B0F19" }}>
+      <section className="hero-section">
 
         {/* full-bleed background image */}
         <img
@@ -266,15 +290,15 @@ const Home = () => {
                 {t("hero.subtitle")}
               </p>
 
-              <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 48 }}>
+              <div className="hero-buttons">
                 <Link to="/repair" className="btn-o solid"><Wrench size={17} /> {t("hero.ctaRepair")} <ArrowRight size={16} style={{ transition: "transform 0.2s" }} /></Link>
                 <Link to="/shop" className="btn-o-glass"><ShoppingBag size={17} /> {t("hero.ctaShop")}</Link>
               </div>
 
               {/* stats */}
-              <div style={{ display: "flex", flexWrap: "wrap", borderTop: "1px solid rgba(255,255,255,0.12)", paddingTop: 26 }}>
+              <div className="hero-stats">
                 {STATS.map((s, i) => (
-                  <div key={i} style={{ opacity: heroVisible ? 1 : 0, transition: `opacity 0.5s ease ${0.3 + i * 0.1}s`, paddingRight: 38, borderRight: i < STATS.length - 1 ? "1px solid rgba(255,255,255,0.12)" : "none" }}>
+                  <div key={i} className="hero-stat-item" style={{ opacity: heroVisible ? 1 : 0, transition: `opacity 0.5s ease ${0.3 + i * 0.1}s` }}>
                     <div className="hero-display" style={{ fontSize: "clamp(1.7rem, 3vw, 2.3rem)", fontWeight: 700, color: "#FDBA74", lineHeight: 1 }}>{t(`stats.${s.key}.value`)}</div>
                     <div style={{ fontSize: 12, color: "#94A3B8", marginTop: 4 }}>{t(`stats.${s.key}.label`)}</div>
                   </div>
@@ -354,7 +378,7 @@ const Home = () => {
       <div style={{ background: "linear-gradient(90deg, #F97316, #F59E0B)", padding: "13px 0", overflow: "hidden" }}>
         <div className="marquee-track">
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 14, padding: "0 24px", whiteSpace: "nowrap", fontSize: 13, fontWeight: 600, color: "#fff" }}>
+            <span key={i} className={i >= marqueeItems.length ? "md-hidden" : ""} style={{ display: "inline-flex", alignItems: "center", gap: 14, padding: "0 24px", whiteSpace: "nowrap", fontSize: 13, fontWeight: 600, color: "#fff" }}>
               <span style={{ width: 5, height: 5, borderRadius: "50%", background: "rgba(255,255,255,0.5)", display: "inline-block", flexShrink: 0 }} />
               {item}
             </span>
@@ -438,7 +462,7 @@ const Home = () => {
         <div style={{ display: "flex", alignItems: "flex-start", flexWrap: "wrap" }}>
           {HOW_IT_WORKS.map((step, i) => (
             <React.Fragment key={step.key}>
-              <Reveal direction="left" duration={1.2} delay={i * 0.35} style={{ flex: "1 1 200px", textAlign: "center", padding: "0 12px" }}>
+              <Reveal direction="left" duration={1.2} delay={i * 0.35} style={{ flex: "1 1 200px", textAlign: "center", padding: "24px 12px" }}>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                   <div style={{ position: "relative", marginBottom: 20 }}>
                     <div style={{ width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg, #FFF7ED, #FEF3C7)", border: "2px solid #FED7AA", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -451,9 +475,9 @@ const Home = () => {
                 </div>
               </Reveal>
               {i < HOW_IT_WORKS.length - 1 && (
-                <Reveal direction="left" duration={1.2} delay={i * 0.35 + 0.17} style={{ flex: 1 }}>
+                <div className="step-conn-wrapper" style={{ flex: 1 }}><Reveal direction="left" duration={1.2} delay={i * 0.35 + 0.17}>
                   <div className="step-conn" style={{ marginTop: 32 }} />
-                </Reveal>
+                </Reveal></div>
               )}
             </React.Fragment>
           ))}
@@ -500,7 +524,7 @@ const Home = () => {
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <Link to="/shop" style={{ fontSize: 14, fontWeight: 600, color: "#F97316", textDecoration: "none", marginRight: 8, display: "flex", alignItems: "center", gap: 6 }}>{t("featured.viewAll")} <ArrowRight size={14} /></Link>
                 {[ChevronLeft, ChevronRight].map((Ic, j) => (
-                  <button key={j} onClick={() => scroll(featCarouselRef, j === 0 ? -1 : 1)} style={{ width: 38, height: 38, borderRadius: "50%", border: "2px solid #E5E7EB", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#6B7280", transition: "all 0.2s" }}
+                  <button key={j} className="carousel-nav" onClick={() => scroll(featCarouselRef, j === 0 ? -1 : 1)} style={{ width: 38, height: 38, borderRadius: "50%", border: "2px solid #E5E7EB", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#6B7280", transition: "all 0.2s" }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = "#F97316"; e.currentTarget.style.color = "#F97316"; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = "#E5E7EB"; e.currentTarget.style.color = "#6B7280"; }}>
                     <Ic size={18} />
@@ -527,7 +551,7 @@ const Home = () => {
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <Link to="/shop" style={{ fontSize: 14, fontWeight: 600, color: "#F97316", textDecoration: "none", marginRight: 8, display: "flex", alignItems: "center", gap: 6 }}>{t("bestSellers.viewAll")} <ArrowRight size={14} /></Link>
                 {[ChevronLeft, ChevronRight].map((Ic, j) => (
-                  <button key={j} onClick={() => scroll(bestCarouselRef, j === 0 ? -1 : 1)} style={{ width: 38, height: 38, borderRadius: "50%", border: "2px solid #E5E7EB", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#6B7280", transition: "all 0.2s" }}
+                  <button key={j} className="carousel-nav" onClick={() => scroll(bestCarouselRef, j === 0 ? -1 : 1)} style={{ width: 38, height: 38, borderRadius: "50%", border: "2px solid #E5E7EB", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#6B7280", transition: "all 0.2s" }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = "#F97316"; e.currentTarget.style.color = "#F97316"; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = "#E5E7EB"; e.currentTarget.style.color = "#6B7280"; }}>
                     <Ic size={18} />

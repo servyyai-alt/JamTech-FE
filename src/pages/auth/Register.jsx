@@ -20,7 +20,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await signUp({ name: data.name, email: data.email, phone: data.phone, password: data.password });
+      await signUp({ name: data.name, email: data.email.trim(), phone: data.phone, password: data.password });
       showToast(t("register.success"), "success");
       navigate("/");
     } catch (err) {
@@ -31,9 +31,9 @@ const Register = () => {
   };
 
   return (
-    <div className="flex h-[calc(100vh-70px)] bg-white overflow-hidden">
+    <div className="flex flex-col lg:flex-row h-full min-h-[calc(100vh-70px)] bg-white overflow-y-auto lg:overflow-hidden">
       {/* Left side: Image */}
-      <div className="hidden w-1/2 lg:block">
+      <div className="w-full lg:w-1/2 h-[220px] lg:h-auto shrink-0 relative">
         <img
           src={bgImage}
           alt="JAM Smart Tech Repair"
@@ -42,7 +42,7 @@ const Register = () => {
       </div>
 
       {/* Right side: Register Form */}
-      <div className="flex w-full flex-col justify-center px-8 lg:w-1/2 xl:px-24 py-4 overflow-y-auto">
+      <div className="flex w-full flex-col justify-center px-6 py-8 lg:w-1/2 lg:px-12 lg:py-12 xl:px-24 overflow-y-auto">
         <div className="mx-auto w-full max-w-md">
           <h1 className="mb-1 text-center font-display text-2xl font-bold animate-fade-up" style={{ animationFillMode: 'both', animationDelay: '100ms' }}>{t("register.title")}</h1>
           <p className="mb-4 text-center text-xs text-gray-500 animate-fade-up" style={{ animationFillMode: 'both', animationDelay: '200ms' }}>{t("register.subtitle")}</p>
@@ -166,3 +166,8 @@ const Register = () => {
 };
 
 export default Register;
+
+
+
+
+

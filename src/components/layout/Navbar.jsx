@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useCart } from "../../context/CartContext.jsx";
 import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
-import logo from "../../assets/Logo.png";
+import logo from "../../assets/logo_new.png";
 
 const navLinks = [
   { to: "/", key: "home" },
@@ -39,7 +39,7 @@ const Navbar = () => {
     <header className={`sticky top-0 z-50 w-full transition-all ${scrolled ? "bg-white/95 shadow-md backdrop-blur" : "bg-white"}`}>
       <div className="container-px mx-auto flex h-16 max-w-7xl items-center justify-between gap-4">
         <Link to="/" className="flex shrink-0 items-center">
-          <img src={logo} alt="JAM Smart Tech" className="h-10 w-auto object-contain" />
+          <img src={logo} alt="JAM Smart Tech" className="h-14 w-auto object-contain" />
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
@@ -153,3 +153,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
