@@ -147,14 +147,14 @@ const Shop = () => {
 
         <div>
           {loading ? (
-            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:grid-cols-3 xl:grid-cols-4">
               {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
             </div>
           ) : products.length === 0 ? (
             <EmptyState title={t("empty.title")} description={t("empty.description")} />
           ) : (
             <>
-              <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 xl:grid-cols-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:grid-cols-3 xl:grid-cols-4">
                 {products.map((p) => <ProductCard key={p._id} product={p} />)}
               </div>
               <Pagination page={meta.page} pages={meta.pages} onChange={(p) => setFilters((f) => ({ ...f, page: p }))} />
