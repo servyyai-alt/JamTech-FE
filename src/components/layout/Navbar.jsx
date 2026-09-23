@@ -94,15 +94,17 @@ const Navbar = () => {
               <button className="flex items-center gap-1 rounded-full p-2 text-ink-700 hover:bg-gray-100">
                 <User size={20} />
               </button>
-              <div className="invisible absolute right-0 mt-1 w-48 rounded-xl border border-gray-100 bg-white p-2 opacity-0 shadow-premium transition group-hover:visible group-hover:opacity-100">
-                <p className="truncate px-3 py-1 text-xs text-gray-400">{user.email}</p>
-                <Link to="/profile" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">{t("profile")}</Link>
-                <Link to="/profile/orders" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">{t("orders")}</Link>
-                <Link to="/profile/repairs" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">{t("repairBookings")}</Link>
-                {user.role === "admin" && <Link to="/admin" className="block rounded-lg px-3 py-2 text-sm font-semibold text-primary-600 hover:bg-gray-50">{t("adminDashboard")}</Link>}
-                <button onClick={logout} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50">
-                  <LogOut size={14} /> {t("logout")}
-                </button>
+              <div className="invisible absolute right-0 top-full pt-1 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                <div className="w-48 rounded-xl border border-gray-100 bg-white p-2 shadow-premium">
+                  <p className="truncate px-3 py-1 text-xs text-gray-400">{user.email}</p>
+                  <Link to="/profile" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">{t("profile")}</Link>
+                  <Link to="/profile/orders" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">{t("orders")}</Link>
+                  <Link to="/profile/repairs" className="block rounded-lg px-3 py-2 text-sm hover:bg-gray-50">{t("repairBookings")}</Link>
+                  {user.role === "admin" && <Link to="/admin" className="block rounded-lg px-3 py-2 text-sm font-semibold text-primary-600 hover:bg-gray-50">{t("adminDashboard")}</Link>}
+                  <button onClick={logout} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50">
+                    <LogOut size={14} /> {t("logout")}
+                  </button>
+                </div>
               </div>
             </div>
           ) : (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Truck, ShieldCheck, RotateCcw, Minus, Plus, Heart, Star, Trash2 } from "lucide-react";
+import { Truck, ShieldCheck, RotateCcw, Minus, Plus, Heart, Star, Trash2, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import * as productService from "../../services/productService.js";
 import { useCart } from "../../context/CartContext.jsx";
@@ -293,7 +293,7 @@ const ProductDetails = () => {
           <div className={`absolute top-0 bottom-0 right-0 flex w-full max-w-sm flex-col bg-white shadow-2xl animate-fade-left animate-duration-[300ms]`}>
             <div className="flex items-center justify-between border-b border-gray-100 p-5">
               <h2 className="font-display text-lg font-bold text-ink-900 flex items-center gap-2"><ShieldCheck className="text-primary-600" size={20} /> Added to Cart</h2>
-              <button onClick={() => setCartDrawerOpen(false)} className="rounded-full p-2 text-gray-400 hover:bg-gray-100"><Minus size={18} className="rotate-45" /></button>
+              <button onClick={() => setCartDrawerOpen(false)} className="rounded-full bg-gray-50 p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"><X size={18} /></button>
             </div>
             
             <div className="flex-1 overflow-y-auto p-6">

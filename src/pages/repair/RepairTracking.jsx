@@ -5,7 +5,7 @@ import * as bookingService from "../../services/bookingService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
 import StatusBadge from "../../components/common/StatusBadge.jsx";
-import { Search } from "lucide-react";
+import { Search, Check } from "lucide-react";
 import { useAuth } from "../../context/AuthContext.jsx";
 
 const ALL_STATUSES = [

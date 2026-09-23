@@ -13,7 +13,6 @@ const SORT_OPTIONS = [
   { value: "price_asc", labelKey: "sort.priceAsc" },
   { value: "price_desc", labelKey: "sort.priceDesc" },
   { value: "popular", labelKey: "sort.popular" },
-  { value: "rating", labelKey: "sort.rating" },
 ];
 
 const FilterPanel = ({ categories, filters, setFilters }) => {
@@ -53,24 +52,7 @@ const FilterPanel = ({ categories, filters, setFilters }) => {
 
       <hr className="my-6 border-gray-100" />
 
-      {/* Rating */}
-      <div className="mb-8">
-        <h4 className="mb-4 text-xs font-bold uppercase tracking-wider text-gray-400">{t("filter.rating")}</h4>
-        <div className="flex flex-col gap-1">
-          {[4, 3, 2].map((r) => (
-            <label key={r} className="group flex cursor-pointer items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-gray-50">
-              <div className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all ${String(filters.minRating) === String(r) ? "border-primary-500 bg-primary-500" : "border-gray-300 bg-white"}`}>
-                {String(filters.minRating) === String(r) && <div className="h-2 w-2 rounded-full bg-white" />}
-              </div>
-              <span className={`text-sm font-medium transition-colors ${String(filters.minRating) === String(r) ? "text-primary-600 font-bold" : "text-gray-600 group-hover:text-ink-900"}`}>{t("filter.ratingAndUp", { count: r })}</span>
-              <input type="radio" name="rating" className="hidden" checked={String(filters.minRating) === String(r)} onChange={() => setFilters((f) => ({ ...f, minRating: r, page: 1 }))} />
-            </label>
-          ))}
-          {filters.minRating && <button onClick={() => setFilters((f) => ({ ...f, minRating: "", page: 1 }))} className="mt-2 text-left text-xs font-semibold text-red-500 hover:text-red-600">{t("filter.clearRating")}</button>}
-        </div>
-      </div>
 
-      <hr className="my-6 border-gray-100" />
 
       {/* Toggles */}
       <div className="flex flex-col gap-3">

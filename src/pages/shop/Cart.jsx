@@ -81,7 +81,7 @@ const Cart = () => {
           <dl className="space-y-2 text-sm">
             <div className="flex justify-between"><dt className="text-gray-500">{t("summary.subtotal")}</dt><dd>{formatPrice(subtotal, cartCurrency)}</dd></div>
             {coupon && <div className="flex justify-between text-emerald-600"><dt>{t("summary.coupon", { code: coupon.code })}</dt><dd>-{formatPrice(coupon.discount, coupon.currency || cartCurrency)}</dd></div>}
-            <div className="flex justify-between text-gray-500"><dt>{t("summary.shippingTax")}</dt><dd>{t("summary.calculatedAtCheckout")}</dd></div>
+            <div className="flex justify-between text-gray-500"><dt>{t("summary.shippingTax")}</dt><dd>{formatPrice(0, cartCurrency)}</dd></div>
           </dl>
           <div className="mt-4 flex justify-between border-t border-gray-100 pt-4">
             <span className="font-display font-semibold">{t("summary.estimatedTotal")}</span>
