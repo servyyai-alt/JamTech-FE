@@ -31,7 +31,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-full min-h-[calc(100vh-70px)] bg-white overflow-y-auto lg:overflow-hidden">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-70px)] bg-white overflow-y-auto lg:overflow-hidden">
       {/* Left side: Image */}
       <div className="w-full lg:w-1/2 h-[220px] lg:h-auto shrink-0 relative">
         <img

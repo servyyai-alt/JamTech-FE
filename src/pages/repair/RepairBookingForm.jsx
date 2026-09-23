@@ -112,7 +112,7 @@ const RepairBookingForm = () => {
             <div className="grid gap-4 sm:grid-cols-2">
               <div><label className="label">{t("fullName")} *</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s]/gu, "")} {...register("name", { required: true })} />{errors.name && <p className="mt-1 text-xs text-red-500">{t("error.nameRequired")}</p>}</div>
               <div><label className="label">{t("email")} *</label><input type="email" className="input" {...register("email", { required: true })} />{errors.email && <p className="mt-1 text-xs text-red-500">{t("error.emailRequired")}</p>}</div>
-              <div><label className="label">{t("phone")} *</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\d\+\-\s\(\)]/g, "")} {...register("phone", { required: true })} />{errors.phone && <p className="mt-1 text-xs text-red-500">{t("error.phoneRequired")}</p>}</div>
+              <div><label className="label">{t("phone")} *</label><input className="input" maxLength={10} minLength={10} onInput={(e) => e.target.value = e.target.value.replace(/[^\d\+\-\s\(\)]/g, "")} {...register("phone", { required: true, maxLength: 10, minLength: 10 })} />{errors.phone && <p className="mt-1 text-xs text-red-500">{t("error.phoneRequired")}</p>}</div>
               {needsAddress && (
                 <>
                   <div className="sm:col-span-2"><label className="label">{t("address")} *</label><input className="input" {...register("address", { required: needsAddress })} /></div>

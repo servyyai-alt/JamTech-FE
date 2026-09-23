@@ -75,7 +75,7 @@ const ProfileAddresses = () => {
             <form onSubmit={handleSubmit} className="space-y-3">
               <input className="input focus:ring-primary-500 focus:border-primary-500" placeholder={t("addresses.modal.label")} value={form.label} onChange={handleInput("label", /[^A-Za-z0-9\s\-_]/g)} />
               <input required className="input focus:ring-primary-500 focus:border-primary-500" placeholder={t("addresses.modal.fullName")} value={form.fullName} onChange={handleInput("fullName", /[^A-Za-z\s\-']/g)} />
-              <input required className="input focus:ring-primary-500 focus:border-primary-500" placeholder={t("addresses.modal.phone")} value={form.phone} onChange={handleInput("phone", /[^\d\+\-\s\(\)]/g)} />
+              <input required className="input focus:ring-primary-500 focus:border-primary-500" placeholder={t("addresses.modal.phone")} maxLength={10} minLength={10} value={form.phone} onChange={handleInput("phone", /[^\d\+\-\s\(\)]/g)} />
               <input required className="input focus:ring-primary-500 focus:border-primary-500" placeholder={t("addresses.modal.addressLine1")} value={form.addressLine1} onChange={handleInput("addressLine1", null)} />
               <input className="input focus:ring-primary-500 focus:border-primary-500" placeholder={t("addresses.modal.addressLine2")} value={form.addressLine2} onChange={handleInput("addressLine2", null)} />
               <div className="grid grid-cols-2 gap-2">
