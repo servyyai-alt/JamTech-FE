@@ -146,7 +146,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-70px)] flex-col lg:flex-row bg-slate-50 overflow-y-auto lg:overflow-hidden">
+    <div className="flex h-[calc(100vh-70px)] flex-col lg:flex-row bg-slate-50 overflow-y-auto lg:overflow-hidden">
       
       {/* Left side: Animated Showcase */}
       <div className="w-full lg:w-1/2 h-auto min-h-[480px] lg:min-h-0 lg:h-auto shrink-0 relative overflow-hidden">

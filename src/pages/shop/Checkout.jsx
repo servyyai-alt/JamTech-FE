@@ -109,7 +109,7 @@ const Checkout = () => {
             )}
             <div className="grid gap-4 sm:grid-cols-2">
               <div><label className="label">{t("checkout.fullName")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s]/gu, "")} {...register("fullName", { required: true })} /></div>
-              <div><label className="label">{t("checkout.phone")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\d\+\-\s\(\)]/g, "")} {...register("phone", { required: true })} /></div>
+              <div><label className="label">{t("checkout.phone")}</label><input className="input" maxLength={10} minLength={10} onInput={(e) => e.target.value = e.target.value.replace(/[^\d\+\-\s\(\)]/g, "")} {...register("phone", { required: true, maxLength: 10, minLength: 10 })} /></div>
               <div className="sm:col-span-2"><label className="label">{t("checkout.addressLine1")}</label><input className="input" {...register("addressLine1", { required: true })} /></div>
               <div className="sm:col-span-2"><label className="label">{t("checkout.addressLine2")}</label><input className="input" {...register("addressLine2")} /></div>
               <div><label className="label">{t("checkout.city")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s\-]/gu, "")} {...register("city", { required: true })} /></div>
@@ -130,7 +130,7 @@ const Checkout = () => {
                 )}
                 <div className="grid gap-4 sm:grid-cols-2">
                 <div><label className="label">{t("checkout.fullName")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s]/gu, "")} {...register("shipFullName", { required: !sameAsBilling })} /></div>
-                <div><label className="label">{t("checkout.phone")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\d\+\-\s\(\)]/g, "")} {...register("shipPhone", { required: !sameAsBilling })} /></div>
+                <div><label className="label">{t("checkout.phone")}</label><input className="input" maxLength={10} minLength={10} onInput={(e) => e.target.value = e.target.value.replace(/[^\d\+\-\s\(\)]/g, "")} {...register("shipPhone", { required: !sameAsBilling, maxLength: 10, minLength: 10 })} /></div>
                 <div className="sm:col-span-2"><label className="label">{t("checkout.addressLine1")}</label><input className="input" {...register("shipAddressLine1", { required: !sameAsBilling })} /></div>
                 <div><label className="label">{t("checkout.city")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^\p{L}\s\-]/gu, "")} {...register("shipCity", { required: !sameAsBilling })} /></div>
                 <div><label className="label">{t("checkout.postalCode")}</label><input className="input" onInput={(e) => e.target.value = e.target.value.replace(/[^0-9]/g, "")} {...register("shipPostalCode", { required: !sameAsBilling })} /></div>
