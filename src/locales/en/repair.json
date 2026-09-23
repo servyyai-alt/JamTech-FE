@@ -97,5 +97,8 @@
   "trackThisRepair": "Track This Repair",
   "trackingSubtitle": "Track your requests below.",
   "trackingPlaceholder": "e.g. REP-2026-00001",
+  "recentQuotes": "Your Recent Quotes & Repairs",
+  "emptyQuotes": "You haven't requested any repair quotes yet.",
+  "customDevice": "Custom Device",
   "paymentStatus": "Payment Status"
 }
