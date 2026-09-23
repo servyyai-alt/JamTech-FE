@@ -80,7 +80,7 @@ const OrderTracking = () => {
 
         {!order && !loading && user && (
           <div className="mx-auto max-w-2xl mt-12 animate-fade-up">
-            <h3 className="mb-4 font-display text-xl font-semibold text-ink-900">Your Recent Orders</h3>
+            <h3 className="mb-4 font-display text-xl font-semibold text-ink-900">{t("tracking.recentOrders")}</h3>
             {loadingOrders ? (
               <Loader />
             ) : myOrders.length > 0 ? (
@@ -90,7 +90,7 @@ const OrderTracking = () => {
                     <div>
                       <p className="font-mono text-sm font-bold text-primary-600">{o.orderNumber}</p>
                       <p className="text-sm font-medium text-ink-900 mt-1">{new Date(o.createdAt).toLocaleDateString()}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">{o.items?.length || 0} items</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{t("tracking.itemCount", { count: o.items?.length || 0 })}</p>
                     </div>
                     <div className="flex items-center gap-4">
                       <span className="font-semibold text-ink-900">{formatPrice(o.totalAmount, o.currency)}</span>
@@ -100,7 +100,7 @@ const OrderTracking = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-sm">You haven't placed any shop orders yet.</p>
+              <p className="text-gray-500 text-sm">{t("tracking.emptyOrders")}</p>
             )}
           </div>
         )}

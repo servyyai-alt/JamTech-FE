@@ -97,5 +97,8 @@
   "trackThisRepair": "Suivre cette réparation",
   "trackingSubtitle": "Entrez votre numéro de réservation pour voir l'état en temps réel.",
   "trackingPlaceholder": "ex. REP-2026-00001",
+  "recentQuotes": "Vos devis et réparations récents",
+  "emptyQuotes": "Vous n'avez pas encore demandé de devis de réparation.",
+  "customDevice": "Appareil personnalisé",
   "paymentStatus": "Statut du paiement"
 }

@@ -53,7 +53,10 @@
     "title": "Track Your Order",
     "description": "Track your orders below.",
     "placeholder": "e.g. ORD-2026-00001",
-    "notFound": "Order not found."
+    "notFound": "Order not found.",
+    "recentOrders": "Your Recent Orders",
+    "emptyOrders": "You haven't placed any shop orders yet.",
+    "itemCount": "{{count}} items"
   },
   "payment": {
     "success": {

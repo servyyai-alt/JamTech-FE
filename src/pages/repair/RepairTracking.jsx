@@ -118,7 +118,7 @@ const RepairTracking = () => {
 
         {!booking && !loading && user && (
           <div className="mx-auto max-w-2xl mt-12 animate-fade-up" style={{ animationDelay: "100ms" }}>
-            <h3 className="mb-4 font-display text-xl font-semibold text-ink-900">Your Recent Quotes & Repairs</h3>
+            <h3 className="mb-4 font-display text-xl font-semibold text-ink-900">{t("recentQuotes")}</h3>
             {loadingBookings ? (
               <Loader />
             ) : myBookings.length > 0 ? (
@@ -127,7 +127,7 @@ const RepairTracking = () => {
                   <button key={b._id} onClick={() => { setBookingNumber(b.bookingNumber); setTimeout(() => track(), 100); }} className="w-full text-left card flex items-center justify-between p-5 hover:-translate-y-1 hover:shadow-md transition-all border border-gray-100 bg-white">
                     <div>
                       <p className="font-mono text-sm font-bold text-primary-600">{b.bookingNumber}</p>
-                      <p className="text-sm font-medium text-ink-900 mt-1">{b.device?.brand} {b.device?.model || "Custom Device"}</p>
+                      <p className="text-sm font-medium text-ink-900 mt-1">{b.device?.brand} {b.device?.model || t("customDevice")}</p>
                       <p className="text-xs text-gray-500 mt-0.5">{new Date(b.createdAt).toLocaleDateString()}</p>
                     </div>
                     <div>
@@ -137,7 +137,7 @@ const RepairTracking = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-sm">You haven't requested any repair quotes yet.</p>
+              <p className="text-gray-500 text-sm">{t("emptyQuotes")}</p>
             )}
           </div>
         )}

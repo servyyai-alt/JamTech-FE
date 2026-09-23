@@ -53,7 +53,10 @@
     "title": "Suivre votre commande",
     "description": "Entrez votre numéro de commande pour voir le statut.",
     "placeholder": "ex. ORD-2026-00001",
-    "notFound": "Commande non trouvée."
+    "notFound": "Commande non trouvée.",
+    "recentOrders": "Vos commandes récentes",
+    "emptyOrders": "Vous n'avez pas encore passé de commandes dans la boutique.",
+    "itemCount": "{{count}} articles"
   },
   "payment": {
     "success": {
