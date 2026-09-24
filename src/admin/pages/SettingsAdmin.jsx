@@ -44,7 +44,6 @@ const SettingsAdmin = () => {
           <div><label className="label">{t("settings.freeShippingThreshold")}</label><input type="number" className="input" value={settings.freeShippingThreshold} onChange={(e) => setSettings({ ...settings, freeShippingThreshold: Number(e.target.value) })} /></div>
         </div>
         <div><label className="label">{t("settings.standardShippingCost")}</label><input type="number" className="input" value={settings.standardShippingCost} onChange={(e) => setSettings({ ...settings, standardShippingCost: Number(e.target.value) })} /></div>
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={settings.maintenanceMode} onChange={(e) => setSettings({ ...settings, maintenanceMode: e.target.checked })} /> {t("settings.maintenanceMode")}</label>
         <button type="submit" disabled={saving} className="btn-primary !px-5 !py-2.5 text-sm disabled:opacity-60">{saving ? t("crud.saving") : t("settings.save")}</button>
       </form>
     </div>
