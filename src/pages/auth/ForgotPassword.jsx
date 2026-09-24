@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as authService from "../../services/authService.js";
 import { useToast } from "../../context/ToastContext.jsx";
 import { useTranslation } from "react-i18next";
@@ -12,11 +12,18 @@ const ForgotPassword = () => {
   const [sent, setSent] = useState(false);
   const { t } = useTranslation("auth");
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await authService.forgotPassword(data.email);
-      setSent(true);
+      const res = await authService.forgotPassword(data.email);
+      if (res.resetToken) {
+        showToast("Dev mode: Redirecting to reset password", "success");
+        navigate(`/reset-password/${res.resetToken}`);
+      } else {
+        setSent(true);
+      }
     } catch (err) {
       showToast(err.response?.data?.message || t("forgotPassword.processFailed"), "error");
     } finally {
