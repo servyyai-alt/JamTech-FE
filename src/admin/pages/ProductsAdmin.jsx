@@ -41,7 +41,7 @@ const ProductsAdmin = () => {
   const load = async () => {
     setLoading(true);
     try {
-      const [pRes, cRes] = await Promise.all([api.get("/products", { params: { limit: 100 } }), api.get("/categories")]);
+      const [pRes, cRes] = await Promise.all([api.get("/products", { params: { limit: 100, active: false } }), api.get("/categories", { params: { active: false } })]);
       setProducts(pRes.data.data);
       setCategories(cRes.data.data);
     } catch (err) {

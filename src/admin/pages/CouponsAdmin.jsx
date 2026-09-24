@@ -17,7 +17,7 @@ const CouponsAdmin = () => {
         { name: "minOrderAmount", label: t("coupons.minOrderAmount"), type: "number" },
         { name: "maxDiscountAmount", label: t("coupons.maxDiscountAmount"), type: "number" },
         { name: "usageLimit", label: t("coupons.usageLimit"), type: "number" },
-        { name: "validUntil", label: t("coupons.validUntil"), required: true },
+        { name: "validUntil", label: t("coupons.validUntil"), type: "date", required: true },
         { name: "isActive", label: t("fields.active"), type: "checkbox" },
       ]}
       columns={[

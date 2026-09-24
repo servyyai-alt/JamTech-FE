@@ -51,6 +51,15 @@ const RepairBrandSelect = () => {
               <span className="font-display font-semibold">{brand.name}</span>
             </Link>
           ))}
+          <Link to="/repair/manual-quote" state={{ category }} className="card flex flex-col items-center justify-center gap-3 border-dashed p-6 text-center hover:-translate-y-1">
+            <span className="text-2xl text-primary-600">+</span>
+            <span className="font-display text-sm font-semibold">{t("brandNotListed", "Brand not listed?")}</span>
+          </Link>
+        </div>
+      )}
+      {!loading && !error && brands.length === 0 && (
+        <div className="mt-6 text-center">
+          <Link to="/repair/manual-quote" state={{ category }} className="btn-secondary">{t("brandNotListed", "Brand not listed?")}</Link>
         </div>
       )}
     </div>
