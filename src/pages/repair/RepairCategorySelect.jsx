@@ -69,6 +69,15 @@ const RepairCategorySelect = () => {
               </Link>
             );
           })}
+          <Link to="/repair/manual-quote" className="group flex flex-col items-center justify-center gap-4 text-center hover:-translate-y-1 transition-all duration-300 border-2 border-dashed border-gray-200 hover:border-primary-500 hover:bg-primary-50/50 bg-gray-50/50 min-h-[250px]" style={{ borderRadius: 20 }}>
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-primary-600 shadow-sm transition-transform group-hover:scale-110">
+              <span className="text-3xl">+</span>
+            </div>
+            <div className="px-4">
+              <span className="block font-display text-lg font-bold text-ink-900 mb-1" style={{ fontFamily: "'Syne', sans-serif" }}>{t("categoryNotListed", "Other Device")}</span>
+              <span className="text-sm font-medium text-gray-500">Request a custom quote</span>
+            </div>
+          </Link>
         </div>
       )}
     </div>

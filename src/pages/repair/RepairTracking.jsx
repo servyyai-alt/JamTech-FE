@@ -89,28 +89,30 @@ const RepairTracking = () => {
               <StatusBadge status={booking.status} />
             </div>
 
-            <div className="relative">
-              <div className="absolute left-[15px] top-4 bottom-4 w-0.5 bg-gray-100 md:left-4 md:right-4 md:top-[15px] md:h-0.5 md:w-auto" />
-              <div className="flex flex-col gap-6 md:flex-row md:justify-between">
-                {ALL_STATUSES.map((status, index) => {
-                  const isCompleted = index <= currentIndex;
-                  const isActive = index === currentIndex;
-                  return (
-                    <div key={status} className="relative flex items-center gap-4 md:flex-col md:text-center z-10">
-                      <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 bg-white transition-colors duration-500 ${isCompleted ? "border-primary-500 text-primary-500 shadow-md" : "border-gray-200 text-gray-300"} ${isActive ? "ring-4 ring-primary-500/20" : ""}`}>
-                        <Check size={16} className={isCompleted ? "opacity-100" : "opacity-0"} />
+            <div className="relative w-full overflow-x-auto pb-4 hide-scrollbar">
+              <div className="relative md:min-w-[1200px] md:px-4">
+                <div className="absolute left-[15px] top-4 bottom-4 w-0.5 bg-gray-100 md:left-8 md:right-8 md:top-[15px] md:h-0.5 md:w-auto" />
+                <div className="flex flex-col gap-6 md:flex-row md:justify-between">
+                  {ALL_STATUSES.map((status, index) => {
+                    const isCompleted = index <= currentIndex;
+                    const isActive = index === currentIndex;
+                    return (
+                      <div key={status} className="relative flex items-center gap-4 md:flex-col md:text-center z-10 md:w-28">
+                        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 bg-white transition-colors duration-500 ${isCompleted ? "border-primary-500 text-primary-500 shadow-md" : "border-gray-200 text-gray-300"} ${isActive ? "ring-4 ring-primary-500/20" : ""}`}>
+                          <Check size={16} className={isCompleted ? "opacity-100" : "opacity-0"} />
+                        </div>
+                        <div>
+                          <p className={`text-[11px] font-bold leading-tight ${isCompleted ? "text-ink-900" : "text-gray-400"}`}>{t(`status.${status}`)}</p>
+                          {isActive && booking.statusUpdatedAt && (
+                            <p className="text-[10px] font-medium text-primary-600 mt-1">
+                              {new Date(booking.statusUpdatedAt).toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <p className={`text-sm font-bold ${isCompleted ? "text-ink-900" : "text-gray-400"}`}>{t(`status.${status}`)}</p>
-                        {isActive && booking.statusUpdatedAt && (
-                          <p className="text-xs font-medium text-primary-600 mt-1">
-                            {new Date(booking.statusUpdatedAt).toLocaleDateString()}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

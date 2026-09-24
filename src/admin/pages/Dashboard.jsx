@@ -9,13 +9,13 @@ import { formatPrice } from "../../components/common/PriceTag.jsx";
 const COLORS = ["#f97316", "#f59e0b", "#0b0f19", "#fb923c", "#fdba74", "#ea580c", "#d97706", "#c2410c"];
 
 const StatCard = ({ icon: Icon, label, value, tint }) => (
-  <div className="card flex items-center gap-4 p-5">
-    <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${tint}`}>
-      <Icon size={22} className="text-white" />
+  <div className="card flex items-center gap-3 p-4 min-w-0">
+    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${tint}`}>
+      <Icon size={20} className="text-white" />
     </div>
-    <div>
-      <p className="text-xs font-medium text-gray-500">{label}</p>
-      <p className="font-display text-xl font-bold text-ink-900">{value}</p>
+    <div className="min-w-0 flex-1">
+      <p className="text-xs font-medium text-gray-500 leading-tight mb-1">{label}</p>
+      <p className="font-display text-lg font-bold text-ink-900 break-all leading-none">{value}</p>
     </div>
   </div>
 );

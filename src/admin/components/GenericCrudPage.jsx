@@ -32,6 +32,12 @@ const unflatten = (obj) => {
   return result;
 };
 
+const getSearchableText = (obj) => {
+  if (obj === null || obj === undefined) return "";
+  if (typeof obj !== "object") return String(obj).toLowerCase();
+  return Object.values(obj).map(getSearchableText).join(" ");
+};
+
 const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
   const { t } = useTranslation("admin");
   const [items, setItems] = useState([]);
@@ -47,7 +53,7 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await crud.list(resource);
+      const res = await crud.list(resource, { active: false });
       setItems(res.data || []);
     } catch (err) {
       showToast(err.response?.data?.message || t("crud.toastLoadFailed"), "error");
@@ -187,9 +193,19 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {items
-                .filter((row) => !searchQuery || JSON.stringify(row).toLowerCase().includes(searchQuery.toLowerCase()))
-                .map((row) => (
+              {(() => {
+                const searchLower = searchQuery.toLowerCase();
+                const filtered = items.filter((row) => !searchQuery || getSearchableText(row).includes(searchLower));
+                if (filtered.length === 0) {
+                  return (
+                    <tr>
+                      <td colSpan={columns.length + 1} className="px-4 py-8 text-center text-sm text-gray-500">
+                        No results found
+                      </td>
+                    </tr>
+                  );
+                }
+                return filtered.map((row) => (
                 <tr key={row._id} className="hover:bg-gray-50">
                   {columns.map((c) => (
                     <td key={c.key} className="px-4 py-3">{c.render ? c.render(row) : String(row[c.key] ?? "—")}</td>
@@ -203,7 +219,8 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
                     </button>
                   </td>
                 </tr>
-              ))}
+                ));
+              })()}
             </tbody>
           </table>
         </div>
@@ -303,7 +320,7 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
                         )}
                       </div>
                     ) : (
-                      <input type={f.type || "text"} className="input" placeholder={f.placeholder} required={f.required} value={value || ""} onChange={(e) => handleChange(f.name, f.type === "number" ? Number(e.target.value) : e.target.value)} />
+                      <input type={f.type || "text"} className="input" placeholder={f.placeholder} required={f.required} value={f.type === "date" && value ? String(value).split("T")[0] : (value || "")} onChange={(e) => handleChange(f.name, f.type === "number" ? Number(e.target.value) : e.target.value)} />
                     )}
                   </div>
                 );

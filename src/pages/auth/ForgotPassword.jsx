@@ -19,7 +19,6 @@ const ForgotPassword = () => {
     try {
       const res = await authService.forgotPassword(data.email);
       if (res.resetToken) {
-        showToast("Dev mode: Redirecting to reset password", "success");
         navigate(`/reset-password/${res.resetToken}`);
       } else {
         setSent(true);

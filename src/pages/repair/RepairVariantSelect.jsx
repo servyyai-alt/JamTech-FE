@@ -68,6 +68,10 @@ const RepairVariantSelect = () => {
             <ArrowRight size={16} className="text-primary-600" />
           </button>
         ))}
+        <button onClick={() => navigate("/repair/manual-quote", { state: { category, brand, model } })} className="card flex items-center justify-between border-dashed p-5 text-left hover:-translate-y-0.5 bg-gray-50/50">
+          <span className="font-medium text-ink-900">{t("variantNotListed", "Other (Not Listed)")}</span>
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-primary-600 shadow-sm"><span className="text-lg leading-none">+</span></span>
+        </button>
       </div>
     </div>
   );

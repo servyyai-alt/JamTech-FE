@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="container-px mx-auto grid max-w-7xl gap-10 py-16 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-2">
           <Link to="/" className="mb-4 flex w-fit flex-col gap-3">
-            <img src={logo} alt="JAM Smart Tech" className="h-16 w-auto rounded-xl bg-white p-1.5 object-contain" />
+            <img src={logo} alt="JAM Smart Tech" className="h-16 w-16 rounded-xl bg-white p-1.5 object-contain" />
             <span className="font-display text-xl font-bold tracking-wide text-white">Jam Smart Tech</span>
           </Link>
           <p className="mb-5 max-w-sm text-sm text-gray-400">{f("tagline")}</p>

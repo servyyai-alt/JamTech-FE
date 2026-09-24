@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { NavLink, Outlet, Link } from "react-router-dom";
+import { NavLink, Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Smartphone, Tag, Layers, SlidersHorizontal, Wrench,
   ClipboardList, ShoppingBag, FolderTree, Package, Users, Ticket, Star, CreditCard, Settings,
-  Menu, X,
+  Menu, X, ArrowLeft
 } from "lucide-react";
 import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 
@@ -45,6 +45,8 @@ const groups = [
 
 const AdminLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const SidebarContent = ({ onNav }) => (
     <>
@@ -106,10 +108,23 @@ const AdminLayout = () => {
           </div>
           <LanguageSwitcher />
         </div>
-        <div className="container-px py-8">
+        <div className="container-px py-8 relative">
           <Outlet />
         </div>
       </div>
+      
+      {location.pathname !== "/admin" && (
+        <button
+          onClick={() => {
+            navigate(-1);
+            window.scrollTo(0, 0);
+          }}
+          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-ink-900 text-white shadow-premium transition-transform hover:scale-110 border border-gray-800 lg:left-[272px] lg:right-auto"
+          title="Go Back"
+        >
+          <ArrowLeft size={20} />
+        </button>
+      )}
     </div>
   );
 };

@@ -13,7 +13,7 @@ const RepairServicesAdmin = () => {
         { name: "name", label: t("fields.name"), required: true },
         { name: "slug", label: t("fields.slug") },
         { name: "icon", label: t("fields.icon") },
-        { name: "image", label: t("fields.image") },
+        { name: "image", label: t("fields.image"), type: "image" },
         { name: "shortDescription", label: t("fields.shortDescription") },
         { name: "fullDescription", label: t("fields.fullDescription"), type: "textarea" },
         { name: "estimatedTime", label: t("repairServices.estimatedTime") },

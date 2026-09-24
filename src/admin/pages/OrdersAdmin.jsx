@@ -56,7 +56,15 @@ const OrdersAdmin = () => {
               {orders.map((o) => (
                 <tr key={o._id} className="hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium">{o.orderNumber}</td>
-                  <td className="px-4 py-3">{t("orders.itemCount", { count: o.items.length })}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-col gap-1">
+                      {o.items?.map((item, idx) => (
+                        <span key={idx} className="text-xs text-gray-600 line-clamp-1" title={item.title}>
+                          {item.quantity}x {item.title || "Product"}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
                   <td className="px-4 py-3">{formatPrice(o.totalAmount, o.currency)}</td>
                   <td className="px-4 py-3 capitalize">{o.paymentStatus}</td>
                   <td className="px-4 py-3"><StatusBadge status={o.status} /></td>
