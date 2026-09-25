@@ -26,7 +26,7 @@ const MainLayout = () => {
       {showBackButton && (
         <button
           onClick={handleBack}
-          className="fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white text-ink-900 shadow-premium transition-transform hover:scale-110 border border-gray-100"
+          className="fixed top-24 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white text-ink-900 shadow-premium transition-transform hover:scale-110 border border-gray-100"
           title="Go Back"
         >
           <ArrowLeft size={20} />
