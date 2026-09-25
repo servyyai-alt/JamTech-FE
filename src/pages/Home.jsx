@@ -15,7 +15,6 @@ import "./home-hero.css";
 import "./repair-services.css";
 import "./customer-stories.css";
 import bg_image from "../assets/bg_image.png";
-import bg_image1 from "../assets/bg_image1.png";
 import repairWorkshop from "../assets/hero_repair_bg.jpg";
 import heroBackgroundVideo from "../assets/anime_video.mp4";
 import catPhoneImg from "../assets/cat_phone.jpg";
@@ -74,6 +73,7 @@ const STATS = [
   { key: "avgTurnaround" },
   { key: "partsGuaranteed" },
 ];
+const HERO_HUD = [92, 74, 58];
 
 /* ─── hooks ─────────────────────────────────────────────────── */
 function useInView(threshold = 0.12) {
@@ -124,6 +124,8 @@ function StarRow({ rating }) {
 const Home = () => {
   const { t } = useTranslation("home");
   const marqueeItems = t("marquee.items", { returnObjects: true });
+  const hudRaw = t("hero.hud", { returnObjects: true });
+  const hudLabels = Array.isArray(hudRaw) ? hudRaw : [];
   const catName = (name) => t(`categoryNames.${CATEGORY_KEYS[name] || name.toLowerCase().replace(/\s+/g, "_")}`, { defaultValue: name });
   const [categories, setCategories] = useState([]);
   const [featured, setFeatured] = useState([]);
@@ -133,6 +135,7 @@ const Home = () => {
   const [heroVisible, setHeroVisible] = useState(false);
 
   const heroVideoRef = useRef(null);
+  const heroRef = useRef(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
@@ -151,6 +154,14 @@ const Home = () => {
     const video = heroVideoRef.current;
     if (video.paused) video.play().catch(() => {});
     else video.pause();
+  };
+
+  const handleHeroPointerMove = (event) => {
+    const section = heroRef.current;
+    if (!section) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    section.style.setProperty("--mx", `${((event.clientX - rect.left) / rect.width) * 100}%`);
+    section.style.setProperty("--my", `${((event.clientY - rect.top) / rect.height) * 100}%`);
   };
 
   const featCarouselRef = useRef(null);
@@ -261,30 +272,71 @@ const Home = () => {
       `}</style>
 
       {/* ── HERO ───────────────────────────────────────────────── */}
-      <section className="premium-hero" aria-labelledby="hero-heading">
+      <section className="premium-hero" aria-labelledby="hero-heading" ref={heroRef} onPointerMove={handleHeroPointerMove}>
         <video
           ref={heroVideoRef}
           className="premium-hero__video"
           src={heroBackgroundVideo}
           poster={bg_image}
-          loop muted playsInline aria-hidden="true"
+          loop muted playsInline autoPlay preload="metadata" aria-hidden="true"
           onPlay={() => setVideoPlaying(true)}
           onPause={() => setVideoPlaying(false)}
         />
-        <div className="premium-hero__shade" />
+        <div className="premium-hero__grade" aria-hidden="true" />
+        <div className="premium-hero__grid" aria-hidden="true" />
+        <div className="premium-hero__sweep" aria-hidden="true" />
         <div className="premium-hero__inner">
-          <div className={`premium-hero__content ${heroVisible ? "is-visible" : ""}`}>
-            <div className="premium-hero__eyebrow"><span /> JAM SMART TECH <span className="premium-hero__eyebrow-divider">/</span> {t("hero.eyebrow")}</div>
-            <h1 id="hero-heading" className="premium-hero__heading">
-              {t("hero.titlePart1")}<br />
-              <span>{t("hero.titlePart2")}</span>
-            </h1>
-            <p className="premium-hero__description">{t("hero.subtitle")}</p>
-            <div className="premium-hero__actions">
-              <Link to="/repair" className="premium-hero__primary">{t("hero.ctaRepair")}<span><ArrowRight size={20} /></span></Link>
-              <Link to="/shop" className="premium-hero__secondary"><ShoppingBag size={18} />{t("hero.ctaShop")}</Link>
+          <div className="premium-hero__body">
+            <div className={`premium-hero__content ${heroVisible ? "is-visible" : ""}`}>
+              <div className="premium-hero__eyebrow"><span /> JAM SMART TECH <span className="premium-hero__eyebrow-divider">/</span> {t("hero.eyebrow")}</div>
+              <h1 id="hero-heading" className="premium-hero__heading">
+                {t("hero.titlePart1")}<br />
+                <span>{t("hero.titlePart2")}</span>
+              </h1>
+              <p className="premium-hero__description">{t("hero.subtitle")}</p>
+              <div className="premium-hero__actions">
+                <Link to="/repair" className="premium-hero__primary">{t("hero.ctaRepair")}<span><ArrowRight size={20} /></span></Link>
+                <Link to="/shop" className="premium-hero__secondary"><ShoppingBag size={18} />{t("hero.ctaShop")}</Link>
+              </div>
+              <div className="premium-hero__promise"><ShieldCheck size={17} /><span>{t("hero.badge")}</span></div>
             </div>
-            <div className="premium-hero__promise"><ShieldCheck size={17} /><span>{t("hero.badge")}</span></div>
+            <div className="premium-hero__stage">
+              <div className="premium-hero__frame">
+                <span className="premium-hero__corner premium-hero__corner--tl" aria-hidden="true" />
+                <span className="premium-hero__corner premium-hero__corner--tr" aria-hidden="true" />
+                <span className="premium-hero__corner premium-hero__corner--bl" aria-hidden="true" />
+                <span className="premium-hero__corner premium-hero__corner--br" aria-hidden="true" />
+                <div className="premium-hero__frame-top">
+                  <span className="premium-hero__signal"><i aria-hidden="true" />{t("hero.liveFeed")}</span>
+                  <button type="button" className="premium-hero__playback" onClick={toggleHeroVideo} aria-label={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")} title={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")}>
+                    {videoPlaying ? <Pause size={15} /> : <Play size={15} />}
+                  </button>
+                </div>
+                <div className="premium-hero__frame-bottom">
+                  <div className="premium-hero__hud">
+                    <span className="premium-hero__hud-title">{t("hero.hudTitle")}</span>
+                    <ul>
+                      {hudLabels.map((label, i) => (
+                        <li key={label}>
+                          <span>{label}</span>
+                          <i className="premium-hero__hud-track"><b style={{ "--fill": `${HERO_HUD[i] ?? 60}%` }} /></i>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="premium-hero__cards">
+                    <div className="premium-hero__card">
+                      <span className="premium-hero__card-icon"><BadgeCheck size={18} /></span>
+                      <span className="premium-hero__card-copy"><strong>{t("heroBadge.title")}</strong><small>{t("heroBadge.subtitle")}</small></span>
+                    </div>
+                    <div className="premium-hero__card premium-hero__card--rating">
+                      <Star size={15} fill="#ffae75" strokeWidth={0} aria-hidden="true" />
+                      <span>{t("ratingBadge.value")}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="premium-hero__footer">
             <div className="premium-hero__stats">
@@ -295,12 +347,7 @@ const Home = () => {
                 </div>
               ))}
             </div>
-            <div className="premium-hero__tools">
-              <a href="#home-devices" className="premium-hero__explore">{t("hero.explore")}<ArrowDown size={16} /></a>
-              <button type="button" className="premium-hero__playback" onClick={toggleHeroVideo} aria-label={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")} title={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")}>
-                {videoPlaying ? <Pause size={16} /> : <Play size={16} />}
-              </button>
-            </div>
+            <a href="#home-devices" className="premium-hero__explore">{t("hero.explore")}<ArrowDown size={16} /></a>
           </div>
         </div>
       </section>
