@@ -11,7 +11,7 @@ import EmptyState from "../../components/common/EmptyState.jsx";
  * fields: [{ name, label, type: 'text'|'number'|'textarea'|'checkbox'|'select'|'multiselect', options?: [{value,label}], optionsResource?, optionLabel?, required?, section?, placeholder? }]
  *   - `name` may be dotted (e.g. "translations.fr.name") for nested fields.
  *   - `section` groups consecutive fields under a heading.
- *   - `multiselect` renders a checkbox list (values stored as an array of ids).
+ *   - `multiselect` renders a filterable checkbox list with Select all / Clear all (values stored as an array of ids).
  * columns: [{ key, label, render?: (row) => node }]
  */
 const getPath = (obj, path) =>
@@ -38,6 +38,73 @@ const getSearchableText = (obj) => {
   return Object.values(obj).map(getSearchableText).join(" ");
 };
 
+/**
+ * Checkbox list used by `multiselect` fields.
+ * Includes a filter box and a Select all / Clear all toggle that act on the
+ * currently visible (filtered) options only.
+ */
+const MultiSelectField = ({ options, value, onChange, search, onSearchChange }) => {
+  const { t } = useTranslation("admin");
+  const selected = value || [];
+  const term = (search || "").trim().toLowerCase();
+  const visible = term
+    ? options.filter((o) => String(o.label).toLowerCase().includes(term))
+    : options;
+  const allVisibleSelected = visible.length > 0 && visible.every((o) => selected.includes(o.value));
+
+  const toggleVisible = () => {
+    if (allVisibleSelected) {
+      const visibleValues = new Set(visible.map((o) => o.value));
+      onChange(selected.filter((v) => !visibleValues.has(v)));
+    } else {
+      onChange(Array.from(new Set([...selected, ...visible.map((o) => o.value)])));
+    }
+  };
+
+  return (
+    <div className="rounded-xl border border-gray-200 bg-gray-50 p-3">
+      <div className="mb-2 flex items-center gap-2">
+        <input
+          type="search"
+          className="input !py-1.5 !text-xs flex-1"
+          placeholder={t("crud.searchOptions")}
+          value={search || ""}
+          onChange={(e) => onSearchChange(e.target.value)}
+        />
+        <button
+          type="button"
+          className="btn-secondary m-0 whitespace-nowrap !px-3 !py-1.5 text-xs"
+          onClick={toggleVisible}
+          disabled={visible.length === 0}
+        >
+          {allVisibleSelected ? t("crud.clearAll") : t("crud.selectAll")}
+        </button>
+      </div>
+      <div className="max-h-52 overflow-y-auto">
+        {options.length === 0 ? (
+          <p className="text-sm text-gray-400">{t("crud.noOptions")}</p>
+        ) : visible.length === 0 ? (
+          <p className="text-sm text-gray-400">{t("crud.noMatches")}</p>
+        ) : visible.map((o) => (
+          <label key={o.value} className="flex items-center gap-2 py-1 text-sm text-ink-700">
+            <input
+              type="checkbox"
+              checked={selected.includes(o.value)}
+              onChange={(e) => {
+                onChange(e.target.checked ? [...selected, o.value] : selected.filter((v) => v !== o.value));
+              }}
+            />
+            <span className="font-medium">{o.label}</span>
+          </label>
+        ))}
+      </div>
+      <p className="mt-2 text-[11px] text-gray-400">
+        {t("crud.selectedCount", { count: selected.length, total: options.length })}
+      </p>
+    </div>
+  );
+};
+
 const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
   const { t } = useTranslation("admin");
   const [items, setItems] = useState([]);
@@ -47,6 +114,7 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
   const [selectOptions, setSelectOptions] = useState({});
+  const [optionSearch, setOptionSearch] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const { showToast } = useToast();
 
@@ -104,6 +172,7 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
     const initial = {};
     fields.forEach((f) => (initial[f.name] = f.type === "multiselect" ? [] : f.type === "checkbox" ? true : ""));
     setForm(initial);
+    setOptionSearch({});
     setEditing(null);
     setModalOpen(true);
   };
@@ -120,6 +189,7 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
       }
     });
     setForm(initial);
+    setOptionSearch({});
     setEditing(item);
     setModalOpen(true);
   };
@@ -251,24 +321,13 @@ const GenericCrudPage = ({ title, resource, fields, columns, description }) => {
                         {(f.options || selectOptions[f.name] || []).map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                       </select>
                     ) : f.type === "multiselect" ? (
-                      <div className="max-h-52 overflow-y-auto rounded-xl border border-gray-200 bg-gray-50 p-3">
-                        {(f.options || selectOptions[f.name] || []).length === 0 ? (
-                          <p className="text-sm text-gray-400">{t("crud.noOptions")}</p>
-                        ) : (f.options || selectOptions[f.name] || []).map((o) => (
-                          <label key={o.value} className="flex items-center gap-2 py-1 text-sm text-ink-700">
-                            <input
-                              type="checkbox"
-                              checked={(value || []).includes(o.value)}
-                              onChange={(e) => {
-                                const current = value || [];
-                                const next = e.target.checked ? [...current, o.value] : current.filter((v) => v !== o.value);
-                                handleChange(f.name, next);
-                              }}
-                            />
-                            <span className="font-medium">{o.label}</span>
-                          </label>
-                        ))}
-                      </div>
+                      <MultiSelectField
+                        options={f.options || selectOptions[f.name] || []}
+                        value={value}
+                        onChange={(next) => handleChange(f.name, next)}
+                        search={optionSearch[f.name]}
+                        onSearchChange={(term) => setOptionSearch((prev) => ({ ...prev, [f.name]: term }))}
+                      />
                     ) : f.type === "checkbox" ? (
                       <label className="flex items-center gap-2 text-sm font-medium text-ink-700">
                         <input type="checkbox" checked={!!value} onChange={(e) => handleChange(f.name, e.target.checked)} />

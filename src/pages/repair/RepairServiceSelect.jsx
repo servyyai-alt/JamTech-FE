@@ -7,7 +7,10 @@ import ErrorState from "../../components/common/ErrorState.jsx";
 import EmptyState from "../../components/common/EmptyState.jsx";
 import RepairStepper from "../../components/service/RepairStepper.jsx";
 import { formatPrice } from "../../components/common/PriceTag.jsx";
-import { Wrench, Clock, ShieldCheck } from "lucide-react";
+import { Wrench, Clock, ShieldCheck, ArrowRight, Smartphone, Tablet, Laptop, Gamepad2 } from "lucide-react";
+import "./repair-service-select.css";
+
+const CATEGORY_ICONS = { Smartphones: Smartphone, Tablets: Tablet, Computers: Laptop, "Gaming Devices": Gamepad2 };
 
 const RepairServiceSelect = () => {
   const { categorySlug, brandSlug, modelSlug } = useParams();
@@ -65,53 +68,94 @@ const RepairServiceSelect = () => {
   if (error) return <div className="container-px section-y mx-auto max-w-4xl"><ErrorState message={error} /></div>;
 
   const availableServices = services.filter((s) => prices[s._id]);
+  const DeviceIcon = CATEGORY_ICONS[category?.name] || Smartphone;
 
   return (
     <div className="container-px section-y mx-auto max-w-5xl">
       <RepairStepper current={4} />
       <div className="mb-8 text-center">
         <h1 className="font-display text-2xl font-bold text-ink-900 md:text-3xl">{t("title")}</h1>
-        <p className="mt-1 text-gray-500">{brand?.name} {model?.name} {variant ? `· ${variant.label}` : ""}</p>
+        <p className="mt-1 text-gray-500">{t("step4Subtitle")}</p>
       </div>
 
-      {availableServices.length === 0 ? (
-        <div className="space-y-4 text-center">
-          <EmptyState title={t("empty.title")} description={t("empty.description")} />
-          <button onClick={() => navigate("/repair/manual-quote", { state: { category, brand, model, variant } })} className="btn-primary">
-            {t("requestManualQuote")}
-          </button>
+      <div className="svc-pick">
+        <div className="svc-pick__device">
+          <span className="svc-pick__device-icon"><DeviceIcon size={22} /></span>
+          <span className="svc-pick__device-copy">
+            <span className="svc-pick__device-kicker">{t("device")}</span>
+            <span className="svc-pick__device-name">{brand?.name} {model?.name}</span>
+            {variant && <span className="svc-pick__device-variant">{variant.label}</span>}
+          </span>
+          <span className="svc-pick__device-side">
+            <span className="svc-pick__count">{t("availableRepairs", { count: availableServices.length })}</span>
+            <button
+              type="button"
+              onClick={() => navigate(`/repair/${categorySlug}/${brandSlug}/${modelSlug}`, { state: { category, brand, model } })}
+              className="svc-pick__change"
+            >
+              {t("changeDevice")} <ArrowRight size={13} />
+            </button>
+          </span>
         </div>
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {availableServices.map((s) => {
-            const price = prices[s._id];
-            return (
-              <button key={s._id} onClick={() => selectService(s)} className="card flex flex-col gap-2 p-6 text-left hover:-translate-y-1">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600"><Wrench size={18} /></div>
-                  <span className="font-display text-lg font-bold text-ink-900">{price.isQuoteOnly ? t("requestQuote") : formatPrice(price.finalPrice ?? price.regularPrice)}</span>
-                </div>
-                <h3 className="font-display font-semibold">{s.name}</h3>
-                {s.shortDescription && <p className="text-sm text-gray-500">{s.shortDescription}</p>}
-                {price.isQuoteOnly && <p className="text-xs font-medium text-primary-600">{t("noFixedPrice")}</p>}
-                <div className="mt-2 flex gap-4 text-xs text-gray-400">
-                  {s.estimatedTime && <span className="flex items-center gap-1"><Clock size={12} /> {s.estimatedTime}</span>}
-                  {s.warranty && <span className="flex items-center gap-1"><ShieldCheck size={12} /> {s.warranty}</span>}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      )}
-      {availableServices.length > 0 && (
-        <div className="mt-6 rounded-2xl border border-dashed border-primary-200 bg-primary-50/50 p-5 text-center">
-          <h2 className="font-display font-semibold text-ink-900">{t("cantFindTitle")}</h2>
-          <p className="mt-1 text-sm text-gray-600">{t("cantFindDescription")}</p>
-          <button onClick={() => navigate("/repair/manual-quote", { state: { category, brand, model, variant } })} className="btn-secondary mt-4 !px-4 !py-2 text-sm">
-            {t("requestManualQuote")}
-          </button>
-        </div>
-      )}
+
+        {availableServices.length === 0 ? (
+          <div className="space-y-4 text-center">
+            <EmptyState title={t("empty.title")} description={t("empty.description")} />
+            <button onClick={() => navigate("/repair/manual-quote", { state: { category, brand, model, variant } })} className="btn-primary">
+              {t("requestManualQuote")}
+            </button>
+          </div>
+        ) : (
+          <div className="svc-pick__grid">
+            {availableServices.map((s, i) => {
+              const price = prices[s._id];
+              return (
+                <button
+                  key={s._id}
+                  type="button"
+                  onClick={() => selectService(s)}
+                  className="svc-pick__card"
+                  style={{ "--i": i }}
+                >
+                  <span className="svc-pick__card-bar" aria-hidden="true" />
+                  <span className="svc-pick__card-head">
+                    <span className="svc-pick__icon"><Wrench size={20} /></span>
+                    <span className={`svc-pick__price ${price.isQuoteOnly ? "svc-pick__price--quote" : ""}`}>
+                      <strong>{price.isQuoteOnly ? t("requestQuote") : formatPrice(price.finalPrice ?? price.regularPrice)}</strong>
+                      {!price.isQuoteOnly && <span>{t("startingFrom")}</span>}
+                    </span>
+                  </span>
+                  <span className="svc-pick__title">{s.name}</span>
+                  {s.shortDescription && <span className="svc-pick__desc">{s.shortDescription}</span>}
+                  {price.isQuoteOnly && <span className="svc-pick__note">{t("noFixedPrice")}</span>}
+                  {(s.estimatedTime || s.warranty) && (
+                    <span className="svc-pick__meta">
+                      {s.estimatedTime && <span className="svc-pick__chip"><Clock size={12} /> {s.estimatedTime}</span>}
+                      {s.warranty && <span className="svc-pick__chip"><ShieldCheck size={12} /> {s.warranty}</span>}
+                    </span>
+                  )}
+                  <span className="svc-pick__cta">
+                    {t("selectRepair")}
+                    <span className="svc-pick__cta-arrow" aria-hidden="true"><ArrowRight size={15} /></span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {availableServices.length > 0 && (
+          <div className="svc-pick__fallback" style={{ "--i": availableServices.length }}>
+            <div>
+              <h2>{t("cantFindTitle")}</h2>
+              <p>{t("cantFindDescription")}</p>
+            </div>
+            <button onClick={() => navigate("/repair/manual-quote", { state: { category, brand, model, variant } })} className="btn-secondary !px-5 !py-2.5 text-sm">
+              {t("requestManualQuote")}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

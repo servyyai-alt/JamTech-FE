@@ -162,6 +162,11 @@
     "delete": "Delete",
     "select": "Select...",
     "noOptions": "No options available",
+    "noMatches": "No matches",
+    "searchOptions": "Filter...",
+    "selectAll": "Select all",
+    "clearAll": "Clear all",
+    "selectedCount": "{{count}} of {{total}} selected",
     "toastLoadFailed": "Failed to load data",
     "toastDropdownFailed": "Failed to load dropdown options",
     "toastUpdated": "Updated successfully",
@@ -261,7 +266,8 @@
     "compatibilitySection": "Applies to Specific Devices (optional)",
     "compatibleCategories": "Device Categories",
     "compatibleBrands": "Brands",
-    "compatibleModels": "Device Models"
+    "compatibleModels": "Device Models",
+    "compatibleVariants": "Device Variants"
   },
   "repairPrices": {
     "title": "Repair Pricing",

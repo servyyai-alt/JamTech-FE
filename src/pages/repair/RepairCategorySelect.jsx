@@ -34,12 +34,7 @@ const RepairCategorySelect = () => {
     setError(null);
     catalogService.getDeviceCategories()
       .then((res) => {
-        // Fallback to ensuring Laptops is in the list if missing from API, just to match the visual
-        let fetched = res.data || [];
-        if (!fetched.find(c => c.name.toLowerCase() === 'laptops' || c.name.toLowerCase() === 'laptop')) {
-            fetched.splice(1, 0, { _id: 'fake-laptop', name: 'Laptops', slug: 'laptops' });
-        }
-        setCategories(fetched);
+        setCategories(res.data || []);
       })
       .catch(() => setError(t("error.loadCategories")))
       .finally(() => setLoading(false));

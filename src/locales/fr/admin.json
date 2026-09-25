@@ -162,6 +162,11 @@
     "delete": "Supprimer",
     "select": "Sélectionner...",
     "noOptions": "Aucune option disponible",
+    "noMatches": "Aucun résultat",
+    "searchOptions": "Filtrer...",
+    "selectAll": "Tout sélectionner",
+    "clearAll": "Tout désélectionner",
+    "selectedCount": "{{count}} sur {{total}} sélectionné(s)",
     "toastLoadFailed": "Échec du chargement des données",
     "toastDropdownFailed": "Échec du chargement des options de la liste déroulante",
     "toastUpdated": "Mis à jour avec succès",
@@ -261,7 +266,8 @@
     "compatibilitySection": "S'applique à des appareils spécifiques (optionnel)",
     "compatibleCategories": "Catégories d'appareils",
     "compatibleBrands": "Marques",
-    "compatibleModels": "Modèles"
+    "compatibleModels": "Modèles",
+    "compatibleVariants": "Variantes"
   },
   "repairPrices": {
     "title": "Tarifs de réparation",

@@ -26,6 +26,11 @@ const RepairServicesAdmin = () => {
         },
         { name: "compatibleBrands", label: t("repairServices.compatibleBrands"), type: "multiselect", optionsResource: "device-catalog/brands" },
         { name: "compatibleModels", label: t("repairServices.compatibleModels"), type: "multiselect", optionsResource: "device-catalog/models" },
+        {
+          name: "compatibleVariants", label: t("repairServices.compatibleVariants"), type: "multiselect",
+          optionsResource: "device-catalog/variants",
+          optionLabel: (variant) => [variant.deviceModel?.brand?.name, variant.deviceModel?.name, variant.label].filter(Boolean).join(" — "),
+        },
         { name: "translations.fr.name", label: t("fields.nameFr"), section: "French Translation" },
         { name: "translations.fr.shortDescription", label: t("fields.shortDescriptionFr"), type: "textarea" },
         { name: "translations.fr.fullDescription", label: t("fields.fullDescriptionFr"), type: "textarea" },
