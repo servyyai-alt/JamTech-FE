@@ -3,16 +3,18 @@ import { Link } from "react-router-dom";
 import {
   Smartphone, Tablet, Laptop, Gamepad2, Wrench, ShieldCheck, Truck, Clock,
   ArrowRight, Star, ShoppingBag, Battery, ScreenShare, MessageSquareText,
-  ChevronLeft, ChevronRight, Zap, Award, HeadphonesIcon, CheckCircle2,
+  ChevronLeft, ChevronRight, Zap, Award, HeadphonesIcon, Pause, Play, ArrowDown, BadgeCheck, ScanLine, BadgeDollarSign,
 } from "lucide-react";
 import * as catalogService from "../services/catalogService.js";
 import * as productService from "../services/productService.js";
 import ProductCard from "../components/ecommerce/ProductCard.jsx";
 import SkeletonCard from "../components/common/SkeletonCard.jsx";
 import { useTranslation } from "react-i18next";
+import "./home-hero.css";
+import "./repair-services.css";
 import bg_image from "../assets/bg_image.png";
 import bg_image1 from "../assets/bg_image1.png";
-import heroVideo from "../assets/Create_a_premium_cinematic_br (1).mp4";
+import heroBackgroundVideo from "../assets/anime_video.mp4";
 import catPhoneImg from "../assets/cat_phone.jpg";
 import catTabletImg from "../assets/cat_tablet.jpg";
 import catComputerImg from "../assets/cat_computer.jpg";
@@ -20,6 +22,8 @@ import catLaptopImg from "../assets/cat_laptop.jpg";
 import catGamingImg from "../assets/cat_gaming.jpg";
 
 /* ─── constants ─────────────────────────────────────────────── */
+const SERVICE_ICONS = [BadgeCheck, Clock, ShieldCheck, Wrench, ScanLine, Truck, Smartphone, BadgeDollarSign];
+
 const CATEGORY_KEYS = {
   Smartphones: "smartphones", Tablets: "tablets", Computers: "computers", Laptops: "laptops", "Gaming Devices": "gaming_devices",
 };
@@ -125,6 +129,27 @@ const Home = () => {
   const [reviewIdx, setReviewIdx] = useState(0);
   const [heroVisible, setHeroVisible] = useState(false);
 
+  const heroVideoRef = useRef(null);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncPlayback = () => {
+      if (preference.matches) video.pause();
+      else video.play().catch(() => {});
+    };
+    syncPlayback();
+    preference.addEventListener("change", syncPlayback);
+    return () => preference.removeEventListener("change", syncPlayback);
+  }, []);
+
+  const toggleHeroVideo = () => {
+    const video = heroVideoRef.current;
+    if (video.paused) video.play().catch(() => {});
+    else video.pause();
+  };
+
   const featCarouselRef = useRef(null);
   const bestCarouselRef = useRef(null);
 
@@ -169,17 +194,8 @@ const Home = () => {
           .hero-section { height: auto; min-height: calc(100vh - 122px); padding: 40px 0; }
         }
 
-        /* marquee */
-        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .marquee-track { display: flex; width: max-content; }
         @media (max-width: 768px) {
-          .marquee-track { animation: marquee 12s linear infinite; }
-          .marquee-track:hover { animation-play-state: paused; }
           .step-conn-wrapper { display: none !important; }
-        }
-        @media (min-width: 769px) {
-          .marquee-track { justify-content: center; width: 100%; flex-wrap: wrap; gap: 12px; }
-          .md-hidden { display: none !important; }
         }
 
         /* hero float */
@@ -241,152 +257,73 @@ const Home = () => {
       `}</style>
 
       {/* ── HERO ───────────────────────────────────────────────── */}
-      <section className="hero-section">
-
-        {/* full-bleed background image */}
-        <img
-          src={bg_image}
-          alt=""
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 28%", opacity: 0.45 }}
+      <section className="premium-hero" aria-labelledby="hero-heading">
+        <video
+          ref={heroVideoRef}
+          className="premium-hero__video"
+          src={heroBackgroundVideo}
+          poster={bg_image}
+          loop muted playsInline aria-hidden="true"
+          onPlay={() => setVideoPlaying(true)}
+          onPause={() => setVideoPlaying(false)}
         />
-
-        {/* overlay gradients for readability */}
-        {/* <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(11,15,25,0.96) 0%, rgba(11,15,25,0.82) 38%, rgba(11,15,25,0.45) 68%, rgba(11,15,25,0.28) 100%)" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(11,15,25,0.6) 0%, transparent 22%, transparent 72%, rgba(11,15,25,0.72) 100%)" }} /> */}
-
-        {/* grid texture */}
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-          maskImage: "radial-gradient(ellipse at 30% 50%, black 0%, transparent 75%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 30% 50%, black 0%, transparent 75%)",
-          pointerEvents: "none",
-        }} />
-
-        {/* brand glow orbs */}
-        <div style={{ position: "absolute", top: "-12%", right: "4%", width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(249,115,22,0.3) 0%, transparent 65%)", filter: "blur(8px)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "-26%", left: "16%", width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
-
-        <div style={{ position: "relative", maxWidth: 1280, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)", width: "100%" }}>
-          <div className="hero-grid">
-
-            {/* left copy */}
-            <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? "none" : "translateY(32px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}>
-
-              {/* live badge */}
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: 100, padding: "8px 18px", marginBottom: 26 }}>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22C55E", boxShadow: "0 0 0 4px rgba(34,197,94,0.25)" }} />
-                <span style={{ fontSize: 12.5, fontWeight: 600, color: "#FDBA74", letterSpacing: "0.04em", textTransform: "uppercase" }}>{t("hero.badge")}</span>
-              </div>
-
-              <h1 className="hero-display" style={{ fontSize: "clamp(2.5rem, 5.4vw, 4.1rem)", fontWeight: 700, lineHeight: 1.06, color: "#fff", marginBottom: 22, letterSpacing: "-0.02em" }}>
-                {t("hero.titlePart1")}<br />
-                <span style={{ background: "linear-gradient(92deg, #FB923C, #F59E0B 55%, #FBBF24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{t("hero.titlePart2")}</span>
-              </h1>
-
-              <p style={{ fontSize: 17, lineHeight: 1.75, color: "#CBD5E1", maxWidth: 500, marginBottom: 38 }}>
-                {t("hero.subtitle")}
-              </p>
-
-              <div className="hero-buttons">
-                <Link to="/repair" className="btn-o solid"><Wrench size={17} /> {t("hero.ctaRepair")} <ArrowRight size={16} style={{ transition: "transform 0.2s" }} /></Link>
-                <Link to="/shop" className="btn-o-glass"><ShoppingBag size={17} /> {t("hero.ctaShop")}</Link>
-              </div>
-
-              {/* stats */}
-              <div className="hero-stats">
-                {STATS.map((s, i) => (
-                  <div key={i} className="hero-stat-item" style={{ opacity: heroVisible ? 1 : 0, transition: `opacity 0.5s ease ${0.3 + i * 0.1}s` }}>
-                    <div className="hero-display" style={{ fontSize: "clamp(1.7rem, 3vw, 2.3rem)", fontWeight: 700, color: "#FDBA74", lineHeight: 1 }}>{t(`stats.${s.key}.value`)}</div>
-                    <div style={{ fontSize: 12, color: "#94A3B8", marginTop: 4 }}>{t(`stats.${s.key}.label`)}</div>
-                  </div>
-                ))}
-              </div>
+        <div className="premium-hero__shade" />
+        <div className="premium-hero__inner">
+          <div className={`premium-hero__content ${heroVisible ? "is-visible" : ""}`}>
+            <div className="premium-hero__eyebrow"><span /> JAM SMART TECH <span className="premium-hero__eyebrow-divider">/</span> {t("hero.eyebrow")}</div>
+            <h1 id="hero-heading" className="premium-hero__heading">
+              {t("hero.titlePart1")}<br />
+              <span>{t("hero.titlePart2")}</span>
+            </h1>
+            <p className="premium-hero__description">{t("hero.subtitle")}</p>
+            <div className="premium-hero__actions">
+              <Link to="/repair" className="premium-hero__primary">{t("hero.ctaRepair")}<span><ArrowRight size={20} /></span></Link>
+              <Link to="/shop" className="premium-hero__secondary"><ShoppingBag size={18} />{t("hero.ctaShop")}</Link>
             </div>
-
-            {/* right — floating composition */}
-            <div style={{ display: "flex", justifyContent: "center", position: "relative" }}>
-              <div className="hero-float" style={{ position: "relative", width: "100%", maxWidth: 460 }}>
-
-                {/* main video card */}
-                <div style={{
-                  borderRadius: 30, overflow: "hidden", position: "relative",
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  boxShadow: "0 40px 90px rgba(0,0,0,0.55)",
-                  opacity: heroVisible ? 1 : 0,
-                  transform: heroVisible ? "none" : "scale(0.95) rotate(1.5deg)",
-                  transition: "opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s",
-                }}>
-                  <video 
-                    ref={(el) => { if (el) el.playbackRate = 0.7; }}
-                    src={heroVideo} 
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline
-                    style={{ width: "100%", height: 430, objectFit: "cover", display: "block" }} 
-                  />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(11,15,25,0.55) 0%, transparent 55%)", pointerEvents: "none" }} />
+            <div className="premium-hero__promise"><ShieldCheck size={17} /><span>{t("hero.badge")}</span></div>
+          </div>
+          <div className="premium-hero__footer">
+            <div className="premium-hero__stats">
+              {STATS.map((stat) => (
+                <div className="premium-hero__stat" key={stat.key}>
+                  <strong>{t(`stats.${stat.key}.value`)}</strong>
+                  <span>{t(`stats.${stat.key}.label`)}</span>
                 </div>
-
-                {/* rating badge */}
-                <div className="lift" style={{
-                  position: "absolute", top: 18, right: -22,
-                  background: "rgba(11,15,25,0.75)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
-                  border: "1px solid rgba(255,255,255,0.18)", borderRadius: 16, padding: "12px 16px",
-                  display: "flex", alignItems: "center", gap: 10, boxShadow: "0 14px 40px rgba(0,0,0,0.4)",
-                  opacity: heroVisible ? 1 : 0, transition: "opacity 0.6s ease 0.5s",
-                }}>
-                  <span style={{ width: 40, height: 40, borderRadius: 12, background: "linear-gradient(135deg,#F97316,#F59E0B)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <Star size={19} style={{ color: "#fff", fill: "#fff" }} />
-                  </span>
-                  <div>
-                    <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", lineHeight: 1.1 }}>4.9/5</div>
-                    <div style={{ fontSize: 11, color: "#94A3B8" }}>{t("ratingBadge.value")}</div>
-                  </div>
-                </div>
-
-                {/* repair complete badge */}
-                <div className="lift" style={{
-                  position: "absolute", bottom: 26, left: -26,
-                  background: "rgba(11,15,25,0.75)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
-                  border: "1px solid rgba(255,255,255,0.18)", borderRadius: 18, padding: "12px 16px",
-                  display: "flex", alignItems: "center", gap: 10, boxShadow: "0 14px 40px rgba(0,0,0,0.4)",
-                  opacity: heroVisible ? 1 : 0, transform: heroVisible ? "none" : "translateX(-20px)",
-                  transition: "opacity 0.6s ease 0.65s, transform 0.6s ease 0.65s",
-                }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 12, background: "linear-gradient(135deg,#22C55E,#10B981)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <CheckCircle2 size={19} style={{ color: "#fff" }} />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: "#fff" }}>{t("heroBadge.title")}</div>
-                    <div style={{ fontSize: 11, color: "#94A3B8" }}>{t("heroBadge.subtitle")}</div>
-                  </div>
-                </div>
-
-                {/* pulse ring */}
-                <div style={{ position: "absolute", top: 58, right: -44, width: 46, height: 46, borderRadius: "50%", border: "2px solid rgba(249,115,22,0.5)", pointerEvents: "none" }} className="ring" />
-              </div>
+              ))}
+            </div>
+            <div className="premium-hero__tools">
+              <a href="#home-devices" className="premium-hero__explore">{t("hero.explore")}<ArrowDown size={16} /></a>
+              <button type="button" className="premium-hero__playback" onClick={toggleHeroVideo} aria-label={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")} title={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")}>
+                {videoPlaying ? <Pause size={16} /> : <Play size={16} />}
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── MARQUEE TICKER ──────────────────────────────────────── */}
-      <div style={{ background: "linear-gradient(90deg, #F97316, #F59E0B)", padding: "13px 0", overflow: "hidden" }}>
-        <div className="marquee-track">
-          {[...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span key={i} className={i >= marqueeItems.length ? "md-hidden" : ""} style={{ display: "inline-flex", alignItems: "center", gap: 14, padding: "0 24px", whiteSpace: "nowrap", fontSize: 13, fontWeight: 600, color: "#fff" }}>
-              <span style={{ width: 5, height: 5, borderRadius: "50%", background: "rgba(255,255,255,0.5)", display: "inline-block", flexShrink: 0 }} />
-              {item}
-            </span>
-          ))}
+      {/* Service guarantees */}
+      <section className="service-ribbon" aria-label={t("marquee.label")}>
+        <div className="service-ribbon__inner">
+          <div className="service-ribbon__intro">
+            <span className="service-ribbon__kicker">{t("marquee.kicker")}</span>
+            <h2>{t("marquee.title")}</h2>
+          </div>
+          <ul className="service-ribbon__list">
+            {marqueeItems.map((item, i) => {
+              const Icon = SERVICE_ICONS[i] || ShieldCheck;
+              return (
+                <li className="service-ribbon__item" key={item}>
+                  <span className="service-ribbon__icon"><Icon size={19} strokeWidth={1.5} aria-hidden="true" /></span>
+                  <span>{item}</span>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-      </div>
+      </section>
 
       {/* ── DEVICE CATEGORIES ───────────────────────────────────── */}
-      <section style={{ padding: "80px clamp(20px,5vw,60px)", maxWidth: 1280, margin: "0 auto" }}>
+      <section id="home-devices" style={{ scrollMarginTop: 120, padding: "80px clamp(20px,5vw,60px)", maxWidth: 1280, margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40, flexWrap: "wrap", gap: 16 }}>
             <div>
@@ -427,28 +364,36 @@ const Home = () => {
       </section>
 
       {/* ── POPULAR REPAIR SERVICES ──────────────────────────────── */}
-      <section style={{ background: "#FFF7ED", padding: "80px clamp(20px,5vw,60px)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <Reveal>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase" }}>{t("repairServices.kicker")}</p>
-            <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E", marginBottom: 40 }}>{t("repairServices.title")}</h2>
-          </Reveal>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
-            {REPAIR_SERVICES.map((s, i) => (
-              <Reveal key={s.key} delay={i * 0.1}>
-                <div className="svc-card lift" style={{ "--svc-color": s.color, "--svc-bg": `${s.color}0d`, borderRadius: 20, padding: "28px 24px", background: "#fff" }}>
-                  <div style={{ width: 50, height: 50, borderRadius: 14, background: `${s.color}15`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-                    <s.icon size={24} style={{ color: s.color }} />
-                  </div>
-                  <div className="syne" style={{ fontSize: 16, fontWeight: 700, color: "#1A1A2E", marginBottom: 10 }}>{t(`repairServices.${s.key}.name`)}</div>
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: 12, color: "#6B7280", background: "#F3F4F6", borderRadius: 6, padding: "3px 10px" }}>{t(`repairServices.${s.key}.time`)}</span>
-                    <span style={{ fontSize: 12, color: s.color, background: `${s.color}15`, borderRadius: 6, padding: "3px 10px", fontWeight: 600 }}>{t(`repairServices.${s.key}.warranty`)}</span>
-                  </div>
+      <section className="repair-showcase" aria-labelledby="repair-services-heading">
+        <div className="repair-showcase__inner">
+          <div className="repair-showcase__header">
+            <div>
+              <p className="repair-showcase__eyebrow"><span />{t("repairServices.kicker")}</p>
+              <h2 id="repair-services-heading">{t("repairServices.title")}</h2>
+              <p className="repair-showcase__intro">{t("repairServices.subtitle")}</p>
+            </div>
+            <Link to="/repair" className="repair-showcase__all">{t("categories.allServices")}<ArrowRight size={17} /></Link>
+          </div>
+          <div className="repair-showcase__grid">
+            {REPAIR_SERVICES.map((service, i) => (
+              <article key={service.key} className={`repair-service ${i === 0 ? "repair-service--featured" : ""}`}>
+                <div className="repair-service__top">
+                  <span className="repair-service__icon"><service.icon size={29} strokeWidth={1.5} aria-hidden="true" /></span>
+                  <span className="repair-service__number" aria-hidden="true">0{i + 1}</span>
                 </div>
-              </Reveal>
+                <h3>{t(`repairServices.${service.key}.name`)}</h3>
+                <p className="repair-service__description">{t(`repairServices.${service.key}.description`)}</p>
+                <div className="repair-service__details">
+                  <span><Clock size={14} aria-hidden="true" />{t(`repairServices.${service.key}.time`)}</span>
+                  <span><ShieldCheck size={14} aria-hidden="true" />{t(`repairServices.${service.key}.warranty`)}</span>
+                </div>
+                <Link to="/repair" className="repair-service__link" aria-label={`${t("repairServices.cta")}: ${t(`repairServices.${service.key}.name`)}`}>
+                  {t("repairServices.cta")}<span><ArrowRight size={18} /></span>
+                </Link>
+              </article>
             ))}
           </div>
+          <div className="repair-showcase__help"><MessageSquareText size={18} aria-hidden="true" /><p>{t("repairServices.help")}</p><Link to="/repair">{t("repairServices.helpCta")}<ArrowRight size={14} /></Link></div>
         </div>
       </section>
 
@@ -495,7 +440,7 @@ const Home = () => {
               { key: "certified", icon: ShieldCheck, color: "#F97316" },
               { key: "flexible", icon: Truck, color: "#F59E0B" },
               { key: "fast", icon: Clock, color: "#EF4444" },
-              { key: "support", icon: HeadphonesIcon, color: "#8B5CF6" },
+              { key: "support", icon: HeadphonesIcon, Pause, Play, ArrowDown, BadgeCheck, ScanLine, BadgeDollarSign, color: "#8B5CF6" },
             ].map((item, i) => (
               <Reveal key={item.key} delay={i * 0.1}>
                 <div className="lift" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "28px 24px" }}>

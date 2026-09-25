@@ -1,5 +1,9 @@
 {
   "hero": {
+    "eyebrow": "Expert device care",
+    "explore": "Explore services",
+    "pauseVideo": "Pause background video",
+    "playVideo": "Play background video",
     "badge": "Certified repairs · Genuine parts · Real warranty",
     "titlePart1": "Device broken?",
     "titlePart2": "We fix that fast.",
@@ -22,6 +26,9 @@
     "partsGuaranteed": { "value": "100%", "label": "Parts Guaranteed" }
   },
   "marquee": {
+    "label": "Our service commitments",
+    "kicker": "The JAM promise",
+    "title": "Care you can count on.",
     "items": [
       "Certified Technicians",
       "Same-Day Repairs",
@@ -47,12 +54,16 @@
     "gaming_devices": "Gaming Devices"
   },
   "repairServices": {
+    "subtitle": "Everyday essentials. Expert attention. Find the right repair for your device.",
+    "cta": "Book a repair",
+    "help": "Not sure what needs fixing?",
+    "helpCta": "Find your repair",
     "kicker": "Most requested",
     "title": "Popular Repair Services",
-    "screen": { "name": "Screen Replacement", "time": "45–60 min", "warranty": "90-day warranty" },
-    "battery": { "name": "Battery Replacement", "time": "30 min", "warranty": "12-month warranty" },
-    "software": { "name": "Software & Diagnostics", "time": "Same day", "warranty": "Free diagnosis" },
-    "general": { "name": "General Repair", "time": "Varies", "warranty": "Genuine parts" }
+    "screen": { "description": "From cracks to unresponsive touch, give your display a fresh start.", "name": "Screen Replacement", "time": "45–60 min", "warranty": "90-day warranty" },
+    "battery": { "description": "Get back to longer days with a fresh battery for your device.", "name": "Battery Replacement", "time": "30 min", "warranty": "12-month warranty" },
+    "software": { "description": "Resolve glitches, slowdowns and software issues with expert help.", "name": "Software & Diagnostics", "time": "Same day", "warranty": "Free diagnosis" },
+    "general": { "description": "Get expert attention for the issues that don’t fit in a box.", "name": "General Repair", "time": "Varies", "warranty": "Genuine parts" }
   },
   "howItWorks": {
     "kicker": "Simple process",

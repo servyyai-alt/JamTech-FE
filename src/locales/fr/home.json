@@ -1,5 +1,9 @@
 {
   "hero": {
+    "eyebrow": "Experts de vos appareils",
+    "explore": "Nos services",
+    "pauseVideo": "Mettre la vidéo en pause",
+    "playVideo": "Lire la vidéo de fond",
     "badge": "Réparations certifiées · Pièces d'origine · Garantie réelle",
     "titlePart1": "Appareil en panne ?",
     "titlePart2": "On répare vite.",
@@ -22,6 +26,9 @@
     "partsGuaranteed": { "value": "100%", "label": "Pièces garanties" }
   },
   "marquee": {
+    "label": "Nos engagements de service",
+    "kicker": "La promesse JAM",
+    "title": "Un service de confiance.",
     "items": [
       "Techniciens certifiés",
       "Réparations le jour même",
@@ -47,12 +54,16 @@
     "gaming_devices": "Consoles de jeux"
   },
   "repairServices": {
+    "subtitle": "Vos appareils du quotidien, entre des mains expertes. Trouvez la réparation adaptée.",
+    "cta": "Réserver une réparation",
+    "help": "Vous ne savez pas quoi réparer ?",
+    "helpCta": "Trouver une réparation",
     "kicker": "Les plus demandés",
     "title": "Services de réparation populaires",
-    "screen": { "name": "Remplacement d'écran", "time": "45–60 min", "warranty": "Garantie 90 jours" },
-    "battery": { "name": "Remplacement de batterie", "time": "30 min", "warranty": "Garantie 12 mois" },
-    "software": { "name": "Logiciels et diagnostics", "time": "Le jour même", "warranty": "Diagnostic gratuit" },
-    "general": { "name": "Réparation générale", "time": "Variable", "warranty": "Pièces d'origine" }
+    "screen": { "description": "Fissures ou écran tactile défaillant : offrez un nouveau départ à votre écran.", "name": "Remplacement d'écran", "time": "45–60 min", "warranty": "Garantie 90 jours" },
+    "battery": { "description": "Retrouvez une meilleure autonomie avec une nouvelle batterie.", "name": "Remplacement de batterie", "time": "30 min", "warranty": "Garantie 12 mois" },
+    "software": { "description": "Résolvez les bugs, les ralentissements et les problèmes logiciels.", "name": "Logiciels et diagnostics", "time": "Le jour même", "warranty": "Diagnostic gratuit" },
+    "general": { "description": "Une prise en charge experte pour tous les autres problèmes.", "name": "Réparation générale", "time": "Variable", "warranty": "Pièces d'origine" }
   },
   "howItWorks": {
     "kicker": "Processus simple",
