@@ -54,6 +54,11 @@
     "gaming_devices": "Gaming Devices"
   },
   "repairServices": {
+    "workshopAlt": "Phone repair workbench with precision tools and a disassembled phone",
+    "editorialBadge": "Precision repairs",
+    "editorialKicker": "Device care",
+    "editorialTitle": "Good as new. Ready for more.",
+    "editorialDescription": "Your everyday essentials deserve a little extra care. Let’s get them back to their best.",
     "subtitle": "Everyday essentials. Expert attention. Find the right repair for your device.",
     "cta": "Book a repair",
     "help": "Not sure what needs fixing?",
@@ -92,6 +97,11 @@
     "viewAll": "View all"
   },
   "reviews": {
+    "subtitle": "From a cracked screen to a fresh start. A few words from the people behind the devices.",
+    "previous": "Previous customer story",
+    "next": "Next customer story",
+    "choose": "Choose a customer story",
+    "ratingLabel": "{{rating}} out of 5 stars",
     "kicker": "Customer stories",
     "title": "What Customers Say",
     "role": "Verified Customer",

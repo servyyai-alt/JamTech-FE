@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import {
   Smartphone, Tablet, Laptop, Gamepad2, Wrench, ShieldCheck, Truck, Clock,
   ArrowRight, Star, ShoppingBag, Battery, ScreenShare, MessageSquareText,
-  ChevronLeft, ChevronRight, Zap, Award, HeadphonesIcon, Pause, Play, ArrowDown, BadgeCheck, ScanLine, BadgeDollarSign,
+  ChevronLeft, ChevronRight, Zap, Award, HeadphonesIcon, Pause, Play, ArrowDown, BadgeCheck, ScanLine, BadgeDollarSign, Quote,
 } from "lucide-react";
 import * as catalogService from "../services/catalogService.js";
 import * as productService from "../services/productService.js";
@@ -12,8 +12,10 @@ import SkeletonCard from "../components/common/SkeletonCard.jsx";
 import { useTranslation } from "react-i18next";
 import "./home-hero.css";
 import "./repair-services.css";
+import "./customer-stories.css";
 import bg_image from "../assets/bg_image.png";
 import bg_image1 from "../assets/bg_image1.png";
+import repairWorkshop from "../assets/hero_repair_bg.jpg";
 import heroBackgroundVideo from "../assets/anime_video.mp4";
 import catPhoneImg from "../assets/cat_phone.jpg";
 import catTabletImg from "../assets/cat_tablet.jpg";
@@ -170,10 +172,6 @@ const Home = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    const id = setInterval(() => setReviewIdx((i) => (i + 1) % REVIEWS.length), 4500);
-    return () => clearInterval(id);
-  }, []);
 
   const scroll = (ref, dir) => { if (ref.current) ref.current.scrollBy({ left: dir * 280, behavior: "smooth" }); };
   const displayCats = categories.length ? categories : FALLBACK_CATEGORIES;
@@ -227,7 +225,12 @@ const Home = () => {
 
         /* step connector */
         .step-conn { flex: 1; height: 2px; background: linear-gradient(to right, #F97316, #FED7AA); margin: 0 8px; margin-bottom: 44px; }
-        @media (max-width: 767px) { .step-conn { display: none; } .p-carousel { display: grid; grid-template-columns: 1fr; gap: 20px; overflow-x: visible; padding-right: 20px; } .carousel-nav { display: none !important; } }
+        @media (max-width: 767px) {
+          .step-conn { display: none; }
+          .p-carousel { overscroll-behavior-x: contain; }
+          .p-carousel > * { flex-basis: min(260px, 78vw); min-width: 0; }
+          .carousel-nav { display: none !important; }
+        }
 
         /* btn */
         .btn-o { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; justify-content: center; }
@@ -374,9 +377,21 @@ const Home = () => {
             </div>
             <Link to="/repair" className="repair-showcase__all">{t("categories.allServices")}<ArrowRight size={17} /></Link>
           </div>
-          <div className="repair-showcase__grid">
+          <div className="repair-showcase__layout">
+            <div className="repair-editorial">
+              <img src={repairWorkshop} alt={t("repairServices.workshopAlt")} loading="lazy" width="1376" height="768" />
+              <div className="repair-editorial__shade" />
+              <div className="repair-editorial__badge"><ShieldCheck size={15} aria-hidden="true" />{t("repairServices.editorialBadge")}</div>
+              <div className="repair-editorial__copy">
+                <span className="repair-editorial__eyebrow">JAM SMART TECH / {t("repairServices.editorialKicker")}</span>
+                <h3>{t("repairServices.editorialTitle")}</h3>
+                <p>{t("repairServices.editorialDescription")}</p>
+                <Link to="/repair">{t("repairServices.cta")}<ArrowRight size={18} /></Link>
+              </div>
+            </div>
+            <div className="repair-showcase__grid">
             {REPAIR_SERVICES.map((service, i) => (
-              <article key={service.key} className={`repair-service ${i === 0 ? "repair-service--featured" : ""}`}>
+              <article key={service.key} className="repair-service">
                 <div className="repair-service__top">
                   <span className="repair-service__icon"><service.icon size={29} strokeWidth={1.5} aria-hidden="true" /></span>
                   <span className="repair-service__number" aria-hidden="true">0{i + 1}</span>
@@ -392,6 +407,7 @@ const Home = () => {
                 </Link>
               </article>
             ))}
+            </div>
           </div>
           <div className="repair-showcase__help"><MessageSquareText size={18} aria-hidden="true" /><p>{t("repairServices.help")}</p><Link to="/repair">{t("repairServices.helpCta")}<ArrowRight size={14} /></Link></div>
         </div>
@@ -440,7 +456,7 @@ const Home = () => {
               { key: "certified", icon: ShieldCheck, color: "#F97316" },
               { key: "flexible", icon: Truck, color: "#F59E0B" },
               { key: "fast", icon: Clock, color: "#EF4444" },
-              { key: "support", icon: HeadphonesIcon, Pause, Play, ArrowDown, BadgeCheck, ScanLine, BadgeDollarSign, color: "#8B5CF6" },
+              { key: "support", icon: HeadphonesIcon, Pause, Play, ArrowDown, BadgeCheck, ScanLine, BadgeDollarSign, Quote, color: "#8B5CF6" },
             ].map((item, i) => (
               <Reveal key={item.key} delay={i * 0.1}>
                 <div className="lift" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "28px 24px" }}>
@@ -510,45 +526,43 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ── REVIEWS ─────────────────────────────────────────────── */}
-      <section style={{ background: "#FFF7ED", padding: "80px clamp(20px,5vw,60px)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <Reveal>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#F97316", letterSpacing: "0.08em", marginBottom: 8, textTransform: "uppercase", textAlign: "center" }}>{t("reviews.kicker")}</p>
-            <h2 className="syne" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)", fontWeight: 700, color: "#1A1A2E", textAlign: "center", marginBottom: 48 }}>{t("reviews.title")}</h2>
-          </Reveal>
-
-          {/* featured large quote */}
-          <div style={{ background: "#fff", borderRadius: 24, padding: "clamp(24px,4vw,48px)", maxWidth: 680, margin: "0 auto 36px", boxShadow: "0 8px 40px rgba(249,115,22,0.08)", border: "1px solid #FED7AA", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 20, right: 28, fontSize: 80, lineHeight: 1, color: "rgba(249,115,22,0.08)", fontFamily: "serif", fontWeight: 900 }}>"</div>
-            <StarRow rating={REVIEWS[reviewIdx].rating} />
-            <p style={{ fontSize: "clamp(15px,2vw,18px)", color: "#374151", lineHeight: 1.8, margin: "18px 0 22px", fontStyle: "italic" }}>
-              "{t(`reviews.items.${REVIEWS[reviewIdx].key}.text`)}"
-            </p>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-              <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: "#1A1A2E" }}>{t(`reviews.items.${REVIEWS[reviewIdx].key}.name`)}</div>
-                <div style={{ fontSize: 12, color: "#9CA3AF" }}>{t("reviews.role")} · {t(`reviews.items.${REVIEWS[reviewIdx].key}.device`)}</div>
+      {/* ── CUSTOMER STORIES ───────────────────────────────────── */}
+      <section className="customer-stories" aria-labelledby="customer-stories-heading">
+        <div className="customer-stories__inner">
+          <div className="customer-stories__layout">
+            <div className="customer-stories__intro">
+              <p className="customer-stories__eyebrow"><span />{t("reviews.kicker")}</p>
+              <h2 id="customer-stories-heading">{t("reviews.title")}</h2>
+              <p className="customer-stories__description">{t("reviews.subtitle")}</p>
+              <div className="customer-stories__signature"><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /><span>{t("hero.badge")}</span></div>
+              <div className="customer-stories__controls">
+                <button type="button" onClick={() => setReviewIdx((i) => (i - 1 + REVIEWS.length) % REVIEWS.length)} aria-label={t("reviews.previous")}><ChevronLeft size={20} /></button>
+                <span><strong>{String(reviewIdx + 1).padStart(2, "0")}</strong> / {String(REVIEWS.length).padStart(2, "0")}</span>
+                <button type="button" onClick={() => setReviewIdx((i) => (i + 1) % REVIEWS.length)} aria-label={t("reviews.next")}><ChevronRight size={20} /></button>
               </div>
-              <div style={{ display: "flex", gap: 6 }}>
-                {REVIEWS.map((_, i) => (
-                  <button key={i} onClick={() => setReviewIdx(i)} style={{ width: i === reviewIdx ? 24 : 8, height: 8, borderRadius: 4, border: "none", cursor: "pointer", background: i === reviewIdx ? "#F97316" : "#E5E7EB", transition: "all 0.3s ease" }} />
-                ))}
+            </div>
+            <div className="customer-story" id="selected-customer-story" aria-live="polite" aria-atomic="true">
+              <div key={REVIEWS[reviewIdx].key} className="customer-story__content">
+                <div className="customer-story__top">
+                  <span className="customer-story__rating" role="img" aria-label={t("reviews.ratingLabel", { rating: REVIEWS[reviewIdx].rating })}><span aria-hidden="true"><StarRow rating={REVIEWS[reviewIdx].rating} /></span></span>
+                  <Quote size={36} strokeWidth={1.2} aria-hidden="true" />
+                </div>
+                <blockquote>{t(`reviews.items.${REVIEWS[reviewIdx].key}.text`)}</blockquote>
+                <div className="customer-story__author">
+                  <span className="customer-story__avatar" aria-hidden="true">{t(`reviews.items.${REVIEWS[reviewIdx].key}.name`).split(" ").map((part) => part[0]).join("")}</span>
+                  <div><h3>{t(`reviews.items.${REVIEWS[reviewIdx].key}.name`)}</h3><span>{t(`reviews.items.${REVIEWS[reviewIdx].key}.device`)}</span></div>
+                  <span className="customer-story__verified"><BadgeCheck size={15} aria-hidden="true" />{t("reviews.role")}</span>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* mini cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
-            {REVIEWS.slice(0, 3).map((r, i) => (
-              <Reveal key={r.key} delay={i * 0.08}>
-                <div className="lift" onClick={() => setReviewIdx(i)} style={{ background: "#fff", borderRadius: 18, padding: "20px 22px", cursor: "pointer", border: `2px solid ${reviewIdx === i ? "#F97316" : "#F3F4F6"}`, transition: "border-color 0.25s" }}>
-                  <StarRow rating={r.rating} />
-                  <p style={{ fontSize: 13, color: "#6B7280", margin: "10px 0 12px", lineHeight: 1.65 }}>"{t(`reviews.items.${r.key}.text`).slice(0, 80)}…"</p>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: "#1A1A2E" }}>{t(`reviews.items.${r.key}.name`)}</div>
-                  <div style={{ fontSize: 11, color: "#9CA3AF" }}>{t(`reviews.items.${r.key}.device`)}</div>
-                </div>
-              </Reveal>
+          <div className="customer-stories__selectors" role="group" aria-label={t("reviews.choose")}>
+            {REVIEWS.map((review, i) => (
+              <button type="button" key={review.key} className={`customer-story-preview ${reviewIdx === i ? "is-active" : ""}`} onClick={() => setReviewIdx(i)} aria-pressed={reviewIdx === i} aria-controls="selected-customer-story">
+                <span className="customer-story-preview__initials" aria-hidden="true">{t(`reviews.items.${review.key}.name`).split(" ").map((part) => part[0]).join("")}</span>
+                <span className="customer-story-preview__name"><strong>{t(`reviews.items.${review.key}.name`)}</strong><span>{t(`reviews.items.${review.key}.device`)}</span></span>
+                <ArrowRight className="customer-story-preview__arrow" size={15} aria-hidden="true" />
+              </button>
             ))}
           </div>
         </div>

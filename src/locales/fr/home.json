@@ -54,6 +54,11 @@
     "gaming_devices": "Consoles de jeux"
   },
   "repairServices": {
+    "workshopAlt": "Établi de réparation avec outils de précision et téléphone démonté",
+    "editorialBadge": "Réparations de précision",
+    "editorialKicker": "Soin des appareils",
+    "editorialTitle": "Comme neuf. Prêt pour la suite.",
+    "editorialDescription": "Vos appareils du quotidien méritent toute notre attention. Redonnons-leur le meilleur.",
     "subtitle": "Vos appareils du quotidien, entre des mains expertes. Trouvez la réparation adaptée.",
     "cta": "Réserver une réparation",
     "help": "Vous ne savez pas quoi réparer ?",
@@ -92,6 +97,11 @@
     "viewAll": "Tout voir"
   },
   "reviews": {
+    "subtitle": "D’un écran fissuré à un nouveau départ. Quelques mots des personnes derrière les appareils.",
+    "previous": "Témoignage précédent",
+    "next": "Témoignage suivant",
+    "choose": "Choisir un témoignage",
+    "ratingLabel": "{{rating}} étoiles sur 5",
     "kicker": "Témoignages clients",
     "title": "Ce que disent nos clients",
     "role": "Client vérifié",
