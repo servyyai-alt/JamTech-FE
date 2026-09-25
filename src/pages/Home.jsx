@@ -556,6 +556,19 @@ const Home = () => {
                 </div>
               </div>
             </div>
+            <div className="customer-stories__side" role="group" aria-label={t("reviews.choose")}>
+              {[1, 2].map((offset) => {
+                const index = (reviewIdx + offset) % REVIEWS.length;
+                const review = REVIEWS[index];
+                return (
+                  <button type="button" className={`customer-story-note customer-story-note--${offset}`} key={offset} onClick={() => setReviewIdx(index)} aria-controls="selected-customer-story">
+                    <span className="customer-story-note__top"><span role="img" aria-label={t("reviews.ratingLabel", { rating: review.rating })}><span aria-hidden="true"><StarRow rating={review.rating} /></span></span><Quote size={22} aria-hidden="true" /></span>
+                    <span className="customer-story-note__quote">{t(`reviews.items.${review.key}.text`)}</span>
+                    <span className="customer-story-note__footer"><span><strong>{t(`reviews.items.${review.key}.name`)}</strong><span>{t(`reviews.items.${review.key}.device`)}</span></span><ArrowRight size={17} aria-hidden="true" /></span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
           <div className="customer-stories__selectors" role="group" aria-label={t("reviews.choose")}>
             {REVIEWS.map((review, i) => (
