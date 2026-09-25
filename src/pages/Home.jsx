@@ -8,6 +8,7 @@ import {
 import * as catalogService from "../services/catalogService.js";
 import * as productService from "../services/productService.js";
 import ProductCard from "../components/ecommerce/ProductCard.jsx";
+import TiltSurface from "../components/common/TiltSurface.jsx";
 import SkeletonCard from "../components/common/SkeletonCard.jsx";
 import { useTranslation } from "react-i18next";
 import "./home-hero.css";
@@ -378,7 +379,7 @@ const Home = () => {
             <Link to="/repair" className="repair-showcase__all">{t("categories.allServices")}<ArrowRight size={17} /></Link>
           </div>
           <div className="repair-showcase__layout">
-            <div className="repair-editorial">
+            <TiltSurface className="repair-editorial">
               <img src={repairWorkshop} alt={t("repairServices.workshopAlt")} loading="lazy" width="1376" height="768" />
               <div className="repair-editorial__shade" />
               <div className="repair-editorial__badge"><ShieldCheck size={15} aria-hidden="true" />{t("repairServices.editorialBadge")}</div>
@@ -388,10 +389,10 @@ const Home = () => {
                 <p>{t("repairServices.editorialDescription")}</p>
                 <Link to="/repair">{t("repairServices.cta")}<ArrowRight size={18} /></Link>
               </div>
-            </div>
+            </TiltSurface>
             <div className="repair-showcase__grid">
             {REPAIR_SERVICES.map((service, i) => (
-              <article key={service.key} className="repair-service">
+              <TiltSurface as="article" key={service.key} className={`repair-service repair-service--${service.key}`}>
                 <div className="repair-service__top">
                   <span className="repair-service__icon"><service.icon size={29} strokeWidth={1.5} aria-hidden="true" /></span>
                   <span className="repair-service__number" aria-hidden="true">0{i + 1}</span>
@@ -405,7 +406,7 @@ const Home = () => {
                 <Link to="/repair" className="repair-service__link" aria-label={`${t("repairServices.cta")}: ${t(`repairServices.${service.key}.name`)}`}>
                   {t("repairServices.cta")}<span><ArrowRight size={18} /></span>
                 </Link>
-              </article>
+              </TiltSurface>
             ))}
             </div>
           </div>
