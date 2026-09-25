@@ -73,8 +73,7 @@ const Cart = () => {
           <h3 className="mb-4 font-display font-semibold">{t("summary.title")}</h3>
           <div className="mb-4 flex gap-2">
             <div className="relative flex-1">
-              <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-              <input value={couponCode} onChange={(e) => setCouponCode(e.target.value)} placeholder={t("coupon.placeholder")} className="input pl-8 !py-2 text-sm" />
+              <input value={couponCode} onChange={(e) => setCouponCode(e.target.value)} placeholder={t("coupon.placeholder")} className="input !py-2 text-sm" />
             </div>
             <button onClick={applyCoupon} disabled={applying} className="btn-secondary !px-4 !py-2 text-sm">{applying ? "..." : t("coupon.apply")}</button>
           </div>

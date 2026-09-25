@@ -323,7 +323,7 @@ const ProductDetails = () => {
               </div>
 
               <div className="flex flex-col gap-3 mt-auto">
-                <Link to="/checkout" className="btn-primary w-full text-center">Proceed to Checkout</Link>
+                <Link to="/cart" className="btn-primary w-full text-center">View Cart & Checkout</Link>
                 <Link to="/shop" className="btn-secondary w-full text-center">Continue Shopping</Link>
               </div>
             </div>
