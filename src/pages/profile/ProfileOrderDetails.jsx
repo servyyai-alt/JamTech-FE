@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { ImageOff } from "lucide-react";
 import * as orderService from "../../services/orderService.js";
 import Loader from "../../components/common/Loader.jsx";
 import ErrorState from "../../components/common/ErrorState.jsx";
 import StatusBadge from "../../components/common/StatusBadge.jsx";
 import { formatPrice } from "../../components/common/PriceTag.jsx";
 import { useTranslation } from "react-i18next";
+import "./orders-page.css";
 
 const ProfileOrderDetails = () => {
   const { id } = useParams();
@@ -28,9 +30,21 @@ const ProfileOrderDetails = () => {
         <StatusBadge status={order.status} />
       </div>
       <div className="mb-4 space-y-2">
-        {order.items.map((it, i) => (
-          <div key={i} className="flex justify-between text-sm"><span>{it.title}{it.variantLabel ? ` (${it.variantLabel})` : ""} × {it.quantity}</span><span>{formatPrice(it.price * it.quantity, order.currency)}</span></div>
-        ))}
+        {order.items.map((it, i) => {
+          const src = it.image || it.product?.images?.[0];
+          return (
+            <div className="ord-line" key={i}>
+              <span className={`ord-line__thumb ${src ? "" : "ord-thumb--empty"}`}>
+                {src ? <img src={src} alt={it.title} loading="lazy" /> : <ImageOff size={16} aria-hidden="true" />}
+              </span>
+              <span className="ord-line__body">
+                <span className="ord-line__title">{it.title}{it.variantLabel ? ` (${it.variantLabel})` : ""}</span>
+                <span className="ord-line__qty">&times; {it.quantity}</span>
+              </span>
+              <span className="ord-line__price">{formatPrice(it.price * it.quantity, order.currency)}</span>
+            </div>
+          );
+        })}
       </div>
       <div className="space-y-1 border-t border-gray-100 pt-4 text-sm">
         <div className="flex justify-between text-gray-500"><span>{t("orderDetails.subtotal")}</span><span>{formatPrice(order.subtotal, order.currency)}</span></div>

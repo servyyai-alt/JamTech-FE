@@ -16,7 +16,7 @@ const Profile = () => {
   return (
     <div className="container-px section-y mx-auto max-w-6xl">
       <h1 className="mb-8 font-display text-3xl font-bold text-ink-900">{t("heading")}</h1>
-      <div className="grid gap-8 md:grid-cols-[220px_1fr]">
+      <div className="grid gap-8 md:grid-cols-[220px_minmax(0,1fr)]">
         <nav className="flex gap-2 overflow-x-auto md:flex-col">
           {tabs.map((tab) => (
             <NavLink
@@ -29,7 +29,7 @@ const Profile = () => {
             </NavLink>
           ))}
         </nav>
-        <div><Outlet /></div>
+        <div className="min-w-0"><Outlet /></div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Truck, ShieldCheck, RotateCcw, Minus, Plus, Heart, Star, Trash2, X } from "lucide-react";
+import { Truck, ShieldCheck, RotateCcw, Minus, Plus, Heart, Star, Trash2, X, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import * as productService from "../../services/productService.js";
 import { useCart } from "../../context/CartContext.jsx";
@@ -21,6 +21,11 @@ const ProductDetails = () => {
   const [reviewPage, setReviewPage] = useState(1);
   const [reviewTotal, setReviewTotal] = useState(0);
   const [loadingReviews, setLoadingReviews] = useState(false);
+  const [reviewSort, setReviewSort] = useState("recent");
+  const [reviewFilter, setReviewFilter] = useState(0);
+  const [reviewSummary, setReviewSummary] = useState(null);
+  const [myReview, setMyReview] = useState(null);
+  const [reviewRefreshKey, setReviewRefreshKey] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -48,26 +53,51 @@ const ProductDetails = () => {
       .finally(() => setLoading(false));
   }, [slug]);
 
+  // the star breakdown and the signed-in user's own review belong to the product,
+  // not to a page of the list, so they load once and survive paging
+  // the service layer returns the whole response body, so unwrap `.data` here
+  const fetchReviewMeta = async (id) => {
+    const [summaryRes, mineRes] = await Promise.allSettled([
+      productService.getProductReviewSummary(id),
+      user ? productService.getMyProductReview(id) : Promise.resolve(null),
+    ]);
+    return {
+      summary: summaryRes.status === "fulfilled" ? summaryRes.value?.data || null : null,
+      mine: mineRes.status === "fulfilled" ? mineRes.value?.data || null : null,
+    };
+  };
+
   useEffect(() => {
-    if (data?.product?._id) {
-      let cancelled = false;
-      setLoadingReviews(true);
-      productService.getProductReviews(data.product._id, 1)
-        .then((res) => {
-          if (cancelled) return;
-          setReviews(res.data || []);
-          setReviewPage(1);
-          setReviewTotal(res.total || 0);
-        })
-        .finally(() => { if (!cancelled) setLoadingReviews(false); });
-      return () => { cancelled = true; };
-    }
-  }, [data]);
+    if (!data?.product?._id) return undefined;
+    let cancelled = false;
+    fetchReviewMeta(data.product._id).then((meta) => {
+      if (cancelled) return;
+      setReviewSummary(meta.summary);
+      setMyReview(meta.mine);
+    });
+    return () => { cancelled = true; };
+  }, [data?.product?._id, user?._id]);
+
+  useEffect(() => {
+    if (!data?.product?._id) return undefined;
+    let cancelled = false;
+    setLoadingReviews(true);
+    productService.getProductReviews(data.product._id, 1, { sort: reviewSort, rating: reviewFilter || undefined })
+      .then((res) => {
+        if (cancelled) return;
+        setReviews(res.data || []);
+        setReviewPage(1);
+        setReviewTotal(res.total || 0);
+      })
+      .finally(() => { if (!cancelled) setLoadingReviews(false); });
+    return () => { cancelled = true; };
+  }, [data?.product?._id, reviewSort, reviewFilter, reviewRefreshKey]);
 
   if (loading) return <Loader full />;
   if (error) return <div className="container-px section-y mx-auto max-w-3xl"><ErrorState message={error} /></div>;
 
   const { product, variants, related } = data;
+  const relatedProducts = related?.slice(0, 4) || [];
   const activeStock = selectedVariant ? selectedVariant.stock : product.stock;
   const activePrice = selectedVariant
     ? (selectedVariant.discountPrice && selectedVariant.discountPrice < selectedVariant.price ? selectedVariant.discountPrice : selectedVariant.price)
@@ -96,18 +126,24 @@ const ProductDetails = () => {
   };
 
   const refreshReviews = async () => {
-    const res = await productService.getProductReviews(product._id, 1);
-    setReviews(res.data || []);
-    setReviewPage(1);
-    setReviewTotal(res.total || 0);
+    const id = data?.product?._id;
+    if (!id) return;
+    const meta = await fetchReviewMeta(id);
+    setReviewSummary(meta.summary);
+    setMyReview(meta.mine);
+    setReviewRefreshKey((k) => k + 1);
   };
 
   const loadMoreReviews = async () => {
     const next = reviewPage + 1;
     setLoadingReviews(true);
     try {
-      const res = await productService.getProductReviews(product._id, next);
-      setReviews((prev) => [...prev, ...(res.data || [])]);
+      const res = await productService.getProductReviews(product._id, next, { sort: reviewSort, rating: reviewFilter || undefined });
+      // a review posted mid-scroll shifts every offset, so guard against repeats
+      setReviews((prev) => {
+        const seen = new Set(prev.map((r) => r._id));
+        return [...prev, ...(res.data || []).filter((r) => !seen.has(r._id))];
+      });
       setReviewPage(next);
       setReviewTotal(res.total || 0);
     } finally {
@@ -141,7 +177,11 @@ const ProductDetails = () => {
     }
   };
 
-  const myReview = user ? reviews.find((r) => r.user?._id === user._id) : null;
+  const summaryTotal = reviewSummary?.total ?? product.numReviews ?? 0;
+  const summaryAverage = reviewSummary?.average ?? product.rating ?? 0;
+  const distribution = reviewSummary?.distribution || {};
+  const ratingRows = [5, 4, 3, 2, 1];
+  const visibleTotal = reviews.length;
 
   return (
     <div className="container-px section-y mx-auto max-w-6xl">
@@ -162,7 +202,7 @@ const ProductDetails = () => {
         <div>
           {product.brand && <span className="text-sm font-medium uppercase tracking-wide text-gray-400">{product.brand}</span>}
           <h1 className="mt-1 font-display text-2xl font-bold text-ink-900 md:text-3xl">{product.title}</h1>
-          <div className="mt-2"><StarRating rating={product.rating} count={product.numReviews} /></div>
+          <div className="mt-2"><StarRating rating={summaryAverage} count={summaryTotal} /></div>
 
           <div className="mt-5"><PriceTag regularPrice={selectedVariant?.price || product.regularPrice} salePrice={selectedVariant?.discountPrice || product.salePrice} currency={product.currency} size="lg" /></div>
           <p className={`mt-1 text-sm font-medium ${activeStock > 0 ? "text-emerald-600" : "text-red-500"}`}>
@@ -223,8 +263,70 @@ const ProductDetails = () => {
           )}
         </div>
 
-        <div>
-          <h2 className="mb-3 font-display text-xl font-bold">{t("product.reviews", { count: reviews.length })}</h2>
+        <div className="min-w-0">
+          <h2 className="mb-3 font-display text-xl font-bold">{t("product.reviews", { count: summaryTotal })}</h2>
+
+          {summaryTotal > 0 && (
+            <div className="mb-5 rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50/60 via-white to-gold-50/50 p-4 sm:p-5">
+              <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-gray-500">{t("product.ratingBreakdown")}</p>
+              <ul className="min-w-0 space-y-1.5">
+                {ratingRows.map((star) => {
+                  const count = distribution[star] || 0;
+                  const pct = summaryTotal > 0 ? (count / summaryTotal) * 100 : 0;
+                  const active = reviewFilter === star;
+                  return (
+                    <li key={star}>
+                      <button
+                        type="button"
+                        onClick={() => setReviewFilter(active ? 0 : star)}
+                        aria-pressed={active}
+                        aria-label={t("product.showOnlyStars", { count: star })}
+                        className={`group flex w-full items-center gap-2 rounded-lg px-1.5 py-1 text-left transition hover:bg-white/70 ${active ? "bg-white shadow-sm ring-1 ring-primary-200" : ""}`}
+                      >
+                        <span className="flex w-9 shrink-0 items-center gap-0.5 text-xs font-semibold text-gray-600">
+                          {star}
+                          <Star size={11} className="fill-gold-500 text-gold-500" />
+                        </span>
+                        <span className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-gray-200/80">
+                          <span
+                            className="block h-full rounded-full bg-gradient-to-r from-gold-400 to-gold-500 transition-all duration-500"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </span>
+                        <span className="w-9 shrink-0 text-right text-xs tabular-nums text-gray-500">{count}</span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <label className="flex items-center gap-2 text-xs font-medium text-gray-500">
+              {t("product.sortBy")}
+              <select
+                value={reviewSort}
+                onChange={(e) => setReviewSort(e.target.value)}
+                className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs font-medium text-ink-900 outline-none transition focus:border-primary-400"
+              >
+                <option value="recent">{t("product.sortRecent")}</option>
+                <option value="highest">{t("product.sortHighest")}</option>
+                <option value="lowest">{t("product.sortLowest")}</option>
+              </select>
+            </label>
+            {reviewFilter > 0 && (
+              <button
+                type="button"
+                onClick={() => setReviewFilter(0)}
+                className="inline-flex items-center gap-1 rounded-full bg-primary-50 px-2.5 py-1 text-xs font-semibold text-primary-700 transition hover:bg-primary-100"
+              >
+                {reviewFilter}
+                <Star size={11} className="fill-current" />
+                <X size={12} />
+              </button>
+            )}
+          </div>
 
           {myReview ? (
             <div className="mb-5 rounded-xl border border-gold-500/40 bg-gold-50 p-4">
@@ -256,8 +358,14 @@ const ProductDetails = () => {
             </div>
           )}
 
-          {reviews.length === 0 ? (
-            <p className="text-sm text-gray-400">{t("product.noReviews")}</p>
+          {loadingReviews && reviews.length === 0 ? (
+            <div className="space-y-3" aria-busy="true">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-16 animate-pulse rounded-xl bg-gray-100" />
+              ))}
+            </div>
+          ) : reviews.length === 0 ? (
+            <p className="text-sm text-gray-400">{reviewFilter > 0 ? t("product.noReviewsMatch") : t("product.noReviews")}</p>
           ) : (
             <div className="space-y-4">
               {reviews.map((r) => (
@@ -268,23 +376,44 @@ const ProductDetails = () => {
                   <p className="mt-1 text-sm text-gray-600">{r.comment}</p>
                 </div>
               ))}
-              {reviewPage < Math.ceil(reviewTotal / 10) && (
-                <button onClick={loadMoreReviews} disabled={loadingReviews} className="btn-o w-full !py-2 text-sm disabled:opacity-60">
-                  {loadingReviews ? t("product.loadingMore") : t("product.loadMore", { count: reviews.length, total: reviewTotal })}
-                </button>
+              {reviewPage < Math.ceil(reviewTotal / 10) ? (
+                <>
+                  <p className="text-center text-xs text-gray-400">{t("product.showingOf", { shown: visibleTotal, total: reviewTotal })}</p>
+                  <button onClick={loadMoreReviews} disabled={loadingReviews} className="btn-o w-full !py-2 text-sm disabled:opacity-60">
+                    {loadingReviews ? t("product.loadingMore") : t("product.loadMore", { count: visibleTotal, total: reviewTotal })}
+                  </button>
+                </>
+              ) : (
+                reviewTotal > 10 && <p className="text-center text-xs text-gray-400">{t("product.showingOf", { shown: visibleTotal, total: reviewTotal })}</p>
               )}
             </div>
           )}
         </div>
       </div>
 
-      {related?.length > 0 && (
-        <div className="mt-16">
-          <h2 className="mb-6 font-display text-xl font-bold">{t("product.relatedProducts")}</h2>
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
-            {related.map((p) => <ProductCard key={p._id} product={p} />)}
+      {relatedProducts.length > 0 && (
+        <section className="mt-16 overflow-hidden rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50 via-white to-gold-50 p-4 shadow-sm sm:p-6 lg:p-8">
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              {product.category?.name && (
+                <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-primary-600">{product.category.name}</p>
+              )}
+              <h2 className="font-display text-2xl font-bold text-ink-900">{t("product.relatedProducts")}</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-600">{t("product.relatedSubtitle")}</p>
+            </div>
+            <Link to="/shop" className="inline-flex items-center gap-2 text-sm font-semibold text-primary-700 transition hover:text-primary-900">
+              {t("product.viewAllProducts")}
+              <ArrowRight size={16} />
+            </Link>
           </div>
-        </div>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {relatedProducts.map((p) => (
+              <div key={p._id} className="min-w-0">
+                <ProductCard product={p} />
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
       {cartDrawerOpen && (

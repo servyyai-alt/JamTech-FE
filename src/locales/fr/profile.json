@@ -50,12 +50,27 @@
       "discount": "Remise",
       "total": "Total",
       "shippingAddress": "Adresse de livraison"
+    },
+    "summary": {
+      "placed": "Commandes passées",
+      "active": "En cours",
+      "spent": "Total dépensé"
     }
   },
   "repairs": {
     "emptyTitle": "Aucun rendez-vous de réparation",
     "emptyDescription": "Réservez une réparation pour la voir ici.",
-    "bookRepair": "Réserver une réparation"
+    "bookRepair": "Réserver une réparation",
+    "summary": {
+      "bookings": "Rendez-vous",
+      "active": "En cours",
+      "done": "Terminés",
+      "spent": "Réparations"
+    },
+    "step": "Étape {{current}} sur {{total}}",
+    "lastUpdate": "Mis à jour",
+    "quoteBadge": "Demande de devis",
+    "cancelled": "Annulé"
   },
   "security": {
     "currentPassword": "Mot de passe actuel",

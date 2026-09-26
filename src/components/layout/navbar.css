@@ -32,9 +32,10 @@
 .site-nav__ambient {
   position: absolute;
   top: -150px;
-  left: 30%;
-  width: 420px;
+  right: 0;
+  width: min(420px, 58vw);
   height: 260px;
+  transform-origin: 100% 50%;
   pointer-events: none;
   opacity: 0.52;
   background: radial-gradient(circle, rgba(249, 115, 22, 0.13), transparent 67%);
@@ -740,7 +741,10 @@
 }
 
 @keyframes nav-ambient {
-  to { transform: translate3d(180px, 55px, 0) scale(1.18); }
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  /* anchored to the right edge and drifting inward, so the glow can never
+     push past the viewport and create a page-level horizontal scrollbar */
+  to { transform: translate3d(-56px, 52px, 0) scale(1.16); }
 }
 
 @keyframes nav-progress-shine {

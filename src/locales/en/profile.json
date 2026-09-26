@@ -50,12 +50,27 @@
       "discount": "Discount",
       "total": "Total",
       "shippingAddress": "Shipping Address"
+    },
+    "summary": {
+      "placed": "Orders placed",
+      "active": "In progress",
+      "spent": "Total spent"
     }
   },
   "repairs": {
     "emptyTitle": "No repair bookings yet",
     "emptyDescription": "Book a repair to see it here.",
-    "bookRepair": "Book a Repair"
+    "bookRepair": "Book a Repair",
+    "summary": {
+      "bookings": "Bookings",
+      "active": "In progress",
+      "done": "Completed",
+      "spent": "Repair spend"
+    },
+    "step": "Step {{current}} of {{total}}",
+    "lastUpdate": "Updated",
+    "quoteBadge": "Quote request",
+    "cancelled": "Cancelled"
   },
   "security": {
     "currentPassword": "Current Password",

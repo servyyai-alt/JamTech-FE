@@ -14,6 +14,9 @@
   },
   "contact": {
     "title": "Get In Touch",
+    "kicker": "We're here to help",
+    "highlight": "— let's talk",
+    "subtitle": "Questions about a repair, an order or a device? Reach us by phone, email or the form below and we'll get back to you.",
     "toastSuccess": "Message sent! We'll get back to you soon.",
     "emailLabel": "Email",
     "emailValue": "support@jamsmarttech.com",
@@ -21,10 +24,19 @@
     "phoneValue": "+31 20 123 4567",
     "storeLabel": "Store",
     "storeValue": "123 Tech Street, Amsterdam, Netherlands",
+    "ctaRepair": "Book a repair",
+    "ctaTrack": "Track a repair",
     "form": {
+      "title": "Send us a message",
+      "hint": "Fill in your details and we'll reply as soon as possible.",
       "name": "Name",
       "email": "Email",
+      "phone": "Phone",
+      "phonePlaceholder": "+31 20 123 4567",
+      "phoneInvalid": "Please enter a valid phone number.",
       "message": "Message",
+      "messagePlaceholder": "How can we help?",
+      "counter": "{{used}} / {{max}}",
       "sending": "Sending...",
       "send": "Send Message"
     }

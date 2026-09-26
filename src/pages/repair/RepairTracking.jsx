@@ -7,11 +7,7 @@ import ErrorState from "../../components/common/ErrorState.jsx";
 import StatusBadge from "../../components/common/StatusBadge.jsx";
 import { Search, Check } from "lucide-react";
 import { useAuth } from "../../context/AuthContext.jsx";
-
-const ALL_STATUSES = [
-  "Pending", "Confirmed", "Device Received", "Diagnosis", "Repair In Progress",
-  "Awaiting Parts", "Repair Completed", "Ready for Collection", "Out for Delivery", "Delivered",
-];
+import { REPAIR_FLOW as ALL_STATUSES } from "../../constants/repairFlow.js";
 
 const RepairTracking = () => {
   const [params] = useSearchParams();
