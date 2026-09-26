@@ -53,16 +53,33 @@ const resources = {
 
 i18n.use(LanguageDetector).use(initReactI18next).init({
   resources,
-  fallbackLng: "en",
+  // French is the default: the first entry is what a visitor with no stored
+  // preference gets. "en" stays in the chain as the missing-key fallback, so a
+  // key absent from a language degrades to English instead of cross-language.
+  fallbackLng: ["fr", "en"],
   supportedLngs: ["en", "fr"],
   ns: ["common", "nav", "home", "shop", "cart", "repair", "profile", "auth", "static", "admin"],
   defaultNS: "common",
   interpolation: { escapeValue: false },
   detection: {
-    order: ["localStorage", "navigator"],
+    // French is the product default. "navigator" is deliberately not in this
+    // list: it would let an English browser override the default. The only
+    // thing that overrides French is an explicit choice saved under jam_lang.
+    order: ["localStorage"],
     lookupLocalStorage: "jam_lang",
     caches: ["localStorage"],
   },
 });
+
+// Keep <html lang> truthful so screen readers apply the right pronunciation
+// rules and the browser offers the right spellcheck/dictionaries.
+if (typeof document !== "undefined") {
+  const applyDocumentLang = (lng) => {
+    const short = String(lng || "fr").split("-")[0].toLowerCase();
+    document.documentElement.lang = short === "en" ? "en" : "fr";
+  };
+  i18n.on("languageChanged", applyDocumentLang);
+  applyDocumentLang(i18n.resolvedLanguage);
+}
 
 export default i18n;

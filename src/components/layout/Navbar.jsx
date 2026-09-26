@@ -17,7 +17,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useCart } from "../../context/CartContext.jsx";
-import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
+import LanguageSwitcher, { LanguageToggle } from "../common/LanguageSwitcher.jsx";
 import logo from "../../assets/logo_new.png";
 import "./navbar.css";
 
@@ -230,6 +230,7 @@ export default function Navbar() {
               </div>
             )}
           </div>
+          <LanguageToggle />
           <LanguageSwitcher className="site-nav__language site-nav__desktop" />
           <Link to="/repair" className="site-nav__book site-nav__desktop"><span>{t("footer.bookRepair")}</span><i><ArrowRight size={15} /></i></Link>
           <button type="button" className="site-nav__icon site-nav__menu-button" onClick={(event) => toggle("mobile", event)} aria-label={t(panel === "mobile" ? "closeMenu" : "openMenu")} aria-expanded={panel === "mobile"} aria-controls="nav-mobile">
