@@ -1,5 +1,13 @@
 {
   "title": "Boutique",
+  "hero": {
+    "kicker": "Accessoires et pièces détachées",
+    "highlight": "pour tous vos appareils",
+    "subtitle": "Chargeurs, coques, câbles et pièces de remplacement — tout ce qu'il faut pour garder vos appareils en marche.",
+    "loading": "Chargement des produits..."
+  },
+  "results_one": "{{count}} produit",
+  "results_other": "{{count}} produits",
   "filter": {
     "title": "Filtres",
     "category": "Catégorie",
@@ -12,9 +20,11 @@
     "clearRating": "Effacer la note",
     "inStockOnly": "En stock uniquement",
     "onSale": "En solde",
-    "applyFilters": "Appliquer les filtres"
+    "applyFilters": "Appliquer les filtres",
+    "close": "Fermer les filtres"
   },
   "sort": {
+    "label": "Trier par",
     "newest": "Plus récent",
     "priceAsc": "Prix : croissant",
     "priceDesc": "Prix : décroissant",

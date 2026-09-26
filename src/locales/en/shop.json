@@ -1,5 +1,13 @@
 {
   "title": "Shop",
+  "hero": {
+    "kicker": "Accessories & spare parts",
+    "highlight": "for every device",
+    "subtitle": "Chargers, cases, cables and replacement parts — everything you need to keep your devices running.",
+    "loading": "Loading products..."
+  },
+  "results_one": "{{count}} product",
+  "results_other": "{{count}} products",
   "filter": {
     "title": "Filters",
     "category": "Category",
@@ -12,9 +20,11 @@
     "clearRating": "Clear rating",
     "inStockOnly": "In Stock Only",
     "onSale": "On Sale",
-    "applyFilters": "Apply Filters"
+    "applyFilters": "Apply Filters",
+    "close": "Close filters"
   },
   "sort": {
+    "label": "Sort by",
     "newest": "Newest",
     "priceAsc": "Price: Low to High",
     "priceDesc": "Price: High to Low",
