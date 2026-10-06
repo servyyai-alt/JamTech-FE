@@ -309,7 +309,7 @@ const Home = () => {
               </h1>
               <div className="hero-subtext-container">
                 <p className={`premium-hero__description hero-subtext ${heroTextIndex === 0 ? 'active' : ''}`}>{t("hero.subtitle")}</p>
-                <p className={`premium-hero__description hero-subtext ${heroTextIndex === 1 ? 'active' : ''}`}>{t("hero.subtitleShop", "Accessoires haut de gamme, coques, chargeurs et gadgets pour tous vos appareils.")}</p>
+                <p className={`premium-hero__description hero-subtext ${heroTextIndex === 1 ? 'active' : ''}`}>{t("hero.subtitleShop", "Phones, laptops and other devices — reliable solutions for all your tech needs.")}</p>
               </div>
               <div className="premium-hero__promise"><ShieldCheck size={17} /><span>{t("hero.badge")}</span></div>
             </div>
