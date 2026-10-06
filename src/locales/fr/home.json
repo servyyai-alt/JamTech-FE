@@ -11,9 +11,17 @@
     "titlePart1": "Appareil en panne ?",
     "titlePart2": "On répare vite.",
     "subtitle": "Services de réparation haut de gamme pour téléphones, tablettes, ordinateurs et consoles — plus une boutique d'accessoires complète. La plupart des réparations sont effectuées le jour même.",
-    "ctaRepair": "Réserver une réparation",
-    "ctaShop": "Acheter des accessoires",
-    "imgAlt": "Technicien en train de réparer un appareil"
+    "ctaRepair": "Réparation",
+    "ctaShop": "Boutique",
+    "imgAlt": "Technicien en train de réparer un appareil",
+    "repairTag": "RÉPARATION",
+    "repairTitle": "Réparer & Restaurer",
+    "repairDesc": "Réparations expertes pour téléphones, tablettes, ordinateurs portables et consoles",
+    "repairCta": "Voir la réparation",
+    "shopTag": "BOUTIQUE",
+    "shopTitle": "Accessoires Premium",
+    "shopDesc": "Découvrez étuis, chargeurs, gadgets et plus encore",
+    "shopCta": "Voir la boutique"
   },
   "heroBadge": {
     "title": "Réparation terminée",

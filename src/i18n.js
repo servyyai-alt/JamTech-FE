@@ -58,14 +58,12 @@ i18n.use(LanguageDetector).use(initReactI18next).init({
   // key absent from a language degrades to English instead of cross-language.
   fallbackLng: ["fr", "en"],
   supportedLngs: ["en", "fr"],
+  lng: "fr",
   ns: ["common", "nav", "home", "shop", "cart", "repair", "profile", "auth", "static", "admin"],
   defaultNS: "common",
   interpolation: { escapeValue: false },
   detection: {
-    // French is the product default. "navigator" is deliberately not in this
-    // list: it would let an English browser override the default. The only
-    // thing that overrides French is an explicit choice saved under jam_lang.
-    order: ["localStorage"],
+    order: ["localStorage", "navigator"],
     lookupLocalStorage: "jam_lang",
     caches: ["localStorage"],
   },

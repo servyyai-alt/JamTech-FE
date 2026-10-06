@@ -294,47 +294,37 @@ const Home = () => {
                 <span>{t("hero.titlePart2")}</span>
               </h1>
               <p className="premium-hero__description">{t("hero.subtitle")}</p>
-              <div className="premium-hero__actions">
-                <Link to="/repair" className="premium-hero__primary">{t("hero.ctaRepair")}<span><ArrowRight size={20} /></span></Link>
-                <Link to="/shop" className="premium-hero__secondary"><ShoppingBag size={18} />{t("hero.ctaShop")}</Link>
-              </div>
               <div className="premium-hero__promise"><ShieldCheck size={17} /><span>{t("hero.badge")}</span></div>
             </div>
             <div className="premium-hero__stage">
-              <div className="premium-hero__frame">
-                <span className="premium-hero__corner premium-hero__corner--tl" aria-hidden="true" />
-                <span className="premium-hero__corner premium-hero__corner--tr" aria-hidden="true" />
-                <span className="premium-hero__corner premium-hero__corner--bl" aria-hidden="true" />
-                <span className="premium-hero__corner premium-hero__corner--br" aria-hidden="true" />
-                <div className="premium-hero__frame-top">
-                  <span className="premium-hero__signal"><i aria-hidden="true" />{t("hero.liveFeed")}</span>
-                  <button type="button" className="premium-hero__playback" onClick={toggleHeroVideo} aria-label={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")} title={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")}>
-                    {videoPlaying ? <Pause size={15} /> : <Play size={15} />}
-                  </button>
-                </div>
-                <div className="premium-hero__frame-bottom">
-                  <div className="premium-hero__hud">
-                    <span className="premium-hero__hud-title">{t("hero.hudTitle")}</span>
-                    <ul>
-                      {hudLabels.map((label, i) => (
-                        <li key={label}>
-                          <span>{label}</span>
-                          <i className="premium-hero__hud-track"><b style={{ "--fill": `${HERO_HUD[i] ?? 60}%` }} /></i>
-                        </li>
-                      ))}
-                    </ul>
+              <div className="premium-hero__frame split-hero">
+                <div className="split-hero__bg" aria-hidden="true" />
+                <Link to="/repair" className="split-hero__panel split-hero__panel--repair">
+                  <div className="split-hero__glow" aria-hidden="true" />
+                  <div className="split-hero__noise" aria-hidden="true" />
+                  <div className="split-hero__content">
+                    <div className="split-hero__tag"><Wrench size={16} aria-hidden="true" />{t("hero.repairTag")}</div>
+                    <h2 className="split-hero__title">{t("hero.repairTitle")}</h2>
+                    <p className="split-hero__desc">{t("hero.repairDesc")}</p>
+                    <span className="split-hero__cta">{t("hero.repairCta")} <ArrowRight size={18} /></span>
                   </div>
-                  <div className="premium-hero__cards">
-                    <div className="premium-hero__card">
-                      <span className="premium-hero__card-icon"><BadgeCheck size={18} /></span>
-                      <span className="premium-hero__card-copy"><strong>{t("heroBadge.title")}</strong><small>{t("heroBadge.subtitle")}</small></span>
-                    </div>
-                    <div className="premium-hero__card premium-hero__card--rating">
-                      <Star size={15} fill="#ffae75" strokeWidth={0} aria-hidden="true" />
-                      <span>{t("ratingBadge.value")}</span>
-                    </div>
+                  <div className="split-hero__3d split-hero__3d--wrench" aria-hidden="true">🔧</div>
+                </Link>
+                <div className="split-hero__divider" aria-hidden="true" />
+                <Link to="/shop" className="split-hero__panel split-hero__panel--shop">
+                  <div className="split-hero__glow split-hero__glow--right" aria-hidden="true" />
+                  <div className="split-hero__noise" aria-hidden="true" />
+                  <div className="split-hero__content">
+                    <div className="split-hero__tag"><ShoppingBag size={16} aria-hidden="true" />{t("hero.shopTag")}</div>
+                    <h2 className="split-hero__title">{t("hero.shopTitle")}</h2>
+                    <p className="split-hero__desc">{t("hero.shopDesc")}</p>
+                    <span className="split-hero__cta">{t("hero.shopCta")} <ArrowRight size={18} /></span>
                   </div>
-                </div>
+                  <div className="split-hero__3d split-hero__3d--bag" aria-hidden="true">🛍️</div>
+                </Link>
+                <button type="button" className="premium-hero__playback split-hero__playback" onClick={toggleHeroVideo} aria-label={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")} title={t(videoPlaying ? "hero.pauseVideo" : "hero.playVideo")}>
+                  {videoPlaying ? <Pause size={15} /> : <Play size={15} />}
+                </button>
               </div>
             </div>
           </div>

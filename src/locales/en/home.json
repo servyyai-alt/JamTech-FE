@@ -13,7 +13,15 @@
     "subtitle": "Premium repair services for phones, tablets, computers and consoles — plus a full accessories store. Most repairs done same day.",
     "ctaRepair": "Book a Repair",
     "ctaShop": "Shop Accessories",
-    "imgAlt": "Technician repairing device"
+    "imgAlt": "Technician repairing device",
+    "repairTag": "REPAIR",
+    "repairTitle": "Fix & Restore",
+    "repairDesc": "Expert repairs for phones, tablets, laptops & consoles",
+    "repairCta": "Go to Repair",
+    "shopTag": "SHOP",
+    "shopTitle": "Premium Accessories",
+    "shopDesc": "Discover cases, chargers, gadgets & more",
+    "shopCta": "Go to Shop"
   },
   "heroBadge": {
     "title": "Repair Complete",
