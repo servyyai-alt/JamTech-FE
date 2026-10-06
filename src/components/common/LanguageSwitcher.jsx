@@ -4,7 +4,8 @@ import { Languages } from "lucide-react";
 
 const LanguageSwitcher = ({ className = "" }) => {
   const { i18n, t } = useTranslation("nav");
-  const current = i18n.language?.startsWith("fr") ? "fr" : "en";
+  const language = i18n.resolvedLanguage || i18n.language || "fr";
+  const current = String(language).toLowerCase().startsWith("fr") ? "fr" : "en";
 
   const switchLang = (e) => {
     const lang = e.target.value;
@@ -45,17 +46,29 @@ export default LanguageSwitcher;
  */
 export const LanguageToggle = ({ className = "" }) => {
   const { i18n, t } = useTranslation("nav");
-  const isFrench = Boolean(i18n.language?.startsWith("fr"));
+  const language = i18n.resolvedLanguage || i18n.language || "fr";
+  const isFrench = String(language).toLowerCase().startsWith("fr");
   const action = t(isFrench ? "switchToEnglish" : "switchToFrench");
+
+  const toggle = () => {
+    i18n.changeLanguage(isFrench ? "en" : "fr");
+  };
 
   return (
     <button
       type="button"
       className={`site-nav__icon site-nav__lang-toggle ${className}`}
-      onClick={() => i18n.changeLanguage(isFrench ? "en" : "fr")}
+      onClick={toggle}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      }}
       lang={isFrench ? "fr" : "en"}
       aria-label={action}
       title={action}
+      aria-pressed={isFrench ? "false" : "true"}
     >
       <Languages size={18} aria-hidden="true" />
       <span className="site-nav__count site-nav__lang-code" aria-hidden="true">

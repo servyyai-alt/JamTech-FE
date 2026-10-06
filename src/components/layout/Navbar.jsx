@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useCart } from "../../context/CartContext.jsx";
 import LanguageSwitcher, { LanguageToggle } from "../common/LanguageSwitcher.jsx";
-import logo from "../../assets/logo_new.png";
+import logo from "../../assets/Logo.png";
 import "./navbar.css";
 
 const navLinks = [
@@ -96,7 +96,7 @@ export default function Navbar() {
     return () => { document.body.style.overflow = previousOverflow; };
   }, [panel]);
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 1320px)");
+    const desktop = window.matchMedia("(min-width: 1200px)");
     const close = () => setPanel(null);
     desktop.addEventListener("change", close);
     return () => desktop.removeEventListener("change", close);
@@ -296,4 +296,3 @@ export default function Navbar() {
     </header>
   );
 }
-

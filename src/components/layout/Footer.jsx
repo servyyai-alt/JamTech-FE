@@ -14,7 +14,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import logo from "../../assets/logo_new.png";
+import logo from "../../assets/Logo.png";
 import leastActionLogo from "../../assets/least-action-logo.png";
 import "./footer.css";
 
@@ -234,4 +234,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

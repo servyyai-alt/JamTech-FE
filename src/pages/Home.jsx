@@ -11,6 +11,7 @@ import ProductCard from "../components/ecommerce/ProductCard.jsx";
 import TiltSurface from "../components/common/TiltSurface.jsx";
 import SkeletonCard from "../components/common/SkeletonCard.jsx";
 import { useTranslation } from "react-i18next";
+import i18n from "../i18n.js";
 import "./home-hero.css";
 import "./repair-services.css";
 import "./customer-stories.css";
@@ -133,6 +134,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [reviewIdx, setReviewIdx] = useState(0);
   const [heroVisible, setHeroVisible] = useState(false);
+  const [heroTextIndex, setHeroTextIndex] = useState(0);
 
   const heroVideoRef = useRef(null);
   const heroRef = useRef(null);
@@ -168,6 +170,12 @@ const Home = () => {
   const bestCarouselRef = useRef(null);
 
   useEffect(() => { const t = setTimeout(() => setHeroVisible(true), 80); return () => clearTimeout(t); }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroTextIndex((prev) => (prev + 1) % 2);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     Promise.all([
@@ -289,11 +297,20 @@ const Home = () => {
           <div className="premium-hero__body">
             <div className={`premium-hero__content ${heroVisible ? "is-visible" : ""}`}>
               <div className="premium-hero__eyebrow"><span /> JAM SMART TECH <span className="premium-hero__eyebrow-divider">/</span> {t("hero.eyebrow")}</div>
-              <h1 id="hero-heading" className="premium-hero__heading">
-                {t("hero.titlePart1")}<br />
-                <span>{t("hero.titlePart2")}</span>
+              <h1 id="hero-heading" className="premium-hero__heading hero-text-switch">
+                <div className={`hero-text ${heroTextIndex === 0 ? 'active' : ''}`}>
+                  {t("hero.titlePart1")}<br />
+                  <span>{t("hero.titlePart2")}</span>
+                </div>
+                <div className={`hero-text ${heroTextIndex === 1 ? 'active' : ''}`}>
+                  {t("hero.titlePart1Shop", "Besoin d'accessoires ?")}<br />
+                  <span>{t("hero.titlePart2Shop", "Visitez notre boutique.")}</span>
+                </div>
               </h1>
-              <p className="premium-hero__description">{t("hero.subtitle")}</p>
+              <div className="hero-subtext-container">
+                <p className={`premium-hero__description hero-subtext ${heroTextIndex === 0 ? 'active' : ''}`}>{t("hero.subtitle")}</p>
+                <p className={`premium-hero__description hero-subtext ${heroTextIndex === 1 ? 'active' : ''}`}>{t("hero.subtitleShop", "Accessoires haut de gamme, coques, chargeurs et gadgets pour tous vos appareils.")}</p>
+              </div>
               <div className="premium-hero__promise"><ShieldCheck size={17} /><span>{t("hero.badge")}</span></div>
             </div>
             <div className="premium-hero__stage">

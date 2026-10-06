@@ -53,17 +53,15 @@ const resources = {
 
 i18n.use(LanguageDetector).use(initReactI18next).init({
   resources,
-  // French is the default: the first entry is what a visitor with no stored
-  // preference gets. "en" stays in the chain as the missing-key fallback, so a
-  // key absent from a language degrades to English instead of cross-language.
   fallbackLng: ["fr", "en"],
   supportedLngs: ["en", "fr"],
   lng: "fr",
+  lowerCaseLng: true,
   ns: ["common", "nav", "home", "shop", "cart", "repair", "profile", "auth", "static", "admin"],
   defaultNS: "common",
   interpolation: { escapeValue: false },
   detection: {
-    order: ["localStorage", "navigator"],
+    order: ["localStorage"],
     lookupLocalStorage: "jam_lang",
     caches: ["localStorage"],
   },
