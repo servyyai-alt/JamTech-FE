@@ -42,13 +42,6 @@ const CATEGORY_IMAGES = {
 const CATEGORY_ICONS = {
   Smartphones: Smartphone, Tablets: Tablet, Computers: Laptop, Laptops: Laptop, "Gaming Devices": Gamepad2,
 };
-const FALLBACK_CATEGORIES = [
-  { name: "Smartphones", slug: "smartphones" },
-  { name: "Laptops", slug: "laptops" },
-  { name: "Tablets", slug: "tablets" },
-  { name: "Computers", slug: "computers" },
-  { name: "Gaming Devices", slug: "gaming-devices" },
-];
 const REPAIR_SERVICES = [
   { key: "screen", icon: ScreenShare, color: "#F97316" },
   { key: "battery", icon: Battery, color: "#F59E0B" },
@@ -194,7 +187,6 @@ const Home = () => {
 
 
   const scroll = (ref, dir) => { if (ref.current) ref.current.scrollBy({ left: dir * 280, behavior: "smooth" }); };
-  const displayCats = categories.length ? categories : FALLBACK_CATEGORIES;
 
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#ffffff", color: "#1A1A2E" }}>
@@ -394,8 +386,18 @@ const Home = () => {
           </div>
         </Reveal>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 16 }}>
-          {displayCats.map((cat, i) => {
-            const catImg = CATEGORY_IMAGES[cat.name] || catPhoneImg;
+          {loading ? Array.from({ length: 5 }).map((_, i) => (
+            <div key={`category-skeleton-${i}`} className="animate-pulse overflow-hidden rounded-[20px] border-2 border-gray-100 bg-white">
+              <div className="h-[170px] w-full bg-gray-200" />
+              <div className="space-y-3 p-6">
+                <div className="h-5 w-3/5 rounded bg-gray-200" />
+                <div className="h-4 w-4/5 rounded bg-gray-100" />
+                <div className="h-4 w-2/5 rounded bg-gray-100" />
+              </div>
+            </div>
+          )) : categories.map((cat, i) => {
+            // Use the admin-managed category image when available.
+            const catImg = cat.image || CATEGORY_IMAGES[cat.name] || catPhoneImg;
             const slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, "-");
             return (
               <Reveal key={cat.name} delay={i * 0.08}>

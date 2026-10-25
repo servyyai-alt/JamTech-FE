@@ -51,7 +51,8 @@ const RepairCategorySelect = () => {
       {loading ? <Loader /> : error ? <ErrorState message={error} onRetry={load} /> : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4">
           {categories.map((cat) => {
-            const catImg = CATEGORY_IMAGES[cat.name] || catPhoneImg;
+            // Prefer the image uploaded by admin; keep the bundled category image as fallback.
+            const catImg = cat.image || CATEGORY_IMAGES[cat.name] || catPhoneImg;
             return (
               <Link key={cat._id} to={`/repair/${cat.slug}`} state={{ category: cat }} className="group flex flex-col overflow-hidden text-center hover:-translate-y-1 hover:shadow-xl transition-all duration-300 border-2 border-gray-100 hover:border-primary-500 bg-white" style={{ borderRadius: 20 }}>
                 <div className="flex h-[170px] w-full items-center justify-center overflow-hidden bg-gray-50 border-b border-gray-100">
